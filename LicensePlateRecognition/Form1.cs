@@ -62,7 +62,17 @@ namespace LicensePlateRecognition
             }
         }
 
-        //选中列表中的文件路径
+
+
+
+        Mat imgHsv = new Mat();
+        Mat equalizeHistHsv = new Mat();
+        Mat matYellow = new Mat();
+        Mat matYellow_dilate = new Mat();
+        Mat matYellow_erode = new Mat();
+        Mat matContours = new Mat();
+        Mat matRects = new Mat();
+        //选中列表中的文件路径并进行图片处理
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count == 0)
@@ -76,6 +86,51 @@ namespace LicensePlateRecognition
 
             //添加原图
             this.img_in = new Mat(imgPath);
+
+            //转为hsv图片          
+            imgHsv = img_in.CvtColor(ColorConversionCodes.BGR2HSV);
+            //对v均衡化后在合并
+            Mat[] matToHsv = new Mat[3];
+            Cv2.Split(imgHsv, out matToHsv);
+            Cv2.EqualizeHist(matToHsv[2], matToHsv[2]);
+            Cv2.Merge(matToHsv, equalizeHistHsv);
+
+            //在均衡化后的hsv颜色空间红寻找黄色区域
+            Scalar yellow_low = new Scalar(15,95,95);
+            Scalar yellow_up = new Scalar(40,255,255);
+            
+            Cv2.InRange(equalizeHistHsv,yellow_low,yellow_up,matYellow);
+
+            //使用形态学操作对选定颜色区域进行处理
+            Mat element = Cv2.GetStructuringElement(MorphShapes.Rect,new OpenCvSharp.Size(7,3));           
+            Cv2.Dilate(matYellow, matYellow_dilate, element);            
+            Cv2.Erode(matYellow_dilate, matYellow_erode, element);
+
+            //寻找轮廓
+            OpenCvSharp.Point[][] contours; //vector<vector<Point>> contours;
+            HierarchyIndex[] hierarchyIndexes; //vector<Vec4i> hierarchy;
+            Cv2.FindContours(
+                matYellow_erode,
+                out contours,
+                out hierarchyIndexes,
+                mode: RetrievalModes.Tree,
+                method: ContourApproximationModes.ApproxSimple); //求轮廓
+            
+            matContours = img_in.Clone();
+            Cv2.DrawContours(matContours, contours, -1, new Scalar(0, 0, 255), 2); //画轮廓线
+
+            //求轮廓的最小外接矩形          
+            matRects = img_in.Clone();
+            Rect[] rects = new Rect[contours.Length];
+            for(int index =0;index<contours.Length;index++)
+            {
+                Rect rect = Cv2.BoundingRect(contours[index]);//用矩形包围区域
+                rects[index] = rect;
+                Cv2.Rectangle(matRects, rect, new Scalar(255, 0, 0), 1);
+            }
+
+
+            this.ShowMatSplitResult(img_in, rects);
         }
 
         //显示各种处理
@@ -89,23 +144,62 @@ namespace LicensePlateRecognition
                     case 0:
                         this.pictureBox1.Load(imgPath);
                         break;
-                    case 1:
+                    case 1://灰度图
                         Mat img_out = new Mat();
                         img_out = img_in.CvtColor(ColorConversionCodes.BGR2GRAY);
                         this.pictureBox1.Image = img_out.ToBitmap();
                         img_out.Release();
                         break;
-                    case 2:
-                        Mat imgHsv = new Mat();
-                        imgHsv = img_in.CvtColor(ColorConversionCodes.BGR2HSV);
-                        Mat[] matToHsv = new Mat[3];
-                        Cv2.Split(imgHsv,out matToHsv);
-                        
-                        this.pictureBox1.Image = matToHsv[2].ToBitmap();
+                    case 2: 
+                        this.pictureBox1.Image = imgHsv.ToBitmap();
+                        break;
 
+                    case 3:  
+                        this.pictureBox1.Image = equalizeHistHsv.ToBitmap();
+                        break;
+
+                    case 4:
+                        this.pictureBox1.Image = matYellow.ToBitmap();
+                        break;
+                    case 5:
+                        this.pictureBox1.Image = matYellow_erode.ToBitmap();
+                        break;
+                    case 6:
+                        this.pictureBox1.Image = matContours.ToBitmap();
+                        break;
+                    case 7:
+                        this.pictureBox1.Image = matRects.ToBitmap();
+                        break;
+                    case 8:
+                        this.pictureBox1.Image = matContours.ToBitmap();
                         break;
                 }
             }
         }
+
+
+
+        //显示切分的图片
+        void ShowMatSplitResult(Mat mat, Rect[] rects)
+        {
+            if (mat.Empty()) return;
+
+            this.listView2.Items.Clear();
+            this.imageList1.Images.Clear();
+
+            for (int index=0;index<rects.Length;index++)
+            {
+                Mat roi = new Mat(mat, rects[index]);
+
+                this.imageList1.Images.Add(roi.ToBitmap());
+                this.listView2.Items.Add(index.ToString());
+                this.listView2.Items[index].ImageIndex = index;
+
+            }
+
+            
+        }
+
+
     }
 }

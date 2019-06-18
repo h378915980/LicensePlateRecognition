@@ -122,15 +122,39 @@ namespace LicensePlateRecognition
             //求轮廓的最小外接矩形          
             matRects = img_in.Clone();
             Rect[] rects = new Rect[contours.Length];
-            for(int index =0;index<contours.Length;index++)
+            int rectNum=0;
+            for (int index =0;index<contours.Length;index++)
             {
+                
                 Rect rect = Cv2.BoundingRect(contours[index]);//用矩形包围区域
-                rects[index] = rect;
-                Cv2.Rectangle(matRects, rect, new Scalar(255, 0, 0), 1);
+                if((double)rect.Width/rect.Height>2 && (double)rect.Width/rect.Height<10
+                    && rect.Height>25 && rect.Height<125
+                    && rect.Width>100 && rect.Width<400)
+                {
+                    
+                    rects[index] = rect;
+                    Cv2.Rectangle(matRects, rect, new Scalar(255, 0, 0), 1);
+                    rectNum++;
+                }
+                else
+                {
+                    rects[index] = Rect.Empty;
+                }       
+            }
+            Rect[] filterRect = new Rect[rectNum];
+            int fRectNum = 0;
+            for (int index = 0; index < rects.Length; index++)
+            {
+                if(rects[index]!=Rect.Empty)
+                {
+                    filterRect[fRectNum] = rects[index];
+                    fRectNum++;
+                }
+              
             }
 
-
-            this.ShowMatSplitResult(img_in, rects);
+            // MessageBox.Show(rectNum.ToString());
+            this.ShowMatSplitResult(img_in, filterRect);
         }
 
         //显示各种处理
@@ -187,17 +211,23 @@ namespace LicensePlateRecognition
             this.listView2.Items.Clear();
             this.imageList1.Images.Clear();
 
+
             for (int index=0;index<rects.Length;index++)
             {
-                Mat roi = new Mat(mat, rects[index]);
+                if(rects[index]!=Rect.Empty)
+                {
+                    Mat roi = new Mat(mat, rects[index]);
 
-                this.imageList1.Images.Add(roi.ToBitmap());
-                this.listView2.Items.Add(index.ToString());
-                this.listView2.Items[index].ImageIndex = index;
+                    this.imageList1.Images.Add(roi.ToBitmap());
+                    this.listView2.Items.Add(index.ToString());
+                    //this.listView2.Items[index].ImageList.ImageSize = new System.Drawing.Size(rects[index].Width, rects[index].Height);
+                    this.listView2.Items[index].ImageIndex = index;
+                    
+                }
 
             }
 
-            
+
         }
 
 

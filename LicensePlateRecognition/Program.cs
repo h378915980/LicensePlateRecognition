@@ -17,6 +17,8 @@ namespace LicensePlateRecognition
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+            //Application.Run(new MyWindow());
+            //Application.Run(new UIResource());
         }
 
 

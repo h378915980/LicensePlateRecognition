@@ -18,7 +18,7 @@ namespace LicensePlateRecognition
         {
             InitializeComponent();
         }
-
+        
         //some functions
         private int currentTabCount;
         private void AddTab(string text, Mat image)
@@ -155,7 +155,7 @@ namespace LicensePlateRecognition
         private void fileList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (fileList.SelectedItems.Count != 1) return;
-
+            
             ProcessAndShowMat(new Bitmap(fileList.SelectedItem.ToString()));
         }
 

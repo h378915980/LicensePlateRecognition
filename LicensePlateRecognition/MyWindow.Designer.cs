@@ -34,8 +34,8 @@
             this.openFIleButton = new System.Windows.Forms.Button();
             this.viewPanel = new System.Windows.Forms.Panel();
             this.viewTabControl = new System.Windows.Forms.TabControl();
-            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.leftPanel.SuspendLayout();
             this.viewPanel.SuspendLayout();
             this.viewTabControl.SuspendLayout();
@@ -52,10 +52,10 @@
             "test2",
             "test3",
             "test4"});
-            this.fileList.Location = new System.Drawing.Point(0, 23);
+            this.fileList.Location = new System.Drawing.Point(0, 24);
             this.fileList.Name = "fileList";
             this.fileList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.fileList.Size = new System.Drawing.Size(145, 336);
+            this.fileList.Size = new System.Drawing.Size(290, 455);
             this.fileList.TabIndex = 0;
             this.fileList.SelectedIndexChanged += new System.EventHandler(this.fileList_SelectedIndexChanged);
             this.fileList.DragDrop += new System.Windows.Forms.DragEventHandler(this.fileList_DragDrop);
@@ -69,15 +69,15 @@
             this.leftPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.leftPanel.Location = new System.Drawing.Point(0, 0);
             this.leftPanel.Name = "leftPanel";
-            this.leftPanel.Size = new System.Drawing.Size(145, 382);
+            this.leftPanel.Size = new System.Drawing.Size(290, 502);
             this.leftPanel.TabIndex = 1;
             // 
             // deleteFileButton
             // 
             this.deleteFileButton.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.deleteFileButton.Location = new System.Drawing.Point(0, 359);
+            this.deleteFileButton.Location = new System.Drawing.Point(0, 479);
             this.deleteFileButton.Name = "deleteFileButton";
-            this.deleteFileButton.Size = new System.Drawing.Size(145, 23);
+            this.deleteFileButton.Size = new System.Drawing.Size(290, 23);
             this.deleteFileButton.TabIndex = 2;
             this.deleteFileButton.Text = "清除";
             this.deleteFileButton.UseVisualStyleBackColor = true;
@@ -88,7 +88,7 @@
             this.openFIleButton.Dock = System.Windows.Forms.DockStyle.Top;
             this.openFIleButton.Location = new System.Drawing.Point(0, 0);
             this.openFIleButton.Name = "openFIleButton";
-            this.openFIleButton.Size = new System.Drawing.Size(145, 23);
+            this.openFIleButton.Size = new System.Drawing.Size(290, 24);
             this.openFIleButton.TabIndex = 1;
             this.openFIleButton.Text = "打开";
             this.openFIleButton.UseVisualStyleBackColor = true;
@@ -98,9 +98,9 @@
             // 
             this.viewPanel.Controls.Add(this.viewTabControl);
             this.viewPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.viewPanel.Location = new System.Drawing.Point(145, 0);
+            this.viewPanel.Location = new System.Drawing.Point(290, 0);
             this.viewPanel.Name = "viewPanel";
-            this.viewPanel.Size = new System.Drawing.Size(837, 382);
+            this.viewPanel.Size = new System.Drawing.Size(692, 502);
             this.viewPanel.TabIndex = 2;
             // 
             // viewTabControl
@@ -110,14 +110,14 @@
             this.viewTabControl.Location = new System.Drawing.Point(0, 0);
             this.viewTabControl.Name = "viewTabControl";
             this.viewTabControl.SelectedIndex = 0;
-            this.viewTabControl.Size = new System.Drawing.Size(837, 382);
+            this.viewTabControl.Size = new System.Drawing.Size(692, 502);
             this.viewTabControl.TabIndex = 0;
             // 
             // tabPage1
             // 
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(829, 353);
+            this.tabPage1.Size = new System.Drawing.Size(684, 473);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "测试";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -126,7 +126,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(982, 382);
+            this.ClientSize = new System.Drawing.Size(982, 502);
             this.Controls.Add(this.viewPanel);
             this.Controls.Add(this.leftPanel);
             this.Name = "MyWindow";

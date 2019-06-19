@@ -19,9 +19,6 @@ namespace LicensePlateRecognition
     public partial class Form1 : Form
     {
         
-        public string savePath;
-
-
 
         public Form1()
         {
@@ -173,12 +170,107 @@ namespace LicensePlateRecognition
 
         }
 
+        //这里看看能不能实现一个进度框
+        private void AutoProcessImage(
+            double heightDivideWidthLow = 0.15f,
+            double heightDivedeWidthUp = 0.7f,
+            int heightLow = 10,
+            int heightUp = 80,
+            int widthLow = 40,
+            int widthUp = 180)
+        {
+
+            if(this.listInputImage.Items.Count==0)
+            {
+                MessageBox.Show("请先导入图片");
+                return;
+            }
+
+            MessageBox.Show(" 请选择保存路径，处理过程中请不要进行其他操作！");
+
+            string savePath;
+
+            if (this.inputImageFolder.ShowDialog() == DialogResult.OK)
+            {
+                savePath = this.inputImageFolder.SelectedPath+"\\sample_";
+                //MessageBox.Show(savePath);
+                
+            }
+            else return;
+
+
+            for(int i=0;i<this.listInputImage.Items.Count;i++)
+            {
+                //MessageBox.Show(this.listInputImage.Items[i].Text);
+                Mat matIn = new Mat(this.listInputImage.Items[i].Text);
+                //转为hsv图片    
+                Mat matHsv = matIn.CvtColor(ColorConversionCodes.BGR2HSV);
+                //对v均衡化后在合并
+                Mat[] matToHsv = new Mat[3];
+                Cv2.Split(matHsv, out matToHsv);
+                Cv2.EqualizeHist(matToHsv[2], matToHsv[2]);
+                Mat equalizeHistHsv = new Mat();
+                Cv2.Merge(matToHsv, equalizeHistHsv);
+
+                //在均衡化后的hsv颜色空间红寻找黄色和蓝色区域
+                Mat matYellow = new Mat();
+                Mat matBlue = new Mat();
+                Scalar yellow_low = new Scalar(15, 70, 70);
+                Scalar yellow_up = new Scalar(40, 255, 255);
+                Scalar blue_low = new Scalar(100, 70, 70);
+                Scalar blue_up = new Scalar(140, 255, 255);
+                Cv2.InRange(equalizeHistHsv, yellow_low, yellow_up, matYellow);
+                Cv2.InRange(equalizeHistHsv, blue_low, blue_up, matBlue);
+                Mat matAll = matBlue + matYellow;
+
+                //使用形态学操作对选定颜色区域进行处理
+                Mat matAllDilate = new Mat();
+                Mat matAllErode = new Mat();
+                Mat element = Cv2.GetStructuringElement(MorphShapes.Rect, new OpenCvSharp.Size(7, 3));
+                Cv2.Dilate(matAll, matAllDilate, element);
+                Cv2.Erode(matAllDilate, matAllErode, element);
+
+
+                //寻找轮廓
+                OpenCvSharp.Point[][] contours; //vector<vector<Point>> contours;
+                HierarchyIndex[] hierarchyIndexes; //vector<Vec4i> hierarchy;
+                Cv2.FindContours(
+                    matAllErode,
+                    out contours,
+                    out hierarchyIndexes,
+                    mode: RetrievalModes.Tree,
+                    method: ContourApproximationModes.ApproxSimple); //求轮廓
+                //求轮廓的最小外接矩形          
+                List<Rect> rects = new List<Rect>();
+                foreach (OpenCvSharp.Point[] p in contours)
+                {
+                    Rect rect = Cv2.BoundingRect(p);
+                    if ((double)rect.Height / rect.Width > 0.15f && (double)rect.Height / rect.Width < 0.7f
+                        && rect.Height > 10 && rect.Height < 80
+                        && rect.Width > 40 && rect.Width < 180)
+                    {
+                        rects.Add(rect);
+                    }
+                }
+                //保存切分的图片
+                int index = 0;
+                foreach (Rect rect in rects)
+                {
+                    Mat roi = new Mat(matIn, rects[index]);
+                    Cv2.ImWrite(savePath+i.ToString()+"_"+index.ToString()+".jpg",roi);
+                    index++;
+                }
+
+
+            }
+            MessageBox.Show("处理完成");
+        }
 
         //events
         //选择文件夹中的图片添加到列表
         private void InputImage(object sender, EventArgs e)
         {
-
+            
             if(this.inputImageFolder.ShowDialog()==DialogResult.OK)
             {
                 this.listInputImage.Clear();
@@ -190,12 +282,16 @@ namespace LicensePlateRecognition
         //选中列表中的文件路径并进行图片处理
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listInputImage.SelectedItems.Count == 1)
+            if (listInputImage.SelectedItems.Count !=0)
             {
-                ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].SubItems[0].Text));              
+                ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text));              
             }
 
         }
 
+        private void butSaveSplitImage_Click(object sender, EventArgs e)
+        {
+            this.AutoProcessImage();
+        }
     }
 }

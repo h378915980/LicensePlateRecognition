@@ -121,13 +121,13 @@
             // butSaveSplitImage
             // 
             this.butSaveSplitImage.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.butSaveSplitImage.Enabled = false;
             this.butSaveSplitImage.Location = new System.Drawing.Point(0, 549);
             this.butSaveSplitImage.Name = "butSaveSplitImage";
             this.butSaveSplitImage.Size = new System.Drawing.Size(212, 32);
             this.butSaveSplitImage.TabIndex = 5;
             this.butSaveSplitImage.Text = "批量处理";
             this.butSaveSplitImage.UseVisualStyleBackColor = true;
+            this.butSaveSplitImage.Click += new System.EventHandler(this.butSaveSplitImage_Click);
             // 
             // splitContainer1
             // 

@@ -19,6 +19,7 @@ namespace LicensePlateRecognition
             Application.Run(new Form1());
             //Application.Run(new MyWindow());
             //Application.Run(new UIResource());
+            //Application.Run(new progressForm());
         }
 
 

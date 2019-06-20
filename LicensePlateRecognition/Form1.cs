@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,17 +17,42 @@ using OpenCvSharp.Extensions;
 
 namespace LicensePlateRecognition
 {
+
+   
+
     public partial class Form1 : Form
     {
-        
+        struct ParameterList
+        {
+            public double HeightDivideWidthLow;
+            public double HeightDivedeWidthUp;
+            public int HeightLow;
+            public int HeightUp;
+            public int WidthLow;
+            public int WidthUp;
+
+        }
+        ParameterList parameterList;
 
         public Form1()
         {
             InitializeComponent();
+            InitParamterList();
+        }
+    
+        
+        //functions
+        private void InitParamterList()
+        {
+            parameterList.HeightDivideWidthLow = (double)this.HeightDividWidthLow.Value;
+            parameterList.HeightDivedeWidthUp = (double)this.HeightDividWidthUp.Value;
+            parameterList.HeightLow = (int)this.HeightLow.Value;
+            parameterList.HeightUp = (int)this.HeightUp.Value;
+            parameterList.WidthLow = (int)this.WidthLow.Value;
+            parameterList.WidthUp = (int)this.WidthUp.Value;
+
         }
 
-
-        //functions
         private void OpenFile(string[] filePath)
         {
             foreach(string f in filePath)
@@ -74,13 +100,7 @@ namespace LicensePlateRecognition
         }
         
 
-        private void ProcessAndShowImage(Bitmap image,
-            double heightDivideWidthLow=0.15f,
-            double heightDivedeWidthUp=0.7f,
-            int heightLow=10,
-            int heightUp=80,
-            int widthLow=40,
-            int widthUp=180)
+        private void ProcessAndShowImage(Bitmap image,ParameterList pl)
         {
 
             currentTabCount = 0;
@@ -143,9 +163,9 @@ namespace LicensePlateRecognition
             foreach(OpenCvSharp.Point[] p in contours)
             {
                 Rect rect = Cv2.BoundingRect(p);
-                if ((double)rect.Height / rect.Width > 0.15f && (double)rect.Height / rect.Width < 0.7f
-                    && rect.Height > 10 && rect.Height < 80
-                    && rect.Width > 40 && rect.Width < 180)
+                if ((double)rect.Height / rect.Width > pl.HeightDivideWidthLow && (double)rect.Height / rect.Width < pl.HeightDivedeWidthUp
+                    && rect.Height > pl.HeightLow && rect.Height < pl.HeightUp
+                    && rect.Width > pl.WidthLow && rect.Width < pl.WidthUp)
                 {
                     rects.Add(rect);
                     Cv2.Rectangle(matRects, rect, new Scalar(0, 0, 255), 3);
@@ -171,13 +191,7 @@ namespace LicensePlateRecognition
         }
 
         //这里看看能不能实现一个进度框
-        private void AutoProcessImage(
-            double heightDivideWidthLow = 0.15f,
-            double heightDivedeWidthUp = 0.7f,
-            int heightLow = 10,
-            int heightUp = 80,
-            int widthLow = 40,
-            int widthUp = 180)
+        private void AutoProcessImage(ParameterList pl)
         {
 
             if(this.listInputImage.Items.Count==0)
@@ -192,14 +206,18 @@ namespace LicensePlateRecognition
 
             if (this.inputImageFolder.ShowDialog() == DialogResult.OK)
             {
-                savePath = this.inputImageFolder.SelectedPath+"\\sample_";
+                savePath = this.inputImageFolder.SelectedPath;
                 //MessageBox.Show(savePath);
                 
             }
             else return;
 
 
-            for(int i=0;i<this.listInputImage.Items.Count;i++)
+            progressForm progress = new progressForm();
+            progress.progressBar1.Maximum = this.listInputImage.Items.Count;
+            progress.Show();
+            
+            for (int i=0;i<this.listInputImage.Items.Count;i++)
             {
                 //MessageBox.Show(this.listInputImage.Items[i].Text);
                 Mat matIn = new Mat(this.listInputImage.Items[i].Text);
@@ -245,9 +263,9 @@ namespace LicensePlateRecognition
                 foreach (OpenCvSharp.Point[] p in contours)
                 {
                     Rect rect = Cv2.BoundingRect(p);
-                    if ((double)rect.Height / rect.Width > 0.15f && (double)rect.Height / rect.Width < 0.7f
-                        && rect.Height > 10 && rect.Height < 80
-                        && rect.Width > 40 && rect.Width < 180)
+                    if ((double)rect.Height / rect.Width > pl.HeightDivideWidthLow && (double)rect.Height / rect.Width < pl.HeightDivedeWidthUp
+                    && rect.Height > pl.HeightLow && rect.Height < pl.HeightUp
+                    && rect.Width > pl.WidthLow && rect.Width < pl.WidthUp)
                     {
                         rects.Add(rect);
                     }
@@ -257,12 +275,15 @@ namespace LicensePlateRecognition
                 foreach (Rect rect in rects)
                 {
                     Mat roi = new Mat(matIn, rects[index]);
-                    Cv2.ImWrite(savePath+i.ToString()+"_"+index.ToString()+".jpg",roi);
+                    Cv2.ImWrite(savePath+ "\\sample_"+i.ToString()+"_"+index.ToString()+".jpg",roi);
                     index++;
                 }
+   
+                progress.Addprogess();
 
 
             }
+            progress.Close();
             MessageBox.Show("处理完成");
         }
 
@@ -284,14 +305,60 @@ namespace LicensePlateRecognition
         {
             if (listInputImage.SelectedItems.Count !=0)
             {
-                ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text));              
+                this.groupBox1.Enabled = true;  
+                ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text),parameterList);
+            }
+            else
+            {
+                this.groupBox1.Enabled = false;
             }
 
         }
 
         private void butSaveSplitImage_Click(object sender, EventArgs e)
         {
-            this.AutoProcessImage();
+
+            
+            this.AutoProcessImage(parameterList);
+
+            
         }
+
+        private void HeightDividWidthLow_ValueChanged(object sender, EventArgs e)
+        {
+            this.parameterList.HeightDivideWidthLow = (double)this.HeightDividWidthLow.Value;
+            ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
+        }
+
+        private void HeightDividWidthUp_ValueChanged(object sender, EventArgs e)
+        {
+            this.parameterList.HeightDivedeWidthUp= (double)this.HeightDividWidthUp.Value;
+            ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
+        }
+
+        private void WidthLow_ValueChanged(object sender, EventArgs e)
+        {
+            this.parameterList.WidthLow = (int)this.WidthLow.Value;
+            ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
+        }
+
+        private void WidthUp_ValueChanged(object sender, EventArgs e)
+        {
+            this.parameterList.WidthUp= (int)this.WidthUp.Value;
+            ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
+        }
+
+        private void HeightLow_ValueChanged(object sender, EventArgs e)
+        {
+            this.parameterList.HeightLow = (int)this.HeightLow.Value;
+            ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
+        }
+
+        private void HeightUp_ValueChanged(object sender, EventArgs e)
+        {
+            this.parameterList.HeightUp = (int)this.HeightUp.Value;
+            ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
+        }
+
     }
 }

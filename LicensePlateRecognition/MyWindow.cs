@@ -135,7 +135,7 @@ namespace LicensePlateRecognition
         }
 
         //window life
-        private void MyWindow_Load(object sender, EventArgs e)
+        public void MyWindow_Load(object sender, EventArgs e)
         {
             fileList.Items.Clear();
             //openFileDialog1.InitialDirectory =

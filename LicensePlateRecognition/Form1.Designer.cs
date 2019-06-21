@@ -37,6 +37,9 @@
             this.imgListSplitImage = new System.Windows.Forms.ImageList(this.components);
             this.listShowSplitImage = new System.Windows.Forms.ListView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.butInputImage = new System.Windows.Forms.Button();
+            this.butSaveSplitImage = new System.Windows.Forms.Button();
+            this.Training_button = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -52,9 +55,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.HeightDividWidthLow = new System.Windows.Forms.NumericUpDown();
             this.HeightDividWidthUp = new System.Windows.Forms.NumericUpDown();
-            this.Training_button = new System.Windows.Forms.Button();
-            this.butSaveSplitImage = new System.Windows.Forms.Button();
-            this.butInputImage = new System.Windows.Forms.Button();
             this.tabShowDiffImage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -84,9 +84,9 @@
             this.listInputImage.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.listInputImage.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.listInputImage.Location = new System.Drawing.Point(0, 2);
-            this.listInputImage.Margin = new System.Windows.Forms.Padding(2);
+            this.listInputImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listInputImage.Name = "listInputImage";
-            this.listInputImage.Size = new System.Drawing.Size(170, 383);
+            this.listInputImage.Size = new System.Drawing.Size(226, 479);
             this.listInputImage.TabIndex = 0;
             this.listInputImage.UseCompatibleStateImageBehavior = false;
             this.listInputImage.View = System.Windows.Forms.View.List;
@@ -101,19 +101,19 @@
             this.tabShowDiffImage.Controls.Add(this.tabPage12);
             this.tabShowDiffImage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabShowDiffImage.Location = new System.Drawing.Point(0, 0);
-            this.tabShowDiffImage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabShowDiffImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabShowDiffImage.Name = "tabShowDiffImage";
             this.tabShowDiffImage.SelectedIndex = 0;
-            this.tabShowDiffImage.Size = new System.Drawing.Size(532, 251);
+            this.tabShowDiffImage.Size = new System.Drawing.Size(714, 315);
             this.tabShowDiffImage.TabIndex = 2;
             // 
             // tabPage12
             // 
             this.tabPage12.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.tabPage12.Location = new System.Drawing.Point(4, 22);
-            this.tabPage12.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage12.Location = new System.Drawing.Point(4, 25);
+            this.tabPage12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage12.Name = "tabPage12";
-            this.tabPage12.Size = new System.Drawing.Size(524, 225);
+            this.tabPage12.Size = new System.Drawing.Size(706, 286);
             this.tabPage12.TabIndex = 0;
             this.tabPage12.Text = "原图";
             // 
@@ -126,11 +126,12 @@
             // listShowSplitImage
             // 
             this.listShowSplitImage.Dock = System.Windows.Forms.DockStyle.Top;
+            this.listShowSplitImage.Enabled = false;
             this.listShowSplitImage.LargeImageList = this.imgListSplitImage;
             this.listShowSplitImage.Location = new System.Drawing.Point(0, 0);
-            this.listShowSplitImage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.listShowSplitImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listShowSplitImage.Name = "listShowSplitImage";
-            this.listShowSplitImage.Size = new System.Drawing.Size(532, 134);
+            this.listShowSplitImage.Size = new System.Drawing.Size(714, 166);
             this.listShowSplitImage.TabIndex = 4;
             this.listShowSplitImage.UseCompatibleStateImageBehavior = false;
             // 
@@ -141,8 +142,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.splitContainer1.Location = new System.Drawing.Point(9, 10);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer1.Location = new System.Drawing.Point(12, 12);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -155,10 +156,44 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(710, 468);
-            this.splitContainer1.SplitterDistance = 162;
-            this.splitContainer1.SplitterWidth = 3;
+            this.splitContainer1.Size = new System.Drawing.Size(947, 585);
+            this.splitContainer1.SplitterDistance = 216;
             this.splitContainer1.TabIndex = 7;
+            // 
+            // butInputImage
+            // 
+            this.butInputImage.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.butInputImage.Location = new System.Drawing.Point(0, 488);
+            this.butInputImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.butInputImage.Name = "butInputImage";
+            this.butInputImage.Size = new System.Drawing.Size(212, 31);
+            this.butInputImage.TabIndex = 10;
+            this.butInputImage.Text = "打开图片文件夹";
+            this.butInputImage.UseVisualStyleBackColor = true;
+            this.butInputImage.Click += new System.EventHandler(this.InputImage);
+            // 
+            // butSaveSplitImage
+            // 
+            this.butSaveSplitImage.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.butSaveSplitImage.Location = new System.Drawing.Point(0, 519);
+            this.butSaveSplitImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.butSaveSplitImage.Name = "butSaveSplitImage";
+            this.butSaveSplitImage.Size = new System.Drawing.Size(212, 31);
+            this.butSaveSplitImage.TabIndex = 9;
+            this.butSaveSplitImage.Text = "批量处理";
+            this.butSaveSplitImage.UseVisualStyleBackColor = true;
+            this.butSaveSplitImage.Click += new System.EventHandler(this.butSaveSplitImage_Click);
+            // 
+            // Training_button
+            // 
+            this.Training_button.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.Training_button.Location = new System.Drawing.Point(0, 550);
+            this.Training_button.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Training_button.Name = "Training_button";
+            this.Training_button.Size = new System.Drawing.Size(212, 31);
+            this.Training_button.TabIndex = 8;
+            this.Training_button.Text = "样品训练";
+            this.Training_button.UseVisualStyleBackColor = true;
             // 
             // splitContainer2
             // 
@@ -166,8 +201,8 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.splitContainer2.Location = new System.Drawing.Point(2, 2);
-            this.splitContainer2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer2.Location = new System.Drawing.Point(3, 2);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -179,9 +214,8 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.groupBox1);
             this.splitContainer2.Panel2.Controls.Add(this.listShowSplitImage);
-            this.splitContainer2.Size = new System.Drawing.Size(536, 459);
-            this.splitContainer2.SplitterDistance = 255;
-            this.splitContainer2.SplitterWidth = 3;
+            this.splitContainer2.Size = new System.Drawing.Size(718, 575);
+            this.splitContainer2.SplitterDistance = 319;
             this.splitContainer2.TabIndex = 0;
             // 
             // groupBox1
@@ -201,11 +235,11 @@
             this.groupBox1.Controls.Add(this.HeightDividWidthUp);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Enabled = false;
-            this.groupBox1.Location = new System.Drawing.Point(0, 134);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Location = new System.Drawing.Point(0, 166);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox1.Size = new System.Drawing.Size(532, 219);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox1.Size = new System.Drawing.Size(714, 274);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "调整处理过程中的参数";
@@ -213,34 +247,32 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(303, 102);
-            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label6.Location = new System.Drawing.Point(404, 128);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(53, 12);
+            this.label6.Size = new System.Drawing.Size(67, 15);
             this.label6.TabIndex = 17;
             this.label6.Text = "高最高值";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(97, 102);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Location = new System.Drawing.Point(129, 128);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(53, 12);
+            this.label7.Size = new System.Drawing.Size(67, 15);
             this.label7.TabIndex = 16;
             this.label7.Text = "高最低值";
             // 
             // HeightUp
             // 
-            this.HeightUp.Location = new System.Drawing.Point(391, 94);
-            this.HeightUp.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.HeightUp.Location = new System.Drawing.Point(521, 118);
+            this.HeightUp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.HeightUp.Maximum = new decimal(new int[] {
             960,
             0,
             0,
             0});
             this.HeightUp.Name = "HeightUp";
-            this.HeightUp.Size = new System.Drawing.Size(90, 21);
+            this.HeightUp.Size = new System.Drawing.Size(120, 25);
             this.HeightUp.TabIndex = 15;
             this.HeightUp.Value = new decimal(new int[] {
             80,
@@ -251,15 +283,15 @@
             // 
             // HeightLow
             // 
-            this.HeightLow.Location = new System.Drawing.Point(185, 94);
-            this.HeightLow.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.HeightLow.Location = new System.Drawing.Point(247, 118);
+            this.HeightLow.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.HeightLow.Maximum = new decimal(new int[] {
             960,
             0,
             0,
             0});
             this.HeightLow.Name = "HeightLow";
-            this.HeightLow.Size = new System.Drawing.Size(90, 21);
+            this.HeightLow.Size = new System.Drawing.Size(120, 25);
             this.HeightLow.TabIndex = 14;
             this.HeightLow.Value = new decimal(new int[] {
             10,
@@ -271,34 +303,32 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(303, 66);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Location = new System.Drawing.Point(404, 82);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(53, 12);
+            this.label5.Size = new System.Drawing.Size(67, 15);
             this.label5.TabIndex = 13;
             this.label5.Text = "宽最高值";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(97, 66);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Location = new System.Drawing.Point(129, 82);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(53, 12);
+            this.label4.Size = new System.Drawing.Size(67, 15);
             this.label4.TabIndex = 12;
             this.label4.Text = "宽最低值";
             // 
             // WidthUp
             // 
-            this.WidthUp.Location = new System.Drawing.Point(391, 58);
-            this.WidthUp.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.WidthUp.Location = new System.Drawing.Point(521, 72);
+            this.WidthUp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.WidthUp.Maximum = new decimal(new int[] {
             1280,
             0,
             0,
             0});
             this.WidthUp.Name = "WidthUp";
-            this.WidthUp.Size = new System.Drawing.Size(90, 21);
+            this.WidthUp.Size = new System.Drawing.Size(120, 25);
             this.WidthUp.TabIndex = 11;
             this.WidthUp.Value = new decimal(new int[] {
             180,
@@ -309,15 +339,15 @@
             // 
             // WidthLow
             // 
-            this.WidthLow.Location = new System.Drawing.Point(185, 58);
-            this.WidthLow.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.WidthLow.Location = new System.Drawing.Point(247, 72);
+            this.WidthLow.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.WidthLow.Maximum = new decimal(new int[] {
             1280,
             0,
             0,
             0});
             this.WidthLow.Name = "WidthLow";
-            this.WidthLow.Size = new System.Drawing.Size(90, 21);
+            this.WidthLow.Size = new System.Drawing.Size(120, 25);
             this.WidthLow.TabIndex = 10;
             this.WidthLow.Value = new decimal(new int[] {
             40,
@@ -329,30 +359,27 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(303, 27);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Location = new System.Drawing.Point(404, 34);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(77, 12);
+            this.label3.Size = new System.Drawing.Size(97, 15);
             this.label3.TabIndex = 9;
             this.label3.Text = "高宽比最高值";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(97, 28);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(129, 35);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(77, 12);
+            this.label2.Size = new System.Drawing.Size(97, 15);
             this.label2.TabIndex = 8;
             this.label2.Text = "高宽比最低值";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 28);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(17, 35);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 12);
+            this.label1.Size = new System.Drawing.Size(82, 15);
             this.label1.TabIndex = 7;
             this.label1.Text = "外接矩形：";
             // 
@@ -364,8 +391,8 @@
             0,
             0,
             131072});
-            this.HeightDividWidthLow.Location = new System.Drawing.Point(185, 20);
-            this.HeightDividWidthLow.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.HeightDividWidthLow.Location = new System.Drawing.Point(247, 25);
+            this.HeightDividWidthLow.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.HeightDividWidthLow.Maximum = new decimal(new int[] {
             1,
             0,
@@ -377,7 +404,7 @@
             0,
             131072});
             this.HeightDividWidthLow.Name = "HeightDividWidthLow";
-            this.HeightDividWidthLow.Size = new System.Drawing.Size(90, 21);
+            this.HeightDividWidthLow.Size = new System.Drawing.Size(120, 25);
             this.HeightDividWidthLow.TabIndex = 5;
             this.HeightDividWidthLow.Value = new decimal(new int[] {
             15,
@@ -394,8 +421,8 @@
             0,
             0,
             131072});
-            this.HeightDividWidthUp.Location = new System.Drawing.Point(391, 19);
-            this.HeightDividWidthUp.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.HeightDividWidthUp.Location = new System.Drawing.Point(521, 24);
+            this.HeightDividWidthUp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.HeightDividWidthUp.Maximum = new decimal(new int[] {
             15,
             0,
@@ -407,7 +434,7 @@
             0,
             65536});
             this.HeightDividWidthUp.Name = "HeightDividWidthUp";
-            this.HeightDividWidthUp.Size = new System.Drawing.Size(90, 21);
+            this.HeightDividWidthUp.Size = new System.Drawing.Size(120, 25);
             this.HeightDividWidthUp.TabIndex = 6;
             this.HeightDividWidthUp.Value = new decimal(new int[] {
             7,
@@ -416,49 +443,14 @@
             65536});
             this.HeightDividWidthUp.ValueChanged += new System.EventHandler(this.HeightDividWidthUp_ValueChanged);
             // 
-            // Training_button
-            // 
-            this.Training_button.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.Training_button.Location = new System.Drawing.Point(0, 439);
-            this.Training_button.Margin = new System.Windows.Forms.Padding(2);
-            this.Training_button.Name = "Training_button";
-            this.Training_button.Size = new System.Drawing.Size(158, 25);
-            this.Training_button.TabIndex = 8;
-            this.Training_button.Text = "样品训练";
-            this.Training_button.UseVisualStyleBackColor = true;
-            // 
-            // butSaveSplitImage
-            // 
-            this.butSaveSplitImage.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.butSaveSplitImage.Location = new System.Drawing.Point(0, 414);
-            this.butSaveSplitImage.Margin = new System.Windows.Forms.Padding(2);
-            this.butSaveSplitImage.Name = "butSaveSplitImage";
-            this.butSaveSplitImage.Size = new System.Drawing.Size(158, 25);
-            this.butSaveSplitImage.TabIndex = 9;
-            this.butSaveSplitImage.Text = "批量处理";
-            this.butSaveSplitImage.UseVisualStyleBackColor = true;
-            this.butSaveSplitImage.Click += new System.EventHandler(this.butSaveSplitImage_Click);
-            // 
-            // butInputImage
-            // 
-            this.butInputImage.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.butInputImage.Location = new System.Drawing.Point(0, 389);
-            this.butInputImage.Margin = new System.Windows.Forms.Padding(2);
-            this.butInputImage.Name = "butInputImage";
-            this.butInputImage.Size = new System.Drawing.Size(158, 25);
-            this.butInputImage.TabIndex = 10;
-            this.butInputImage.Text = "打开图片文件夹";
-            this.butInputImage.UseVisualStyleBackColor = true;
-            this.butInputImage.Click += new System.EventHandler(this.InputImage);
-            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(728, 487);
+            this.ClientSize = new System.Drawing.Size(971, 609);
             this.Controls.Add(this.splitContainer1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.Text = "LicensePlateRecognition";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

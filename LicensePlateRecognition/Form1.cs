@@ -13,7 +13,7 @@ using System.Windows.Forms;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 
-
+using static LicensePlateRecognition.PlateLocator;
 
 namespace LicensePlateRecognition
 {
@@ -22,17 +22,15 @@ namespace LicensePlateRecognition
 
     public partial class Form1 : Form
     {
-        struct ParameterList
-        {
-            public double HeightDivideWidthLow;
-            public double HeightDivedeWidthUp;
-            public int HeightLow;
-            public int HeightUp;
-            public int WidthLow;
-            public int WidthUp;
+        //初始化参数列表
+        ParameterList parameterList = new ParameterList(
+            hdwl: 0.15f,
+            hdwu: 0.70f,
+            hl: 10,
+            hu: 80,
+            wl: 40,
+            wu: 180);
 
-        }
-        ParameterList parameterList;
 
         public Form1()
         {
@@ -44,17 +42,28 @@ namespace LicensePlateRecognition
         //functions
         private void InitParamterList()
         {
-            parameterList.HeightDivideWidthLow = (double)this.HeightDividWidthLow.Value;
-            parameterList.HeightDivedeWidthUp = (double)this.HeightDividWidthUp.Value;
-            parameterList.HeightLow = (int)this.HeightLow.Value;
-            parameterList.HeightUp = (int)this.HeightUp.Value;
-            parameterList.WidthLow = (int)this.WidthLow.Value;
-            parameterList.WidthUp = (int)this.WidthUp.Value;
+            this.HeightDividWidthLow.ValueChanged -= new System.EventHandler(HeightDividWidthLow_ValueChanged);
+            this.HeightDividWidthUp.ValueChanged -= new System.EventHandler(HeightDividWidthUp_ValueChanged);
+            this.HeightLow.ValueChanged -= new System.EventHandler(HeightLow_ValueChanged);
+            this.HeightUp.ValueChanged -= new System.EventHandler(HeightUp_ValueChanged);
+            this.WidthLow.ValueChanged -= new System.EventHandler(WidthLow_ValueChanged);
+            this.WidthUp.ValueChanged -= new System.EventHandler(WidthUp_ValueChanged);
+
+            this.HeightDividWidthLow.Value = (decimal)parameterList.HeightDivideWidthLow;
+            this.HeightDividWidthUp.Value = (decimal)parameterList.HeightDivedeWidthUp;
+            this.HeightLow.Value = parameterList.HeightLow;
+            this.HeightUp.Value = parameterList.HeightUp;
+            this.WidthLow.Value = parameterList.WidthLow;
+            this.WidthUp.Value = parameterList.WidthUp;
+
+            this.HeightDividWidthLow.ValueChanged += new System.EventHandler(HeightDividWidthLow_ValueChanged);
+            this.HeightDividWidthUp.ValueChanged += new System.EventHandler(HeightDividWidthUp_ValueChanged);
+            this.HeightLow.ValueChanged += new System.EventHandler(HeightLow_ValueChanged);
+            this.HeightUp.ValueChanged += new System.EventHandler(HeightUp_ValueChanged);
+            this.WidthLow.ValueChanged += new System.EventHandler(WidthLow_ValueChanged);
+            this.WidthUp.ValueChanged += new System.EventHandler(WidthUp_ValueChanged);
 
         }
-
-        
-
         private int currentTabCount;
         private void AddTag(string text,Mat image)
         {
@@ -85,7 +94,6 @@ namespace LicensePlateRecognition
 
             currentTabCount++;
         }
-        
 
         private void ProcessAndShowImage(Bitmap image,ParameterList pl)
         {
@@ -177,102 +185,6 @@ namespace LicensePlateRecognition
 
         }
 
-        //这里看看能不能实现一个进度框
-        private void AutoProcessImage(ParameterList pl)
-        {
-
-            if(this.listInputImage.Items.Count==0)
-            {
-                MessageBox.Show("请先导入图片");
-                return;
-            }
-
-            MessageBox.Show(" 请选择保存路径，处理过程中请不要进行其他操作！");
-
-            string savePath;
-
-            if (this.inputImageFolder.ShowDialog() == DialogResult.OK)
-            {
-                savePath = this.inputImageFolder.SelectedPath;
-                //MessageBox.Show(savePath);
-                
-            }
-            else return;
-
-
-            progressForm progress = new progressForm();
-            progress.progressBar1.Maximum = this.listInputImage.Items.Count;
-            progress.Show();
-            
-            for (int i=0;i<this.listInputImage.Items.Count;i++)
-            {
-                //MessageBox.Show(this.listInputImage.Items[i].Text);
-                Mat matIn = new Mat(this.listInputImage.Items[i].Text);
-                //转为hsv图片    
-                Mat matHsv = matIn.CvtColor(ColorConversionCodes.BGR2HSV);
-                //对v均衡化后在合并
-                Mat[] matToHsv = new Mat[3];
-                Cv2.Split(matHsv, out matToHsv);
-                Cv2.EqualizeHist(matToHsv[2], matToHsv[2]);
-                Mat equalizeHistHsv = new Mat();
-                Cv2.Merge(matToHsv, equalizeHistHsv);
-
-                //在均衡化后的hsv颜色空间红寻找黄色和蓝色区域
-                Mat matYellow = new Mat();
-                Mat matBlue = new Mat();
-                Scalar yellow_low = new Scalar(15, 70, 70);
-                Scalar yellow_up = new Scalar(40, 255, 255);
-                Scalar blue_low = new Scalar(100, 70, 70);
-                Scalar blue_up = new Scalar(140, 255, 255);
-                Cv2.InRange(equalizeHistHsv, yellow_low, yellow_up, matYellow);
-                Cv2.InRange(equalizeHistHsv, blue_low, blue_up, matBlue);
-                Mat matAll = matBlue + matYellow;
-
-                //使用形态学操作对选定颜色区域进行处理
-                Mat matAllDilate = new Mat();
-                Mat matAllErode = new Mat();
-                Mat element = Cv2.GetStructuringElement(MorphShapes.Rect, new OpenCvSharp.Size(7, 3));
-                Cv2.Dilate(matAll, matAllDilate, element);
-                Cv2.Erode(matAllDilate, matAllErode, element);
-
-
-                //寻找轮廓
-                OpenCvSharp.Point[][] contours; //vector<vector<Point>> contours;
-                HierarchyIndex[] hierarchyIndexes; //vector<Vec4i> hierarchy;
-                Cv2.FindContours(
-                    matAllErode,
-                    out contours,
-                    out hierarchyIndexes,
-                    mode: RetrievalModes.Tree,
-                    method: ContourApproximationModes.ApproxSimple); //求轮廓
-                //求轮廓的最小外接矩形          
-                List<Rect> rects = new List<Rect>();
-                foreach (OpenCvSharp.Point[] p in contours)
-                {
-                    Rect rect = Cv2.BoundingRect(p);
-                    if ((double)rect.Height / rect.Width > pl.HeightDivideWidthLow && (double)rect.Height / rect.Width < pl.HeightDivedeWidthUp
-                    && rect.Height > pl.HeightLow && rect.Height < pl.HeightUp
-                    && rect.Width > pl.WidthLow && rect.Width < pl.WidthUp)
-                    {
-                        rects.Add(rect);
-                    }
-                }
-                //保存切分的图片
-                int index = 0;
-                foreach (Rect rect in rects)
-                {
-                    Mat roi = new Mat(matIn, rects[index]);
-                    Cv2.ImWrite(savePath+ "\\sample_"+i.ToString()+"_"+index.ToString()+".jpg",roi);
-                    index++;
-                }
-   
-                progress.Addprogess();
-
-
-            }
-            progress.Close();
-            MessageBox.Show("处理完成");
-        }
 
         //events
         //选择文件夹中的图片添加到列表
@@ -297,7 +209,7 @@ namespace LicensePlateRecognition
             if (listInputImage.SelectedItems.Count !=0)
             {
                 this.groupBox1.Enabled = true;  
-                ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text),parameterList);
+                this.ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text),parameterList);
             }
             else
             {
@@ -308,11 +220,32 @@ namespace LicensePlateRecognition
 
         private void butSaveSplitImage_Click(object sender, EventArgs e)
         {
+            if (this.listInputImage.Items.Count == 0)
+            {
+                MessageBox.Show("请先导入图片");
+                return;
+            }
 
-            
-            this.AutoProcessImage(parameterList);
+            MessageBox.Show(" 请选择保存路径，处理过程中请不要进行其他操作！");
 
-            
+            string savePath;
+
+            if (this.inputImageFolder.ShowDialog() == DialogResult.OK)
+            {
+                savePath = this.inputImageFolder.SelectedPath;
+            }
+            else return;
+
+            List<string> files = new List<string>();
+            for (int i = 0; i < this.listInputImage.Items.Count; i++)
+            {
+                files.Add(this.listInputImage.Items[i].Text);
+            }
+
+            AutoProcessImageByColor(files, parameterList, savePath);
+
+            MessageBox.Show("处理完成");
+       
         }
 
         private void HeightDividWidthLow_ValueChanged(object sender, EventArgs e)

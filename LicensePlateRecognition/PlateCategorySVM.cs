@@ -59,7 +59,7 @@ namespace LicensePlateRecognition
         }
         
         //分类文件与标签，加保存训练结果路径
-        public static bool Train(List<FileInfo> file,string savePath)
+        public static bool Train(List<FileInfo> file)
         {
             svm = SVM.Create();
             svm.Type = SVM.Types.CSvc;
@@ -98,7 +98,6 @@ namespace LicensePlateRecognition
 
             if (svm.Train(samples, SampleTypes.RowSample, responses))
             {
-                svm.Save(savePath);
                 return true;
             }
 

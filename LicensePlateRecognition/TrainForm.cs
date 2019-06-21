@@ -28,8 +28,9 @@ namespace LicensePlateRecognition
             files.Add(f1);
             files.Add(f2);
 
-            if (PlateCategorySVM.Train(files, "C:\\Users\\hepeiyuan\\Desktop\\MyPlateData\\svmdata.xml"))
+            if (PlateCategorySVM.Train(files))
             {
+                PlateCategorySVM.Save("C:\\Users\\hepeiyuan\\Desktop\\MyPlateData\\svmdata.xml");
                 MessageBox.Show("train success");
             }
             

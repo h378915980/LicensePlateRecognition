@@ -20,6 +20,18 @@ namespace LicensePlateRecognition
         public static int HOGNBits = 9;
 
         private static SVM svm = null;
+        public struct FileInfo
+        {
+            public string FilePath;//样本路径
+            public int Label;      //样本标识
+
+            public FileInfo(string fp,int lab)
+            {
+                FilePath = fp;
+                Label = lab;
+            }
+        } 
+
 
 
         //HOGDescriptor
@@ -33,11 +45,6 @@ namespace LicensePlateRecognition
         }
 
 
-        
-
-
-
-
         //train
         public static bool Train(Mat samples,Mat responses)
         {
@@ -47,10 +54,64 @@ namespace LicensePlateRecognition
             svm.TermCriteria = new TermCriteria(CriteriaType.MaxIter,1000,1e-10);
             
             IsReady = true;
+            
             return svm.Train(samples,SampleTypes.RowSample,responses);
         }
+        
+        //分类文件与标签，加保存训练结果路径
+        public static bool Train(List<FileInfo> file,string savePath)
+        {
+            svm = SVM.Create();
+            svm.Type = SVM.Types.CSvc;
+            svm.KernelType = SVM.KernelTypes.Linear;
+            svm.TermCriteria = new TermCriteria(CriteriaType.MaxIter, 1000, 1e-10);
 
-        //加载svm模型
+            IsReady = true;
+
+            //long timeStart = Cv2.GetTickCount(); //计算处理时间，有时间的话加个进度条
+
+            Mat samples = new Mat();  //特征矩阵
+             
+            Mat responses = new Mat(); //标签矩阵
+
+            foreach(FileInfo fi in file)
+            {
+                List<string> fileNames= FileIO.OpenFile(fi.FilePath); //读到需要的文件路径列表
+                //处理每个文件
+                foreach(string s in fileNames)
+                {
+                    Mat matImg = new Mat(s,ImreadModes.Grayscale);  //get image
+
+                    Cv2.Threshold(matImg, matImg, 0, 255,ThresholdTypes.Otsu); //二值化
+                    
+                    float[] feature = ComputeHogDescriptors(matImg);  //提取图片HOG特征
+
+                    samples.PushBack(TypeConvert.Float2Mat(feature));//向特征矩阵中添加一行特征向量
+                    responses.PushBack(TypeConvert.Int2Mat(fi.Label)); //向标签矩阵中添加一行标签
+
+                }
+
+            }
+
+            samples.ConvertTo(samples, MatType.CV_32FC1); //训练数据的格式必须是32位浮点型
+
+
+            if (svm.Train(samples, SampleTypes.RowSample, responses))
+            {
+                svm.Save(savePath);
+                return true;
+            }
+
+
+           // long timeEnd = Cv2.GetTickCount();
+           // double timeUse = (timeEnd - timeStart) / Cv2.GetTickFrequency();
+
+            return false;
+        }
+
+
+
+        //加载svm模型,也就是哪个xml文件
         public static void Load(string fileName)
         {
             try
@@ -71,6 +132,40 @@ namespace LicensePlateRecognition
                 return;
             svm.Save(ﬁleName);
         }
+
+        //
+        public static PlateCategory Test(Mat matTest)
+        {
+            try
+            {
+                if (IsReady == false || svm == null)
+                {
+                    throw new Exception("训练数据为空，请重新训练⻋牌类型识别或加载数据");
+                }
+
+                PlateCategory result = PlateCategory.UNKNOW;
+
+                if (IsReady == false || svm == null) return result;
+
+                float[] descriptor = ComputeHogDescriptors(matTest);
+
+                Mat testDescriptor = TypeConvert.Float2Mat(descriptor);
+
+                float predict = svm.Predict(testDescriptor);
+
+                result = (PlateCategory)((int)predict);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+        }
+
+
 
 
 

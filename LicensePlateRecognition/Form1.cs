@@ -53,20 +53,7 @@ namespace LicensePlateRecognition
 
         }
 
-        private void OpenFile(string[] filePath)
-        {
-            foreach(string f in filePath)
-            {
-                if(
-                    f.EndsWith(".jpg") ||
-                    f.EndsWith(".png") ||
-                    f.EndsWith(".bmp"))
-                {
-
-                    listInputImage.Items.Add(f);
-                }
-            }
-        }
+        
 
         private int currentTabCount;
         private void AddTag(string text,Mat image)
@@ -295,7 +282,11 @@ namespace LicensePlateRecognition
             if(this.inputImageFolder.ShowDialog()==DialogResult.OK)
             {
                 this.listInputImage.Clear();
-                this.OpenFile(System.IO.Directory.GetFiles(inputImageFolder.SelectedPath));
+                List<string> files = FileIO.OpenFile(inputImageFolder.SelectedPath);
+                foreach(string f in files)
+                {
+                    listInputImage.Items.Add(f);
+                }
             }
         }
 

@@ -101,6 +101,11 @@ namespace LicensePlateRecognition
                     index++;
                 }
             }
+
         }
+
+        //
+        
+
     }
 }

@@ -11,7 +11,6 @@ namespace LicensePlateRecognition
         //待定：返回指定类型的文件列表，这里只能返回图片
         public static List<string> OpenFile(string fileFolder)
         {
-
             string[] files = System.IO.Directory.GetFiles(fileFolder);
             List<string> useFiles=new List<string>();
             foreach(string f in files)
@@ -27,6 +26,14 @@ namespace LicensePlateRecognition
             }
             return useFiles;
         }
+
+        //
+
+
+
+
+
+
 
 
 

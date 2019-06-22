@@ -1,4 +1,5 @@
 ﻿using OpenCvSharp;
+using OpenCvSharp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -48,6 +49,30 @@ namespace LicensePlateRecognition
                 this.listView1.Items.Add(plateCategory.ToString());
             }
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            StringBuilder stringBuilder = new StringBuilder();//可以自由增加的字符串
+
+            stringBuilder.Append("asd");
+            stringBuilder.Append("asd");
+            stringBuilder.Append("asd");
+            MessageBox.Show(stringBuilder.ToString());
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Mat mat = new Mat(@"C:\Users\hepeiyuan\Desktop\chartest\2019-03-12-14-40-38-034156_颜色法_269.jpg");
+            mat = CharSegement.ClearMaodingAndBorder(mat.CvtColor(ColorConversionCodes.BGR2GRAY), PlateColor.BLUE);
+            this.pictureBox1.Image = mat.ToBitmap();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Mat mat = new Mat(@"C:\Users\hepeiyuan\Desktop\chartest\sample_118_0.jpg");
+            mat = CharSegement.SplitePlateByOriginal(mat,mat,PlateColor.YELLOW);
+            this.pictureBox1.Image = mat.ToBitmap();
         }
     }
 }

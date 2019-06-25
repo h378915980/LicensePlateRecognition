@@ -37,9 +37,6 @@
             this.imgListSplitImage = new System.Windows.Forms.ImageList(this.components);
             this.listShowSplitImage = new System.Windows.Forms.ListView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.butInputImage = new System.Windows.Forms.Button();
-            this.butSaveSplitImage = new System.Windows.Forms.Button();
-            this.Training_button = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -116,18 +113,16 @@
             // 
             // listInputImage
             // 
-            this.listInputImage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.listInputImage.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.listInputImage.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
+            this.listInputImage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listInputImage.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.listInputImage.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.listInputImage.Location = new System.Drawing.Point(0, 2);
+            this.listInputImage.Location = new System.Drawing.Point(0, 0);
             this.listInputImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listInputImage.Name = "listInputImage";
-            this.listInputImage.Size = new System.Drawing.Size(256, 546);
+            this.listInputImage.Size = new System.Drawing.Size(242, 648);
             this.listInputImage.TabIndex = 0;
             this.listInputImage.UseCompatibleStateImageBehavior = false;
             this.listInputImage.View = System.Windows.Forms.View.List;
@@ -145,7 +140,7 @@
             this.tabShowDiffImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabShowDiffImage.Name = "tabShowDiffImage";
             this.tabShowDiffImage.SelectedIndex = 0;
-            this.tabShowDiffImage.Size = new System.Drawing.Size(820, 232);
+            this.tabShowDiffImage.Size = new System.Drawing.Size(820, 116);
             this.tabShowDiffImage.TabIndex = 2;
             // 
             // tabPage12
@@ -154,7 +149,7 @@
             this.tabPage12.Location = new System.Drawing.Point(4, 25);
             this.tabPage12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage12.Name = "tabPage12";
-            this.tabPage12.Size = new System.Drawing.Size(812, 203);
+            this.tabPage12.Size = new System.Drawing.Size(812, 87);
             this.tabPage12.TabIndex = 0;
             this.tabPage12.Text = "原图";
             // 
@@ -189,10 +184,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.butInputImage);
             this.splitContainer1.Panel1.Controls.Add(this.listInputImage);
-            this.splitContainer1.Panel1.Controls.Add(this.butSaveSplitImage);
-            this.splitContainer1.Panel1.Controls.Add(this.Training_button);
             // 
             // splitContainer1.Panel2
             // 
@@ -200,41 +192,6 @@
             this.splitContainer1.Size = new System.Drawing.Size(1083, 652);
             this.splitContainer1.SplitterDistance = 246;
             this.splitContainer1.TabIndex = 7;
-            // 
-            // butInputImage
-            // 
-            this.butInputImage.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.butInputImage.Location = new System.Drawing.Point(0, 555);
-            this.butInputImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.butInputImage.Name = "butInputImage";
-            this.butInputImage.Size = new System.Drawing.Size(242, 31);
-            this.butInputImage.TabIndex = 10;
-            this.butInputImage.Text = "打开图片文件夹";
-            this.butInputImage.UseVisualStyleBackColor = true;
-            this.butInputImage.Click += new System.EventHandler(this.InputImage);
-            // 
-            // butSaveSplitImage
-            // 
-            this.butSaveSplitImage.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.butSaveSplitImage.Location = new System.Drawing.Point(0, 586);
-            this.butSaveSplitImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.butSaveSplitImage.Name = "butSaveSplitImage";
-            this.butSaveSplitImage.Size = new System.Drawing.Size(242, 31);
-            this.butSaveSplitImage.TabIndex = 9;
-            this.butSaveSplitImage.Text = "批量处理";
-            this.butSaveSplitImage.UseVisualStyleBackColor = true;
-            this.butSaveSplitImage.Click += new System.EventHandler(this.butSaveSplitImage_Click);
-            // 
-            // Training_button
-            // 
-            this.Training_button.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.Training_button.Location = new System.Drawing.Point(0, 617);
-            this.Training_button.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Training_button.Name = "Training_button";
-            this.Training_button.Size = new System.Drawing.Size(242, 31);
-            this.Training_button.TabIndex = 8;
-            this.Training_button.Text = "样品训练";
-            this.Training_button.UseVisualStyleBackColor = true;
             // 
             // splitContainer2
             // 
@@ -256,7 +213,7 @@
             this.splitContainer2.Panel2.Controls.Add(this.tabControl1);
             this.splitContainer2.Panel2.Controls.Add(this.listShowSplitImage);
             this.splitContainer2.Size = new System.Drawing.Size(824, 642);
-            this.splitContainer2.SplitterDistance = 236;
+            this.splitContainer2.SplitterDistance = 120;
             this.splitContainer2.TabIndex = 0;
             // 
             // tabControl1
@@ -761,14 +718,16 @@
             // 打开图片ToolStripMenuItem
             // 
             this.打开图片ToolStripMenuItem.Name = "打开图片ToolStripMenuItem";
-            this.打开图片ToolStripMenuItem.Size = new System.Drawing.Size(144, 26);
-            this.打开图片ToolStripMenuItem.Text = "打开图片";
+            this.打开图片ToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.打开图片ToolStripMenuItem.Text = "打开图片文件夹";
+            this.打开图片ToolStripMenuItem.Click += new System.EventHandler(this.OpenImageFolder);
             // 
             // 批量处理ToolStripMenuItem
             // 
             this.批量处理ToolStripMenuItem.Name = "批量处理ToolStripMenuItem";
-            this.批量处理ToolStripMenuItem.Size = new System.Drawing.Size(144, 26);
+            this.批量处理ToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.批量处理ToolStripMenuItem.Text = "批量处理";
+            this.批量处理ToolStripMenuItem.Click += new System.EventHandler(this.AutoProcessImage);
             // 
             // 字符分割ToolStripMenuItem
             // 
@@ -781,7 +740,7 @@
             // 打开文件夹ToolStripMenuItem2
             // 
             this.打开文件夹ToolStripMenuItem2.Name = "打开文件夹ToolStripMenuItem2";
-            this.打开文件夹ToolStripMenuItem2.Size = new System.Drawing.Size(144, 26);
+            this.打开文件夹ToolStripMenuItem2.Size = new System.Drawing.Size(216, 26);
             this.打开文件夹ToolStripMenuItem2.Text = "打开图片";
             // 
             // 车牌训练ToolStripMenuItem
@@ -888,9 +847,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown WidthUp;
         private System.Windows.Forms.NumericUpDown WidthLow;
-        private System.Windows.Forms.Button butInputImage;
-        private System.Windows.Forms.Button butSaveSplitImage;
-        private System.Windows.Forms.Button Training_button;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem 车牌定位ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 字符分割ToolStripMenuItem;

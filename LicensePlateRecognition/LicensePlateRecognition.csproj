@@ -94,12 +94,6 @@
       <DependentUpon>TrainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="TypeConvert.cs" />
-    <Compile Include="UIResource.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UIResource.Designer.cs">
-      <DependentUpon>UIResource.cs</DependentUpon>
-    </Compile>
     <Compile Include="Utilities.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -122,9 +116,6 @@
     </Compile>
     <EmbeddedResource Include="TrainForm.resx">
       <DependentUpon>TrainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UIResource.resx">
-      <DependentUpon>UIResource.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

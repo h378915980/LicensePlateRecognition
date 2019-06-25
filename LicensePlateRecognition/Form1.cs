@@ -274,21 +274,19 @@ namespace LicensePlateRecognition
 
 
         //events
-        //选择文件夹中的图片添加到列表
-        private void InputImage(object sender, EventArgs e)
+        //选择文件夹中的图片添加到列表       
+        private void OpenImageFolder(object sender, EventArgs e)
         {
-            
-            if(this.inputImageFolder.ShowDialog()==DialogResult.OK)
+            if (this.inputImageFolder.ShowDialog() == DialogResult.OK)
             {
                 this.listInputImage.Clear();
                 List<string> files = FileIO.OpenFile(inputImageFolder.SelectedPath);
-                foreach(string f in files)
+                foreach (string f in files)
                 {
                     listInputImage.Items.Add(f);
                 }
             }
-        }       
-
+        }
         //选中列表中的文件路径并进行图片处理
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -304,8 +302,8 @@ namespace LicensePlateRecognition
             }
 
         }
-
-        private void butSaveSplitImage_Click(object sender, EventArgs e)
+        //批量处理列表文件
+        private void AutoProcessImage(object sender, EventArgs e)
         {
             if (this.listInputImage.Items.Count == 0)
             {
@@ -332,7 +330,6 @@ namespace LicensePlateRecognition
             AutoProcessImageByColor(files, parameterList, savePath);
 
             MessageBox.Show("处理完成");
-       
         }
 
         private void HeightDividWidthLow_ValueChanged(object sender, EventArgs e)
@@ -371,6 +368,6 @@ namespace LicensePlateRecognition
             ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
         }
 
-
+        
     }
 }

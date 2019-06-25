@@ -371,6 +371,6 @@ namespace LicensePlateRecognition
             ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
         }
 
-        
+
     }
 }

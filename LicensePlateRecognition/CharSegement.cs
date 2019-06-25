@@ -12,6 +12,49 @@ namespace LicensePlateRecognition
     class CharSegement
     {
 
+        //判断车牌颜色,千万要通过byte获取!!!!!!!
+        public static PlateColor GetPlateColor(Mat matPlate)
+        {
+
+            Mat matHSV = matPlate.CvtColor(ColorConversionCodes.BGR2HSV); //转为hsv空间
+
+            Mat[] matToHsv = new Mat[3];   //分为三通道
+            Cv2.Split(matHSV, out matToHsv);
+
+            Mat matH = matToHsv[0];
+            Mat matS = matToHsv[1];
+            Mat matV = matToHsv[2];
+
+            int blueNum = 0;
+            int YellowNum = 0;
+
+            for(int i = 0; i < matHSV.Rows; i++)
+            {
+                for(int j=0;j<matHSV.Cols;j++)
+                {
+                    
+                    byte hValue = matH.At<byte>(i, j);  //获取各处的值
+                    byte sValue = matS.At<byte>(i, j);
+                    byte vValue = matV.At<byte>(i, j);
+
+                    if ((hValue > 90 && hValue<120) && (sValue > 80 && sValue < 220) && (vValue > 80 && vValue < 255))
+                        blueNum++;
+
+                    else if ((hValue > 11 && hValue < 34) && (sValue > 43 && sValue < 255) && (vValue > 46 && vValue < 255))
+                        YellowNum++;
+                }
+            }
+
+            Console.WriteLine(blueNum);
+            if (blueNum > YellowNum)
+                return PlateColor.BLUE;
+            else
+                return PlateColor.YELLOW;
+
+        }
+
+
+        //注意！！输入的举证必须是单通道的灰度图！
         //只清除了水平边框，垂直边框没有清除的必要
         public static Mat ClearBorder(Mat matIn)
         {
@@ -73,8 +116,6 @@ namespace LicensePlateRecognition
 
             return matResult;
         }
-
-
         //清除车牌上的铆钉
         public static Mat ClearMaoding(Mat matIn)
         {
@@ -110,7 +151,6 @@ namespace LicensePlateRecognition
 
             return matResult;
         }
-
         //清除铆钉和边框
         public static Mat ClearMaodingAndBorder(Mat matGray,PlateColor plateColor)
         {
@@ -155,8 +195,8 @@ namespace LicensePlateRecognition
             return result;
         }
 
-
-        public static Mat SplitePlateByOriginal(Mat matOriginal,Mat matPlate,
+        //根据原图切割，返回该车牌上的字符的信息
+        public static List<CharInfo> SplitePlateByOriginal(Mat matOriginal,Mat matPlate,
             PlateColor plateColor,
             int leftLimit = 0, int rightLimit = 0,
             int topLimit = 0, int bottomLimit = 0,
@@ -165,7 +205,7 @@ namespace LicensePlateRecognition
             float minRatio = 0.08f, float maxRatio = 2f)
         {
             List<CharInfo> result = new List<CharInfo>();
-
+            
             Mat matGray = matPlate.CvtColor(ColorConversionCodes.BGR2GRAY);//先将车牌转为灰度图,注意蓝黄牌会有很大区别
             Mat matClear = ClearMaodingAndBorder(matGray, plateColor); //去除铆钉和边框
             //找轮廓
@@ -181,14 +221,50 @@ namespace LicensePlateRecognition
                     NotOnBorder(rect,matPlate.Size(),leftLimit,rightLimit,topLimit,bottomLimit))
                 {
                     rects.Add(rect);
-                    Cv2.Rectangle(matPlate, rect, new Scalar(0, 0, 255), 1);
+                   // Cv2.Rectangle(matPlate, rect, new Scalar(0, 0, 255), 1);
                 }
             }
 
             rects = RejectInnerRectFromRects(rects);  //去掉矩形内部的矩形
-            
-            return matPlate;
+            rects = AdjustRects(rects);        //对矩形大小等进行调整
+            rects = GetSafeRects(matOriginal, rects);   //检查安全矩形
+
+            if (rects.Count == 0) return result;
+
+            for (int index = 0; index < rects.Count; index++)
+            {
+                CharInfo plateCharInfo = new CharInfo(); //字符信息
+                Rect rectROI = rects[index];   //字符所在矩形
+                Mat matROI = matOriginal.SubMat(rectROI);  //字符的图片
+                plateCharInfo.OriginalMat = matROI;
+                plateCharInfo.OriginalRect = rectROI;
+
+                result.Add(plateCharInfo);
+            }            
+            return result;
         }
+
+
+        //通过gamma增强原图后在切割
+        public static List<CharInfo> SplitePlateByGammaTransform(Mat originalMat,
+        PlateColor plateColor,
+        float gammaFactor = 0.40f,
+        int leftLimit = 0, int rightLimit = 0,
+        int topLimit = 0, int bottomLimit = 0,
+        int minWidth = 2, int maxWidth = 30,
+        int minHeight = 10, int maxHeight = 80,
+        float minRatio = 0.08f, float maxRatio = 2f)
+        {
+            Mat plateMat = Utilities.GammaTransform(originalMat, gammaFactor);
+
+            return SplitePlateByOriginal(originalMat, plateMat, plateColor,
+            leftLimit, rightLimit,
+            topLimit, bottomLimit,
+            minWidth, maxWidth,
+            minHeight, maxHeight,
+            minRatio, maxRatio);
+        }
+
 
 
 
@@ -241,17 +317,170 @@ namespace LicensePlateRecognition
         }
 
 
-        private static List<Rect> AdjustRects(List<Rect> rects)
+        //调整矩形大小
+        public static List<Rect> AdjustRects(List<Rect> rects)
         {
-            throw new NotImplementedException();
+            float heightAverage = GetRectsAverageHeight(rects);  //高度平均值
+            float heightLimit = heightAverage * 0.5f;      //高度限定值
+             
+            int topMedian = GetMedianRectsTop(rects);   //顶部中位数
+            int BottomMedian = GetMedianRectsBottom(rects);  //底部中位数
+
+            for(int index = rects.Count - 1; index >= 0; index--)
+            {
+                Rect rect = rects[index];
+                if (rect.Height >=  heightLimit && rect.Height < heightAverage)
+                {
+                    int topOffset = Math.Abs(rect.Top - topMedian); //与顶部差值
+                    int bottomOffset = Math.Abs(rect.Bottom - BottomMedian); //与底部差值
+
+                    //那边偏移值大就选另一边
+                    if (topOffset > bottomOffset)      
+                    {
+                        rect.Y = (int)(rect.Bottom - heightAverage);
+                    }
+
+
+                    rect.Height = (int)heightAverage +3;
+                    rects[index] = rect;
+                }
+            }
+            return rects;
+        }
+        //去掉矩形的内部矩形
+        public static List<Rect> RejectInnerRectFromRects(List<Rect> rects)
+        {
+            for (int index = rects.Count - 1; index >= 0; index--)
+            {
+                Rect rect = rects[index];
+                for (int i = 0; i < rects.Count; i++)
+                {
+                    
+                    Rect rectTemp = rects[i];
+                    if ((rect.X >= rectTemp.X && rect.Y >= rectTemp.Y &&
+                    rect.Right <= rectTemp.Right && rect.Bottom <= rectTemp.Bottom) &&
+                    (rect.Width < rectTemp.Width || rect.Height < rectTemp.Height))      //避免将自己除去
+                    {
+                        rects.RemoveAt(index);
+                        break;
+                    }
+                }
+            }
+            return rects;
         }
 
-        private static List<Rect> RejectInnerRectFromRects(List<Rect> rects)
+        //获取安全矩形
+        public static List<Rect> GetSafeRects(Mat m,List<Rect> rects)
         {
-            throw new NotImplementedException();
+
+            List<Rect> result = new List<Rect>();
+            for(int index=0;index<rects.Count;index++)
+            {
+                Rect roi = rects[index];
+                if (!(0 <= roi.X && 0 <= roi.Width && roi.X + roi.Width <= m.Cols && 0 <= roi.Y && 0 <= roi.Height && roi.Y + roi.Height <= m.Rows))
+                {
+                    continue;
+                }
+                if (roi.Left < 0)
+                    roi.Left = 0;
+                if (roi.Top < 0)
+                    roi.Top = 0;
+                if (roi.Right > m.Cols)
+                    roi.Width = m.Cols - roi.Left;
+                if (roi.Bottom > m.Rows)
+                    roi.Height = m.Rows - roi.Top;
+
+                result.Add(roi);
+            }
+            return result;
+        }
+
+        //获得矩形平均高度
+        public static float GetRectsAverageHeight(List<Rect> rects)
+        {
+            float heightTotal = 0f;
+            if (rects.Count == 0) return heightTotal;
+            foreach (var rect in rects)
+            {
+                heightTotal += rect.Height;
+            }
+
+            return heightTotal / rects.Count;
+        }
+
+        //获得矩形最大高度
+        public static int GetRectsMaxHeight(List<Rect> rects)
+        {
+            int maxHeight = 0;
+            if (rects.Count == 0) return maxHeight;
+            foreach (var rect in rects)
+            {
+                if (maxHeight < rect.Height) maxHeight = rect.Height;
+            }
+
+            return maxHeight;
+        }
+
+        //获得矩形顶部中位数
+        public static int GetMedianRectsTop(List<Rect> rects)
+        {
+            if (rects.Count == 0) return 0;
+
+            rects.Sort(new RectTopComparer());
+            int midianIndex = rects.Count / 2;
+
+            return rects[midianIndex].Top;
+        }
+
+        //获得矩形底部中位数
+        public static int GetMedianRectsBottom(List<Rect> rects)
+        {
+            if (rects.Count == 0) return 0;
+            
+            rects.Sort(new RectBottomComparer());
+            int midianIndex = rects.Count / 2;
+
+            return rects[midianIndex].Bottom;
         }
 
 
+
+        //比较大小
+        private class RectTopComparer : IComparer<Rect>
+        {
+            public int Compare(Rect x, Rect y)
+            {
+                return x.Top.CompareTo(y.Top);
+            }
+        }
+        private class RectBottomComparer : IComparer<Rect>
+        {
+            public int Compare(Rect x, Rect y)
+            {
+                return x.Bottom.CompareTo(y.Bottom);
+            }
+        }
+        private class RectHeightComparer : IComparer<Rect>
+        {
+            public int Compare(Rect x, Rect y)
+            {
+                return x.Height.CompareTo(y.Height);
+            }
+        }
+        private class RectLeftComparer : IComparer<Rect>
+        {
+            public int Compare(Rect x, Rect y)
+            {
+                return x.X.CompareTo(y.X);
+            }
+        }
+        private class CharInfoLeftComparer : IComparer<CharInfo>
+        {
+            public int Compare(CharInfo x, CharInfo y)
+            {
+                return x.OriginalRect.X.CompareTo(y.OriginalRect.X);
+            }
+        }
 
     }
 }

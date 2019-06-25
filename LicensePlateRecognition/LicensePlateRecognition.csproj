@@ -100,6 +100,7 @@
     <Compile Include="UIResource.Designer.cs">
       <DependentUpon>UIResource.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utilities.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
       <SubType>Designer</SubType>

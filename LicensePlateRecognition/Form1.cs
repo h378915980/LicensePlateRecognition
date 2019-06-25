@@ -39,6 +39,8 @@ namespace LicensePlateRecognition
         }
     
         
+
+
         //functions
         private void InitParamterList()
         {
@@ -94,7 +96,7 @@ namespace LicensePlateRecognition
 
             currentTabCount++;
         }
-
+        //展示车牌
         private void ProcessAndShowImage(Bitmap image,ParameterList pl)
         {
 
@@ -184,6 +186,91 @@ namespace LicensePlateRecognition
             }
 
         }
+        //展示字符
+        private void ProcessAndShowChars(Bitmap plate)
+        {
+            currentTabCount = 0;
+
+            Mat matIn = plate.ToMat();           
+            AddTag("原图", matIn);
+
+            // matIn = Utilities.GammaTransform(matIn);
+            //AddTag("gamma增强", matIn);
+
+            //matIn = Utilities.IndexTransform(matIn);
+            //AddTag("指数增强", matIn);
+
+            //matIn = Utilities.LogTransform(matIn);
+            //AddTag("指数增强", matIn);
+
+            //matIn = Utilities.LaplaceTransform(matIn);
+            //AddTag("拉普拉斯",matIn);
+
+            Mat matGray = matIn.CvtColor(ColorConversionCodes.RGB2GRAY);
+            AddTag("灰度图", matGray);
+
+            PlateColor plateColor = CharSegement.GetPlateColor(matIn);
+            Mat matClear = CharSegement.ClearMaodingAndBorder(matGray,plateColor);
+            AddTag("去边框与铆钉", matClear);
+
+            //找轮廓
+            OpenCvSharp.Point[][] contours = null;
+            HierarchyIndex[] hierarchyIndices = null;
+            matClear.FindContours(out contours, out hierarchyIndices, RetrievalModes.External, ContourApproximationModes.ApproxNone);
+            
+            //求轮廓外接最小矩形
+            List<Rect> rects = new List<Rect>();
+            Mat matContours = matIn.Clone();
+            for (int index = 0; index < contours.Length; index++)
+            {
+                Rect rect = Cv2.BoundingRect(contours[index]);
+                if (CharSegement.VerifyRect(rect) &&
+                    CharSegement.NotOnBorder(rect,matIn.Size()))
+                {
+                    rects.Add(rect);
+                    Cv2.Rectangle(matContours, rect, new Scalar(0, 0, 255), 1);
+                }
+            }
+            AddTag("外接矩形",matContours);
+
+            //去除内部矩形
+            Mat matInner = matIn.Clone();
+            rects = CharSegement.RejectInnerRectFromRects(rects);
+            for(int index = 0; index < rects.Count; index++)
+            {
+                Cv2.Rectangle(matInner, rects[index], new Scalar(0, 0, 255), 1);
+            }
+            AddTag("去内部矩形", matInner);
+
+
+
+            //调整矩形大小
+            Mat matAdjust = matIn.Clone();
+            rects = CharSegement.AdjustRects(rects);
+            for (int index = 0; index < rects.Count; index++)
+            {
+                Cv2.Rectangle(matAdjust, rects[index], new Scalar(0, 0, 255), 1);
+            }
+            AddTag("调整大小",matAdjust);
+
+            //展示切割结果
+            rects = CharSegement.GetSafeRects(matIn,rects);
+            this.listShowSplitImage.Items.Clear();
+            this.imgListSplitImage.Images.Clear();
+            this.imgListSplitImage.ImageSize = new System.Drawing.Size(16,32);
+            int i = 0;
+            foreach (Rect rect in rects)
+            {
+                Mat roi = new Mat(matIn, rects[i]);
+
+                this.imgListSplitImage.Images.Add(roi.ToBitmap());
+                this.listShowSplitImage.Items.Add(i.ToString());
+                //this.listShowSplitImage.Items[index].ImageList.ImageSize = new System.Drawing.Size(rects[index].Width, rects[index].Height);
+                this.listShowSplitImage.Items[i].ImageIndex = i;
+                i++;
+            }
+        }
+
 
 
         //events
@@ -200,16 +287,16 @@ namespace LicensePlateRecognition
                     listInputImage.Items.Add(f);
                 }
             }
-        }
+        }       
 
-        
         //选中列表中的文件路径并进行图片处理
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listInputImage.SelectedItems.Count !=0)
             {
-                this.groupBox1.Enabled = true;  
-                this.ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text),parameterList);
+                this.groupBox1.Enabled = true;
+                //this.ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text),parameterList);
+                this.ProcessAndShowChars(new Bitmap(this.listInputImage.SelectedItems[0].Text));
             }
             else
             {
@@ -284,5 +371,6 @@ namespace LicensePlateRecognition
             ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
         }
 
+        
     }
 }

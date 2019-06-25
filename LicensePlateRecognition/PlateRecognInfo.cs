@@ -143,8 +143,8 @@ namespace LicensePlateRecognition
     public class CharInfo
     {
         public PlateChar PlateChar;  //字符
-        public Mat OriginalMat; //原图
-        public Rect OriginalRect; //所在矩形
+        public Mat OriginalMat; //字符的原始图片
+        public Rect OriginalRect; //字符的位置
         public PlateLocateMethod PlateLocateMethod;
         public CharSplitMethod CharSplitMethod;
         public string Info

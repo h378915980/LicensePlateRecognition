@@ -64,14 +64,14 @@ namespace LicensePlateRecognition
         private void button4_Click(object sender, EventArgs e)
         {
             Mat mat = new Mat(@"C:\Users\hepeiyuan\Desktop\chartest\2019-03-12-14-40-38-034156_颜色法_269.jpg");
-            mat = CharSegement.ClearMaodingAndBorder(mat.CvtColor(ColorConversionCodes.BGR2GRAY), PlateColor.BLUE);
+            //mat = CharSegement.SplitePlateByOriginal(mat, PlateColor.BLUE);
             this.pictureBox1.Image = mat.ToBitmap();
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            Mat mat = new Mat(@"C:\Users\hepeiyuan\Desktop\chartest\sample_118_0.jpg");
-            mat = CharSegement.SplitePlateByOriginal(mat,mat,PlateColor.YELLOW);
+            Mat mat = new Mat(@"C:\Users\hepeiyuan\Desktop\chartest\2019-03-12-14-52-59-029965_颜色法_273.jpg");
+           // mat = CharSegement.SplitePlateByOriginal(mat,PlateColor.YELLOW);
             this.pictureBox1.Image = mat.ToBitmap();
         }
     }

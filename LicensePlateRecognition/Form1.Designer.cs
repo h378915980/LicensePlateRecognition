@@ -55,6 +55,17 @@
             this.label1 = new System.Windows.Forms.Label();
             this.HeightDividWidthLow = new System.Windows.Forms.NumericUpDown();
             this.HeightDividWidthUp = new System.Windows.Forms.NumericUpDown();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.车牌定位ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.打开图片ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.批量处理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.字符分割ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.打开文件夹ToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.车牌训练ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.打开文件夹ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.字符训练ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.打开文件夹ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabShowDiffImage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -71,6 +82,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.WidthLow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.HeightDividWidthLow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.HeightDividWidthUp)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // listInputImage
@@ -86,7 +98,7 @@
             this.listInputImage.Location = new System.Drawing.Point(0, 2);
             this.listInputImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listInputImage.Name = "listInputImage";
-            this.listInputImage.Size = new System.Drawing.Size(226, 479);
+            this.listInputImage.Size = new System.Drawing.Size(226, 465);
             this.listInputImage.TabIndex = 0;
             this.listInputImage.UseCompatibleStateImageBehavior = false;
             this.listInputImage.View = System.Windows.Forms.View.List;
@@ -104,7 +116,7 @@
             this.tabShowDiffImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabShowDiffImage.Name = "tabShowDiffImage";
             this.tabShowDiffImage.SelectedIndex = 0;
-            this.tabShowDiffImage.Size = new System.Drawing.Size(714, 315);
+            this.tabShowDiffImage.Size = new System.Drawing.Size(714, 87);
             this.tabShowDiffImage.TabIndex = 2;
             // 
             // tabPage12
@@ -113,7 +125,7 @@
             this.tabPage12.Location = new System.Drawing.Point(4, 25);
             this.tabPage12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage12.Name = "tabPage12";
-            this.tabPage12.Size = new System.Drawing.Size(706, 286);
+            this.tabPage12.Size = new System.Drawing.Size(706, 58);
             this.tabPage12.TabIndex = 0;
             this.tabPage12.Text = "原图";
             // 
@@ -142,7 +154,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.splitContainer1.Location = new System.Drawing.Point(12, 12);
+            this.splitContainer1.Location = new System.Drawing.Point(12, 26);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.splitContainer1.Name = "splitContainer1";
             // 
@@ -156,14 +168,14 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(947, 585);
+            this.splitContainer1.Size = new System.Drawing.Size(947, 571);
             this.splitContainer1.SplitterDistance = 216;
             this.splitContainer1.TabIndex = 7;
             // 
             // butInputImage
             // 
             this.butInputImage.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.butInputImage.Location = new System.Drawing.Point(0, 488);
+            this.butInputImage.Location = new System.Drawing.Point(0, 474);
             this.butInputImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.butInputImage.Name = "butInputImage";
             this.butInputImage.Size = new System.Drawing.Size(212, 31);
@@ -175,7 +187,7 @@
             // butSaveSplitImage
             // 
             this.butSaveSplitImage.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.butSaveSplitImage.Location = new System.Drawing.Point(0, 519);
+            this.butSaveSplitImage.Location = new System.Drawing.Point(0, 505);
             this.butSaveSplitImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.butSaveSplitImage.Name = "butSaveSplitImage";
             this.butSaveSplitImage.Size = new System.Drawing.Size(212, 31);
@@ -187,7 +199,7 @@
             // Training_button
             // 
             this.Training_button.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.Training_button.Location = new System.Drawing.Point(0, 550);
+            this.Training_button.Location = new System.Drawing.Point(0, 536);
             this.Training_button.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Training_button.Name = "Training_button";
             this.Training_button.Size = new System.Drawing.Size(212, 31);
@@ -214,8 +226,8 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.groupBox1);
             this.splitContainer2.Panel2.Controls.Add(this.listShowSplitImage);
-            this.splitContainer2.Size = new System.Drawing.Size(718, 575);
-            this.splitContainer2.SplitterDistance = 319;
+            this.splitContainer2.Size = new System.Drawing.Size(718, 561);
+            this.splitContainer2.SplitterDistance = 91;
             this.splitContainer2.TabIndex = 0;
             // 
             // groupBox1
@@ -239,10 +251,11 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(714, 274);
+            this.groupBox1.Size = new System.Drawing.Size(714, 240);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "调整处理过程中的参数";
+            this.groupBox1.Visible = false;
             // 
             // label6
             // 
@@ -443,6 +456,90 @@
             65536});
             this.HeightDividWidthUp.ValueChanged += new System.EventHandler(this.HeightDividWidthUp_ValueChanged);
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.车牌定位ToolStripMenuItem,
+            this.字符分割ToolStripMenuItem,
+            this.车牌训练ToolStripMenuItem,
+            this.字符训练ToolStripMenuItem,
+            this.帮助ToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(971, 28);
+            this.menuStrip1.TabIndex = 8;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // 车牌定位ToolStripMenuItem
+            // 
+            this.车牌定位ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.打开图片ToolStripMenuItem,
+            this.批量处理ToolStripMenuItem});
+            this.车牌定位ToolStripMenuItem.Name = "车牌定位ToolStripMenuItem";
+            this.车牌定位ToolStripMenuItem.Size = new System.Drawing.Size(81, 24);
+            this.车牌定位ToolStripMenuItem.Text = "车牌定位";
+            // 
+            // 打开图片ToolStripMenuItem
+            // 
+            this.打开图片ToolStripMenuItem.Name = "打开图片ToolStripMenuItem";
+            this.打开图片ToolStripMenuItem.Size = new System.Drawing.Size(144, 26);
+            this.打开图片ToolStripMenuItem.Text = "打开图片";
+            // 
+            // 批量处理ToolStripMenuItem
+            // 
+            this.批量处理ToolStripMenuItem.Name = "批量处理ToolStripMenuItem";
+            this.批量处理ToolStripMenuItem.Size = new System.Drawing.Size(144, 26);
+            this.批量处理ToolStripMenuItem.Text = "批量处理";
+            // 
+            // 字符分割ToolStripMenuItem
+            // 
+            this.字符分割ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.打开文件夹ToolStripMenuItem2});
+            this.字符分割ToolStripMenuItem.Name = "字符分割ToolStripMenuItem";
+            this.字符分割ToolStripMenuItem.Size = new System.Drawing.Size(81, 24);
+            this.字符分割ToolStripMenuItem.Text = "字符分割";
+            // 
+            // 打开文件夹ToolStripMenuItem2
+            // 
+            this.打开文件夹ToolStripMenuItem2.Name = "打开文件夹ToolStripMenuItem2";
+            this.打开文件夹ToolStripMenuItem2.Size = new System.Drawing.Size(144, 26);
+            this.打开文件夹ToolStripMenuItem2.Text = "打开图片";
+            // 
+            // 车牌训练ToolStripMenuItem
+            // 
+            this.车牌训练ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.打开文件夹ToolStripMenuItem});
+            this.车牌训练ToolStripMenuItem.Name = "车牌训练ToolStripMenuItem";
+            this.车牌训练ToolStripMenuItem.Size = new System.Drawing.Size(81, 24);
+            this.车牌训练ToolStripMenuItem.Text = "车牌训练";
+            // 
+            // 打开文件夹ToolStripMenuItem
+            // 
+            this.打开文件夹ToolStripMenuItem.Name = "打开文件夹ToolStripMenuItem";
+            this.打开文件夹ToolStripMenuItem.Size = new System.Drawing.Size(159, 26);
+            this.打开文件夹ToolStripMenuItem.Text = "打开文件夹";
+            // 
+            // 字符训练ToolStripMenuItem
+            // 
+            this.字符训练ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.打开文件夹ToolStripMenuItem1});
+            this.字符训练ToolStripMenuItem.Name = "字符训练ToolStripMenuItem";
+            this.字符训练ToolStripMenuItem.Size = new System.Drawing.Size(81, 24);
+            this.字符训练ToolStripMenuItem.Text = "字符训练";
+            // 
+            // 打开文件夹ToolStripMenuItem1
+            // 
+            this.打开文件夹ToolStripMenuItem1.Name = "打开文件夹ToolStripMenuItem1";
+            this.打开文件夹ToolStripMenuItem1.Size = new System.Drawing.Size(159, 26);
+            this.打开文件夹ToolStripMenuItem1.Text = "打开文件夹";
+            // 
+            // 帮助ToolStripMenuItem
+            // 
+            this.帮助ToolStripMenuItem.Name = "帮助ToolStripMenuItem";
+            this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(51, 24);
+            this.帮助ToolStripMenuItem.Text = "帮助";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -450,6 +547,8 @@
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(971, 609);
             this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.Text = "LicensePlateRecognition";
@@ -471,7 +570,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.WidthLow)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.HeightDividWidthLow)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.HeightDividWidthUp)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -503,6 +605,17 @@
         private System.Windows.Forms.Button butInputImage;
         private System.Windows.Forms.Button butSaveSplitImage;
         private System.Windows.Forms.Button Training_button;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem 车牌定位ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 字符分割ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 车牌训练ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 字符训练ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 打开图片ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 批量处理ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 打开文件夹ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 打开文件夹ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem 帮助ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 打开文件夹ToolStripMenuItem2;
     }
 }
 

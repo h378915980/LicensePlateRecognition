@@ -54,7 +54,7 @@ namespace LicensePlateRecognition
         }
 
 
-        //注意！！输入的举证必须是单通道的灰度图！
+        //注意！！输入的矩阵必须是单通道的灰度图！
         //只清除了水平边框，垂直边框没有清除的必要
         public static Mat ClearBorder(Mat matIn)
         {
@@ -87,7 +87,7 @@ namespace LicensePlateRecognition
             }
 
             int minTop = (int)(0.1f * rows);   //为了避免将字抹去，只设置最上面和最下面的两小行范围
-            int maxTop = (int)(0.9f * rows);
+            int maxTop = (int)(0.85f * rows);
 
             Mat matResult = matIn.Clone();
 
@@ -113,6 +113,42 @@ namespace LicensePlateRecognition
                     }
                 }
             }
+
+            //去掉左侧边框
+            //for (int colsIndex = 0; colsIndex < cols; colsIndex++)
+            //{
+            //    int noJumpCount = 0;
+            //    int JumpCount = 0;
+            //    int JumpThreshold = 5;
+            //    byte isBorder = 0;
+
+            //    for (int rowsIndex = 0; rowsIndex < rows - 1; rowsIndex++)
+            //    {
+            //        if (matIn.At<byte>(rowsIndex, colsIndex) == matIn.At<byte>(rowsIndex + 1, colsIndex))  //每一行值与后一行比较
+            //            noJumpCount++;
+            //        else JumpCount++;
+
+            //        if (noJumpCount > noJumpCountThreshold && JumpCount <= JumpThreshold)
+            //        {
+            //            noJumpCount = 0;
+            //            isBorder = 1;
+            //            break;
+            //        }
+            //    }
+            //    border.Set<byte>(0, colsIndex, isBorder); //得出哪一列是边框
+            //}
+
+            //for (int colIndex = 0; colIndex < 0.05 * cols; colIndex++)
+            //{
+            //    if (border.At<byte>(0, colIndex) == 1) //说明这一列是矩形边框
+            //    {
+            //        for (int rowIndex = 0; rowIndex < rows; rowIndex++)
+            //        {
+            //            matResult.Set<byte>(rowIndex, colIndex, 0);
+            //        }
+
+            //    }
+            //}
 
             return matResult;
         }
@@ -251,7 +287,7 @@ namespace LicensePlateRecognition
         float gammaFactor = 0.40f,
         int leftLimit = 0, int rightLimit = 0,
         int topLimit = 0, int bottomLimit = 0,
-        int minWidth = 2, int maxWidth = 30,
+        int minWidth = 1, int maxWidth = 30,
         int minHeight = 10, int maxHeight = 80,
         float minRatio = 0.08f, float maxRatio = 2f)
         {
@@ -270,15 +306,15 @@ namespace LicensePlateRecognition
 
         //筛选出符合大小条件的矩形
         public static bool VerifyRect(Rect rect,
-        int minWidth = 2, int maxWidth = 30,
+        int minWidth = 1, int maxWidth = 25,
         int minHeight = 10, int maxHeight = 80,
-        float minRatio = 0.08f, float maxRatio = 2f)
+        float minRatio = 0.0001f, float maxRatio = 2f)
         {
             int width = rect.Width;
             int height = rect.Height;
 
             if (width == 0 || height == 0) return false;
-            float ratio = (float)width / height;
+            float ratio = (float) width / height;
 
             return ((width > minWidth && width < maxWidth) &&
             (height > minHeight && height < maxHeight) &&
@@ -320,51 +356,190 @@ namespace LicensePlateRecognition
         //调整矩形大小
         public static List<Rect> AdjustRects(List<Rect> rects)
         {
-            float heightAverage = GetRectsAverageHeight(rects);  //高度平均值
-            float heightLimit = heightAverage * 0.5f;      //高度限定值
-             
-            int topMedian = GetMedianRectsTop(rects);   //顶部中位数
-            int BottomMedian = GetMedianRectsBottom(rects);  //底部中位数
+            float heightAverage = GetRectsAverageHeight(rects); //高度平均值
+            float heightLimit = heightAverage * 0.5f;           //高度限定值
+            float highestHeight = GetRectsHighestHeight(rects); //得到矩形最大高度
+            float highAveRadio = highestHeight / heightAverage; //最大高度与平均高度的比值
+
+            int topMedian = GetMedianRectsTop(rects);           //顶部中位数
+            int BottomMedian = GetMedianRectsBottom(rects);     //底部中位数
 
             for(int index = rects.Count - 1; index >= 0; index--)
             {
                 Rect rect = rects[index];
-                if (rect.Height >=  heightLimit && rect.Height < heightAverage)
+                float rectAveRadio = heightAverage / rect.Height;
+                if ( rect.Height < heightAverage )   
                 {
-                    int topOffset = Math.Abs(rect.Top - topMedian); //与顶部差值
-                    int bottomOffset = Math.Abs(rect.Bottom - BottomMedian); //与底部差值
+                    int topOffset = Math.Abs(rect.Top - topMedian);             //与顶部差值
+                    int bottomOffset = Math.Abs(rect.Bottom - BottomMedian);    //与底部差值
 
                     //那边偏移值大就选另一边
                     if (topOffset > bottomOffset)      
                     {
-                        rect.Y = (int)(rect.Bottom - heightAverage);
+                        rect.Y = (int)(rect.Bottom - heightAverage - 0.5);
                     }
 
-
-                    rect.Height = (int)heightAverage +3;
+                    rect.Height = (int)(heightAverage +3);
                     rects[index] = rect;
                 }
             }
             return rects;
         }
-        //去掉矩形的内部矩形
+        //去掉矩形的内部矩形和左右的矩形
         public static List<Rect> RejectInnerRectFromRects(List<Rect> rects)
         {
             for (int index = rects.Count - 1; index >= 0; index--)
             {
                 Rect rect = rects[index];
+                float limitWidth = 2.0f * rect.Width;               
                 for (int i = 0; i < rects.Count; i++)
                 {
-                    
+
                     Rect rectTemp = rects[i];
-                    if ((rect.X >= rectTemp.X && rect.Y >= rectTemp.Y &&
-                    rect.Right <= rectTemp.Right && rect.Bottom <= rectTemp.Bottom) &&
-                    (rect.Width < rectTemp.Width || rect.Height < rectTemp.Height))      //避免将自己除去
+                    int lldis = rect.X - rectTemp.X;
+                    int lrdis = rectTemp.Right - rect.X;
+                    int rrdis = rect.Right - rectTemp.Right;
+                    int limitdis = (int)(0.25 * rectTemp.Width);
+                    //去掉内部的矩形
+                    if (rect.X == rectTemp.X && rect.Right != rectTemp.Right) 
                     {
-                        rects.RemoveAt(index);
-                        break;
+                        if (rect.Width <= 5 )
+                        {
+                            rects.RemoveAt(index);
+                            break;
+                        }
+                        if (rect.Width < rectTemp.Width && rectTemp.Width <= limitWidth) 
+                        {
+                            rects.RemoveAt(index);
+                            break;
+                        }
+                        if (rect.Width < rectTemp.Width && rectTemp.Width > limitWidth)
+                        {
+                            rectTemp.X = rect.Right;
+                            rectTemp.Width = rectTemp.Width - rect.Width;
+                            rects[i] = rectTemp;
+                            break;
+                        }
                     }
+
+                    if (rect.X > rectTemp.X && rect.X < rectTemp.Right) 
+                    {
+                        if (rect.Width <= 5) 
+                        {
+                            rects.RemoveAt(index);
+                            break;
+                        }
+                        //位于左边0.25之内时
+                        if (lldis <= limitdis && rectTemp.Width <= limitWidth) 
+                        {
+                            rects.RemoveAt(index);
+                            break;
+                        }
+                        if (lldis <= limitdis && rectTemp.Width > limitWidth)
+                        {
+                            rectTemp.X = rect.Right;
+                            rectTemp.Width = rectTemp.Width - lldis - rect.Width;
+                            rects[i] = rectTemp;
+                            break;
+                        }
+                        //位于右边0.25时
+                        if (lrdis <= limitdis && lrdis >= 0.5 * rect.Width && rectTemp.Width <= limitWidth) 
+                        {
+                            rects.RemoveAt(index);
+                            break;
+                        }
+                        if (lrdis <= limitdis && lrdis < 0.5 * rect.Width && rectTemp.Width <= limitWidth) 
+                        {
+                            rect.X = rectTemp.Right;
+                            rect.Width = rect.Width - lrdis;
+                            break;
+                        }
+                        if (lrdis <= limitdis && rectTemp.Width > limitWidth)
+                        {
+                            rectTemp.Width = rectTemp.Width - lrdis;
+                            rects[i] = rectTemp;
+                            break;
+                        }
+                        //位于中间0.25~0.75部分
+                        if (lldis > limitdis && lrdis > limitdis) 
+                        {
+                            if (rectTemp.Width <= limitWidth && lldis > 0.5 * rectTemp.Width)  
+                            {
+                                rects.RemoveAt(i);
+                                break;
+                            }
+                            if (rectTemp.Width <= limitWidth && lldis <= 0.5 * rectTemp.Width)
+                            {
+                                rects.RemoveAt(index);
+                                break;
+                            }
+                            if (rectTemp.Width > limitWidth && lldis >= lrdis) 
+                            {
+                                rectTemp.Width = rectTemp.Width - lrdis;
+                                rects[i] = rectTemp;
+                                break;
+                            }
+                            if (rectTemp.Width > limitWidth && lldis < lrdis)
+                            {
+                                rectTemp.X = rect.Right;
+                                rectTemp.Width = rectTemp.Width - lldis - rect.Width;
+                                rects[i] = rectTemp;
+                                break;
+                            }
+                        }
+
+                    }
+                                        
+                //    if ((rect.X >= rectTemp.X && rect.Y >= rectTemp.Y &&
+                //    rect.Right <= rectTemp.Right && rect.Bottom <= rectTemp.Bottom) &&
+                //    (rect.Width < rectTemp.Width || rect.Height < rectTemp.Height))      //避免将自己除去
+                //    {
+                //        rects.RemoveAt(index);
+                //        break;
+                //    }
+
+
+                //    if (rect.X >= rectTemp.X && rect.X < rectTemp.Right && rect.Width < rectTemp.Width)
+                //    {
+                //        rects.RemoveAt(index);
+                //        break;
+                //    }
+
+                //    if (rect.X > rectTemp.X && rect.Width == rectTemp.Width && rect.X <= (rectTemp.X + 0.6 * rectTemp.Width))
+                //    {
+                //        rects.RemoveAt(index);
+                //        break;
+                //    }
+
+                //    if (rect.X > rectTemp.X && rect.Width == rectTemp.Width && rect.X > (rectTemp.X + 0.6 * rectTemp.Width))
+                //    {
+                //        rect.X = rectTemp.Right;
+                //        break;
+                //    }
+                    
+
+                //    if (rect.X >= rectTemp.X && rect.X <= rectTemp.Right && rect.Width > rectTemp.Width)
+                //    {
+                //        rect.X = rectTemp.Right;
+                //        rect.Width = rect.Width - rectTemp.Right + rect.X;
+                //        break;
+                //    }
                 }
+                                   
+            }
+            rects = SortLeftRects(rects);
+            if (rects[0].Width <= 6 && rects[0].Right < 7)
+            {
+                rects.RemoveAt(0);
+            }
+                        
+            if (rects[0].Width <= 2)
+                rects.RemoveAt(0);
+            
+            if (rects.Count > 7)
+            {
+                for (int i = 7; i < rects.Count; i++)
+                    rects.RemoveAt(i);
             }
             return rects;
         }
@@ -393,6 +568,20 @@ namespace LicensePlateRecognition
                 result.Add(roi);
             }
             return result;
+        }
+
+        //获得矩形最高高度
+        public static float GetRectsHighestHeight(List<Rect> rects)
+        {
+            float highestHeight = 0f;
+            if (rects.Count == 0)
+                return highestHeight;
+            foreach (var rect in rects)
+            {
+                if (rect.Height > highestHeight)
+                    highestHeight = rect.Height;
+            }
+            return highestHeight;
         }
 
         //获得矩形平均高度
@@ -443,6 +632,15 @@ namespace LicensePlateRecognition
             return rects[midianIndex].Bottom;
         }
 
+        //将矩形数组从左到右排列
+        public static List<Rect> SortLeftRects(List<Rect> rects)
+        {
+            if (rects.Count == 0)
+                return rects;
+            
+            rects.Sort(new RectLeftComparer());
+            return rects;
+        }
 
 
         //比较大小

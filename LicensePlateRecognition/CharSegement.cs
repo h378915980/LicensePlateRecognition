@@ -287,7 +287,7 @@ namespace LicensePlateRecognition
         float gammaFactor = 0.40f,
         int leftLimit = 0, int rightLimit = 0,
         int topLimit = 0, int bottomLimit = 0,
-        int minWidth = 2, int maxWidth = 30,
+        int minWidth = 1, int maxWidth = 30,
         int minHeight = 10, int maxHeight = 80,
         float minRatio = 0.08f, float maxRatio = 2f)
         {

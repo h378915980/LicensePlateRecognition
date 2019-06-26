@@ -20,12 +20,12 @@ namespace LicensePlateRecognition
         public static int HOGNBits = 9;
 
         private static SVM svm = null;
-        public struct FileInfo
+        public struct SVMFileInfo
         {
             public string FilePath;//样本路径
             public int Label;      //样本标识
 
-            public FileInfo(string fp,int lab)
+            public SVMFileInfo(string fp,int lab)
             {
                 FilePath = fp;
                 Label = lab;
@@ -58,8 +58,8 @@ namespace LicensePlateRecognition
             return svm.Train(samples,SampleTypes.RowSample,responses);
         }
         
-        //分类文件与标签，加保存训练结果路径
-        public static bool Train(List<FileInfo> file)
+        //分类文件与标签，参数为文件列表与标签结构体
+        public static bool Train(List<SVMFileInfo> file)
         {
             svm = SVM.Create();
             svm.Type = SVM.Types.CSvc;
@@ -68,15 +68,17 @@ namespace LicensePlateRecognition
 
             IsReady = true;
 
-            //long timeStart = Cv2.GetTickCount(); //计算处理时间，有时间的话加个进度条
-
             Mat samples = new Mat();  //特征矩阵
              
             Mat responses = new Mat(); //标签矩阵
 
-            foreach(FileInfo fi in file)
+            foreach(SVMFileInfo fi in file)
             {
                 List<string> fileNames= FileIO.OpenFile(fi.FilePath); //读到需要的文件路径列表
+
+                if (fileNames == null || fileNames.Count<=0)  //如果文件夹中一个图片都没有就返回
+                    return false;
+
                 //处理每个文件
                 foreach(string s in fileNames)
                 {
@@ -90,20 +92,14 @@ namespace LicensePlateRecognition
                     responses.PushBack(TypeConvert.Int2Mat(fi.Label)); //向标签矩阵中添加一行标签
 
                 }
-
             }
 
             samples.ConvertTo(samples, MatType.CV_32FC1); //训练数据的格式必须是32位浮点型
-
 
             if (svm.Train(samples, SampleTypes.RowSample, responses))
             {
                 return true;
             }
-
-
-           // long timeEnd = Cv2.GetTickCount();
-           // double timeUse = (timeEnd - timeStart) / Cv2.GetTickFrequency();
 
             return false;
         }
@@ -129,7 +125,7 @@ namespace LicensePlateRecognition
         {
             if (IsReady == false || svm == null)
                 return;
-            svm.Save(ﬁleName);
+            svm.Save(ﬁleName+@"\plateSVM.xml");
         }
 
         //

@@ -39,7 +39,6 @@ namespace LicensePlateRecognition
         //使用颜色法自动分割图片,参数为图片路径列表，处理参数列表，保存文件夹路径
         public static void AutoProcessImageByColor(List<string> files,ParameterList pl,string saveFolderPath)
         {
-
             for (int i = 0; i < files.Count; i++)
             {
                 Mat matIn = new Mat(files[i]);

@@ -94,6 +94,12 @@
       <DependentUpon>TrainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="TypeConvert.cs" />
+    <Compile Include="UserSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserSetting.Designer.cs">
+      <DependentUpon>UserSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utilities.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -116,6 +122,9 @@
     </Compile>
     <EmbeddedResource Include="TrainForm.resx">
       <DependentUpon>TrainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserSetting.resx">
+      <DependentUpon>UserSetting.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

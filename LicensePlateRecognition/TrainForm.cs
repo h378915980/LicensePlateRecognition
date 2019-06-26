@@ -19,23 +19,11 @@ namespace LicensePlateRecognition
             InitializeComponent();
         }
 
-        PlateCategorySVM.FileInfo f1=new PlateCategorySVM.FileInfo("C:\\Users\\hepeiyuan\\Desktop\\MyPlateData\\nonplate", (int)PlateCategory.UNKNOW);
-        PlateCategorySVM.FileInfo f2=new PlateCategorySVM.FileInfo("C:\\Users\\hepeiyuan\\Desktop\\MyPlateData\\plate",(int)PlateCategory.NORMALPLATE);
 
 
         private void button1_Click(object sender, EventArgs e)
         {
-            List<PlateCategorySVM.FileInfo> files = new List<PlateCategorySVM.FileInfo>();
-            files.Add(f1);
-            files.Add(f2);
-
-            if (PlateCategorySVM.Train(files))
-            {
-                PlateCategorySVM.Save("C:\\Users\\hepeiyuan\\Desktop\\MyPlateData\\svmdata.xml");
-                MessageBox.Show("train success");
-            }
-            
-
+           
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -53,12 +41,8 @@ namespace LicensePlateRecognition
 
         private void button3_Click(object sender, EventArgs e)
         {
-            StringBuilder stringBuilder = new StringBuilder();//可以自由增加的字符串
+            FileIO.PrepareTrainningCharDirectory(@"C:\Users\hepeiyuan\Desktop\新建文件夹");
 
-            stringBuilder.Append("asd");
-            stringBuilder.Append("asd");
-            stringBuilder.Append("asd");
-            MessageBox.Show(stringBuilder.ToString());
         }
 
         private void button4_Click(object sender, EventArgs e)

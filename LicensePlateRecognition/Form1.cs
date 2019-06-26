@@ -12,14 +12,10 @@ using System.Windows.Forms;
 
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
-
 using static LicensePlateRecognition.PlateLocator;
 
 namespace LicensePlateRecognition
 {
-
-   
-
     public partial class Form1 : Form
     {
         //初始化参数列表
@@ -35,14 +31,15 @@ namespace LicensePlateRecognition
         public Form1()
         {
             InitializeComponent();
-            InitParamterList();
+            InitAll();
         }
-    
+
+
         
 
 
-        //functions
-        private void InitParamterList()
+        //init
+        private void InitAll()
         {
             this.HeightDividWidthLow.ValueChanged -= new System.EventHandler(HeightDividWidthLow_ValueChanged);
             this.HeightDividWidthUp.ValueChanged -= new System.EventHandler(HeightDividWidthUp_ValueChanged);
@@ -65,7 +62,28 @@ namespace LicensePlateRecognition
             this.WidthLow.ValueChanged += new System.EventHandler(WidthLow_ValueChanged);
             this.WidthUp.ValueChanged += new System.EventHandler(WidthUp_ValueChanged);
 
+
+            AddPlateCategoryForComboBox();
+
+            //this.groupBoxForPlateLabel.Enabled = false;
+            this.groupBoxForPlateParameter.Enabled = false;
+            //this.comboBoxPlate.Text = this.comboBoxPlate.Items[1].ToString();
+
         }
+        //添加车牌标签选项
+        private void AddPlateCategoryForComboBox()
+        {
+            string[] plateCategory = Enum.GetNames(typeof(PlateCategory));
+            for(int index = 0; index < plateCategory.Length; index++)
+            {
+                this.comboBoxPlate.Items.Add(plateCategory[index]);
+            }
+
+        }
+
+
+
+        //functions
         private int currentTabCount;
         private void AddTag(string text,Mat image)
         {
@@ -99,7 +117,6 @@ namespace LicensePlateRecognition
         //展示车牌
         private void ProcessAndShowImage(Bitmap image,ParameterList pl)
         {
-
             currentTabCount = 0;
 
             Mat matIn = image.ToMat();
@@ -170,22 +187,47 @@ namespace LicensePlateRecognition
             }
             AddTag("外接矩形", matRects);
 
-            //显示切分的图片
+
+            ShowSpliteImage(rects, matIn);
+            
+
+        }
+
+        //显示图片和相关信息
+        private void ShowSpliteImage(List<Rect> rects,Mat matIn)
+        {
             this.listShowSplitImage.Items.Clear();
             this.imgListSplitImage.Images.Clear();
             int index = 0;
             foreach (Rect rect in rects)
             {
                 Mat roi = new Mat(matIn, rects[index]);
+             
+                if(!UserSetting.isAutoProcess)
+                {
+                    this.imgListSplitImage.Images.Add(roi.ToBitmap());
+                    this.listShowSplitImage.Items.Add(index.ToString());
+                    this.listShowSplitImage.Items[index].ImageIndex = index;  //这三条顺序还还不能换，佛了
+                }
+                else
+                {
+                    
+                    this.imgListSplitImage.Images.Add(roi.ToBitmap());
+                    this.listShowSplitImage.Items.Add(PlateCategorySVM.Test(roi).ToString());
+                    this.listShowSplitImage.Items[index].ImageIndex = index;  //这三条顺序还还不能换，佛了
+                }
 
-                this.imgListSplitImage.Images.Add(roi.ToBitmap());
-                this.listShowSplitImage.Items.Add(index.ToString());
-                //this.listShowSplitImage.Items[index].ImageList.ImageSize = new System.Drawing.Size(rects[index].Width, rects[index].Height);
-                this.listShowSplitImage.Items[index].ImageIndex = index;
                 index++;
             }
-
         }
+
+        //
+
+
+
+
+
+
         //展示字符
         private void ProcessAndShowChars(Bitmap plate)
         {
@@ -290,18 +332,108 @@ namespace LicensePlateRecognition
         //选中列表中的文件路径并进行图片处理
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //this.groupBoxForPlateLabel.Enabled = false;  //选择图片时先将打标签功能禁用
+            
+
             if (listInputImage.SelectedItems.Count !=0)
             {
-                this.groupBox1.Enabled = true;
-                //this.ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text),parameterList);
-                this.ProcessAndShowChars(new Bitmap(this.listInputImage.SelectedItems[0].Text));
+                
+                this.groupBoxForPlateParameter.Enabled = true;
+                this.ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text),parameterList);
+                //this.ProcessAndShowChars(new Bitmap(this.listInputImage.SelectedItems[0].Text));
             }
             else
             {
-                this.groupBox1.Enabled = false;
+                this.groupBoxForPlateParameter.Enabled = false;
             }
 
         }
+        //选择切出来的图片进行处理
+        private void listShowSplitImage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //if (listShowSplitImage.SelectedItems.Count != 0)
+            //{
+            //    this.groupBoxForPlateLabel.Enabled = true;
+            //    Bitmap bitmap = (Bitmap)(this.imgListSplitImage.Images[this.listShowSplitImage.SelectedItems[0].ImageIndex]);
+            //    selectedImage = bitmap;  //这里不太好
+            //}
+            //else
+            //{
+            //    this.groupBoxForPlateLabel.Enabled = false;
+            //}
+        }
+        //单个保存
+        private void butSavePlateCategory_Click(object sender, EventArgs e)
+        {
+            if(listShowSplitImage.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("请先选择图片");
+                return;
+            }
+
+            if (UserSetting.savePath == null)
+            {
+                MessageBox.Show("请先在设置中添加保存路径");
+                return;
+            }
+
+            if (this.comboBoxPlate.Text == "")
+            {
+                MessageBox.Show("请先为图片添加一个标签");
+                return;
+            }
+
+            if (UserSetting.isFolderReady == false)
+            {
+                FileIO.PrepareTrainningPlateDirectory(UserSetting.savePath);  //添加文件夹
+                UserSetting.isFolderReady = true;
+            }
+
+           
+           
+            for(int index = 0; index < this.listShowSplitImage.SelectedItems.Count; index++)
+            {
+                Bitmap bitmap = (Bitmap)(this.imgListSplitImage.Images[this.listShowSplitImage.SelectedItems[index].ImageIndex]);
+                DateTime now = DateTime.Now;
+                string time = string.Format("{0}-{1:00}-{2:00}-{3:00}-{4:00}-{5:00}-{6:000000}",
+                    now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second, new Random().Next(1000));
+                string sp = UserSetting.savePath + @"\plates\" + this.comboBoxPlate.Text + @"\" + time + ".jpg";//保存路径
+                //MessageBox.Show(sp);
+                Cv2.ImWrite(sp, bitmap.ToMat()); //添加图片
+
+                this.listShowSplitImage.SelectedItems[index].Remove();  
+            }
+
+        }
+        //全部保存
+        private void butAutoSavePlateCategory(object sender, EventArgs e)
+        {
+            if (!UserSetting.isAutoProcess)
+            {
+                MessageBox.Show("请先在设置中开启自动处理功能");
+                return;
+            }
+
+            for (int index = 0; index < this.listShowSplitImage.Items.Count; index++)
+            {
+                Bitmap bitmap = (Bitmap)(this.imgListSplitImage.Images[this.listShowSplitImage.Items[index].ImageIndex]);
+                DateTime now = DateTime.Now;
+                string time = string.Format("{0}-{1:00}-{2:00}-{3:00}-{4:00}-{5:00}-{6:000000}",
+                    now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second, new Random().Next(1000));
+
+                string sp = UserSetting.savePath + @"\plates\" + this.listShowSplitImage.Items[index].Text + @"\" + time + ".jpg";//保存路径
+                //MessageBox.Show(sp);
+                Cv2.ImWrite(sp, bitmap.ToMat()); //添加图片             
+            }
+            this.listShowSplitImage.Clear();          
+            this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index + 1].Selected = true;
+            this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index - 1].Remove();
+
+            
+        }
+
+
+
         //批量处理列表文件
         private void AutoProcessImage(object sender, EventArgs e)
         {
@@ -366,6 +498,62 @@ namespace LicensePlateRecognition
         {
             this.parameterList.HeightUp = (int)this.HeightUp.Value;
             ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
+        }
+
+
+        //测试用按钮
+        private void button7_Click(object sender, EventArgs e)
+        {
+            if (this.listInputImage.SelectedItems.Count == 0)
+                return;
+
+            if (this.listInputImage.SelectedItems[0].Index + 1 >= this.listInputImage.Items.Count)
+            {
+                this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index].Remove();
+
+                return;
+            }
+                
+
+            this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index + 1].Selected = true;
+            this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index].Selected = false;
+            this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index - 1].Remove();
+
+        }
+
+        //训练
+        private void TrainPlate(object sender, EventArgs e)
+        {
+            if(UserSetting.savePath==null)
+            {
+                MessageBox.Show("请先在设置中设置训练样本保存路径");
+                return;
+            }
+
+            List<PlateCategorySVM.SVMFileInfo> fileInfos = FileIO.PrepareTrainningPlateDirectory(UserSetting.savePath);
+
+            UserSetting.isFolderReady = true;
+
+            if (PlateCategorySVM.Train(fileInfos))
+            {
+                PlateCategorySVM.Save(UserSetting.savePath);
+                MessageBox.Show("svm已经准备好");
+            }
+            else
+            {
+                MessageBox.Show("训练文件夹中无图片，请先手动添加一部分");
+                return;
+            }
+            
+
+
+        }
+
+        //打开设置界面
+        private void OpenUserSetting(object sender, EventArgs e)
+        {
+            Form form = new UserSetting();
+            form.ShowDialog();
         }
 
         

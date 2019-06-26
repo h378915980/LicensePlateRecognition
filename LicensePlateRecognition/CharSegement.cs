@@ -173,7 +173,7 @@ namespace LicensePlateRecognition
                 jump.Set<float>(rowIndex, 0, (float)jumpCount); //记录每一行的跳变数
             }
 
-            int thresholdJump = 10;   //跳变阈值(7个字）
+            int thresholdJump = 7;   //跳变阈值(7个字）
             for(int rowIndex = 0; rowIndex < matIn.Rows; rowIndex++)
             {
                 if (jump.At<float>(rowIndex) <= thresholdJump)
@@ -368,7 +368,7 @@ namespace LicensePlateRecognition
             {
                 Rect rect = rects[index];
                 float rectAveRadio = heightAverage / rect.Height;
-                if (rect.Height >= heightLimit && rect.Height < heightAverage )   
+                if ( rect.Height < heightAverage )   
                 {
                     int topOffset = Math.Abs(rect.Top - topMedian);             //与顶部差值
                     int bottomOffset = Math.Abs(rect.Bottom - BottomMedian);    //与底部差值
@@ -376,7 +376,7 @@ namespace LicensePlateRecognition
                     //那边偏移值大就选另一边
                     if (topOffset > bottomOffset)      
                     {
-                        rect.Y = (int)(rect.Bottom - heightAverage) ;
+                        rect.Y = (int)(rect.Bottom - heightAverage - 0.5);
                     }
 
                     rect.Height = (int)(heightAverage +3);
@@ -528,10 +528,14 @@ namespace LicensePlateRecognition
                                    
             }
             rects = SortLeftRects(rects);
-            if ( rects[0].Width <= 6&&rects[0].Right<7) 
+            if (rects[0].Width <= 6 && rects[0].Right < 7)
             {
                 rects.RemoveAt(0);
             }
+                        
+            if (rects[0].Width <= 2)
+                rects.RemoveAt(0);
+            
             if (rects.Count > 7)
             {
                 for (int i = 7; i < rects.Count; i++)

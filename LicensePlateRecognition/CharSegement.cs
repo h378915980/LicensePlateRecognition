@@ -87,7 +87,7 @@ namespace LicensePlateRecognition
             }
 
             int minTop = (int)(0.1f * rows);   //为了避免将字抹去，只设置最上面和最下面的两小行范围
-            int maxTop = (int)(0.9f * rows);
+            int maxTop = (int)(0.85f * rows);
 
             Mat matResult = matIn.Clone();
 
@@ -306,9 +306,9 @@ namespace LicensePlateRecognition
 
         //筛选出符合大小条件的矩形
         public static bool VerifyRect(Rect rect,
-        int minWidth = 2, int maxWidth = 25,
+        int minWidth = 1, int maxWidth = 25,
         int minHeight = 10, int maxHeight = 80,
-        float minRatio = 0.08f, float maxRatio = 2f)
+        float minRatio = 0.0001f, float maxRatio = 2f)
         {
             int width = rect.Width;
             int height = rect.Height;
@@ -356,28 +356,30 @@ namespace LicensePlateRecognition
         //调整矩形大小
         public static List<Rect> AdjustRects(List<Rect> rects)
         {
-            float heightAverage = GetRectsAverageHeight(rects);  //高度平均值
-            float heightLimit = heightAverage * 0.5f;      //高度限定值
-             
-            int topMedian = GetMedianRectsTop(rects);   //顶部中位数
-            int BottomMedian = GetMedianRectsBottom(rects);  //底部中位数
+            float heightAverage = GetRectsAverageHeight(rects); //高度平均值
+            float heightLimit = heightAverage * 0.5f;           //高度限定值
+            float highestHeight = GetRectsHighestHeight(rects); //得到矩形最大高度
+            float highAveRadio = highestHeight / heightAverage; //最大高度与平均高度的比值
+
+            int topMedian = GetMedianRectsTop(rects);           //顶部中位数
+            int BottomMedian = GetMedianRectsBottom(rects);     //底部中位数
 
             for(int index = rects.Count - 1; index >= 0; index--)
             {
                 Rect rect = rects[index];
-                if (rect.Height >=  heightLimit && rect.Height < heightAverage)
+                float rectAveRadio = heightAverage / rect.Height;
+                if (rect.Height >= heightLimit && rect.Height < heightAverage )   
                 {
-                    int topOffset = Math.Abs(rect.Top - topMedian); //与顶部差值
-                    int bottomOffset = Math.Abs(rect.Bottom - BottomMedian); //与底部差值
+                    int topOffset = Math.Abs(rect.Top - topMedian);             //与顶部差值
+                    int bottomOffset = Math.Abs(rect.Bottom - BottomMedian);    //与底部差值
 
                     //那边偏移值大就选另一边
                     if (topOffset > bottomOffset)      
                     {
-                        rect.Y = (int)(rect.Bottom - heightAverage);
+                        rect.Y = (int)(rect.Bottom - heightAverage) ;
                     }
 
-                    rect.Y = rect.Y - 1;
-                    rect.Height = (int)heightAverage +5;
+                    rect.Height = (int)(heightAverage +3);
                     rects[index] = rect;
                 }
             }
@@ -389,7 +391,7 @@ namespace LicensePlateRecognition
             for (int index = rects.Count - 1; index >= 0; index--)
             {
                 Rect rect = rects[index];
-                float limitWidth = 2 * rect.Width;               
+                float limitWidth = 2.0f * rect.Width;               
                 for (int i = 0; i < rects.Count; i++)
                 {
 
@@ -526,7 +528,7 @@ namespace LicensePlateRecognition
                                    
             }
             rects = SortLeftRects(rects);
-            if (rects[0].Width <= 5)
+            if ( rects[0].Width <= 6&&rects[0].Right<7) 
             {
                 rects.RemoveAt(0);
             }
@@ -562,6 +564,20 @@ namespace LicensePlateRecognition
                 result.Add(roi);
             }
             return result;
+        }
+
+        //获得矩形最高高度
+        public static float GetRectsHighestHeight(List<Rect> rects)
+        {
+            float highestHeight = 0f;
+            if (rects.Count == 0)
+                return highestHeight;
+            foreach (var rect in rects)
+            {
+                if (rect.Height > highestHeight)
+                    highestHeight = rect.Height;
+            }
+            return highestHeight;
         }
 
         //获得矩形平均高度

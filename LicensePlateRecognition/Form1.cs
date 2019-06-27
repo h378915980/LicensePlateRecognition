@@ -301,10 +301,11 @@ namespace LicensePlateRecognition
             this.imgListSplitImage.Images.Clear();
             this.imgListSplitImage.ImageSize = new System.Drawing.Size(16,32);
             int i = 0;
+            rects = CharSegement.SortLeftRects(rects);
             foreach (Rect rect in rects)
             {
                 Mat roi = new Mat(matIn, rects[i]);
-
+                
                 this.imgListSplitImage.Images.Add(roi.ToBitmap());
                 this.listShowSplitImage.Items.Add(i.ToString());
                 //this.listShowSplitImage.Items[index].ImageList.ImageSize = new System.Drawing.Size(rects[index].Width, rects[index].Height);
@@ -339,8 +340,8 @@ namespace LicensePlateRecognition
             {
                 
                 this.groupBoxForPlateParameter.Enabled = true;
-                this.ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text),parameterList);
-                //this.ProcessAndShowChars(new Bitmap(this.listInputImage.SelectedItems[0].Text));
+                //this.ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text),parameterList);
+                this.ProcessAndShowChars(new Bitmap(this.listInputImage.SelectedItems[0].Text));
             }
             else
             {

@@ -35,7 +35,7 @@ namespace LicensePlateRecognition
         }
 
 
-        
+        UserSetting.ShowTypes showTypes=UserSetting.ShowTypes.UNKNOW;
 
 
         //init
@@ -64,10 +64,10 @@ namespace LicensePlateRecognition
 
 
             AddPlateCategoryForComboBox();
+            AddCharCategoryForComboBox();
 
-            //this.groupBoxForPlateLabel.Enabled = false;
+            this.groupBoxForPlateLabel.Enabled = false;
             this.groupBoxForPlateParameter.Enabled = false;
-            //this.comboBoxPlate.Text = this.comboBoxPlate.Items[1].ToString();
 
         }
         //添加车牌标签选项
@@ -80,10 +80,19 @@ namespace LicensePlateRecognition
             }
 
         }
+        //添加字符标签选项
+        private void AddCharCategoryForComboBox()
+        {
+            string[] plateCategory = Enum.GetNames(typeof(PlateChar));
+            for (int index = 0; index < plateCategory.Length; index++)
+            {
+                this.comboBoxChar.Items.Add(plateCategory[index]);
+            }
+        }
 
 
 
-        //functions
+        //显示部分
         private int currentTabCount;
         private void AddTag(string text,Mat image)
         {
@@ -192,42 +201,6 @@ namespace LicensePlateRecognition
             
 
         }
-
-        //显示图片和相关信息
-        private void ShowSpliteImage(List<Rect> rects,Mat matIn)
-        {
-            this.listShowSplitImage.Items.Clear();
-            this.imgListSplitImage.Images.Clear();
-            int index = 0;
-            foreach (Rect rect in rects)
-            {
-                Mat roi = new Mat(matIn, rects[index]);
-             
-                if(!UserSetting.isAutoProcess)
-                {
-                    this.imgListSplitImage.Images.Add(roi.ToBitmap());
-                    this.listShowSplitImage.Items.Add(index.ToString());
-                    this.listShowSplitImage.Items[index].ImageIndex = index;  //这三条顺序还还不能换，佛了
-                }
-                else
-                {
-                    
-                    this.imgListSplitImage.Images.Add(roi.ToBitmap());
-                    this.listShowSplitImage.Items.Add(PlateCategorySVM.Test(roi).ToString());
-                    this.listShowSplitImage.Items[index].ImageIndex = index;  //这三条顺序还还不能换，佛了
-                }
-
-                index++;
-            }
-        }
-
-        //
-
-
-
-
-
-
         //展示字符
         private void ProcessAndShowChars(Bitmap plate)
         {
@@ -296,29 +269,77 @@ namespace LicensePlateRecognition
             AddTag("调整大小",matAdjust);
 
             //展示切割结果
-            rects = CharSegement.GetSafeRects(matIn,rects);
+            ShowSpliteImage(rects, matIn);
+        }
+        //显示图片和相关信息
+        private void ShowSpliteImage(List<Rect> rects, Mat matIn)
+        {
             this.listShowSplitImage.Items.Clear();
             this.imgListSplitImage.Images.Clear();
-            this.imgListSplitImage.ImageSize = new System.Drawing.Size(16,32);
-            int i = 0;
-            foreach (Rect rect in rects)
-            {
-                Mat roi = new Mat(matIn, rects[i]);
 
-                this.imgListSplitImage.Images.Add(roi.ToBitmap());
-                this.listShowSplitImage.Items.Add(i.ToString());
-                //this.listShowSplitImage.Items[index].ImageList.ImageSize = new System.Drawing.Size(rects[index].Width, rects[index].Height);
-                this.listShowSplitImage.Items[i].ImageIndex = i;
-                i++;
+            if(this.showTypes==UserSetting.ShowTypes.PLATE)
+            {
+                this.imgListSplitImage.ImageSize = new System.Drawing.Size(96, 32);
+
+                int index = 0;
+                foreach (Rect rect in rects)
+                {
+                    Mat roi = new Mat(matIn, rects[index]);
+
+                    if (!UserSetting.isAutoProcessPlate)
+                    {
+                        this.imgListSplitImage.Images.Add(roi.ToBitmap());
+                        this.listShowSplitImage.Items.Add(index.ToString());
+                        this.listShowSplitImage.Items[index].ImageIndex = index;  //这三条顺序还还不能换，佛了
+                    }
+                    else
+                    {
+
+                        this.imgListSplitImage.Images.Add(roi.ToBitmap());
+                        this.listShowSplitImage.Items.Add(PlateCategorySVM.Test(roi).ToString());
+                        this.listShowSplitImage.Items[index].ImageIndex = index;  //这三条顺序还还不能换，佛了
+                    }
+
+                    index++;
+                }
+                return;
             }
+
+            if (this.showTypes == UserSetting.ShowTypes.CHAR)
+            {
+                this.imgListSplitImage.ImageSize = new System.Drawing.Size(16, 32);
+                int index = 0;
+                foreach (Rect rect in rects)
+                {
+                    Mat roi = new Mat(matIn, rects[index]);
+
+                    if (!UserSetting.isAutoProcessChar)
+                    {
+                        this.imgListSplitImage.Images.Add(roi.ToBitmap());
+                        this.listShowSplitImage.Items.Add(index.ToString());
+                        this.listShowSplitImage.Items[index].ImageIndex = index;  //这三条顺序还还不能换，佛了
+                    }
+                    else
+                    {
+
+                        this.imgListSplitImage.Images.Add(roi.ToBitmap());
+                        this.listShowSplitImage.Items.Add(CharCategorySVM.Test(roi).ToString().Replace("_",""));
+                        this.listShowSplitImage.Items[index].ImageIndex = index;  //这三条顺序还还不能换，佛了
+                    }
+
+                    index++;
+                }
+                return; 
+            }         
         }
 
 
 
         //events
-        //选择文件夹中的图片添加到列表       
+        //选择车牌文件夹中的图片添加到列表       
         private void OpenImageFolder(object sender, EventArgs e)
         {
+            
             if (this.inputImageFolder.ShowDialog() == DialogResult.OK)
             {
                 this.listInputImage.Clear();
@@ -328,39 +349,119 @@ namespace LicensePlateRecognition
                     listInputImage.Items.Add(f);
                 }
             }
-        }
-        //选中列表中的文件路径并进行图片处理
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //this.groupBoxForPlateLabel.Enabled = false;  //选择图片时先将打标签功能禁用
-            
-
-            if (listInputImage.SelectedItems.Count !=0)
+            else
             {
-                
-                this.groupBoxForPlateParameter.Enabled = true;
-                this.ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text),parameterList);
-                //this.ProcessAndShowChars(new Bitmap(this.listInputImage.SelectedItems[0].Text));
+                return;
+            }
+
+            this.listShowSplitImage.Items.Clear();
+            this.imgListSplitImage.Images.Clear();
+
+            this.showTypes = UserSetting.ShowTypes.PLATE;
+            this.tabControl1.TabPages[0].Enabled = true;
+            this.tabControl1.TabPages[1].Enabled = false;
+
+            this.tabControl1.SelectedTab = this.tabControl1.TabPages[0];
+
+
+            //初始化一下tab界面
+            for (int i = this.tabShowDiffImage.TabPages.Count - 1; i >= 0; i--)
+            {
+                this.tabShowDiffImage.TabPages.RemoveAt(i);
+            }
+        }
+        //选择字符文件夹中的图片添加到列表
+        private void butOpenCharFolder(object sender, EventArgs e)
+        {
+
+            if (this.inputImageFolder.ShowDialog() == DialogResult.OK)
+            {
+                this.listInputImage.Clear();
+                List<string> files = FileIO.OpenFile(inputImageFolder.SelectedPath);
+                foreach (string f in files)
+                {
+                    listInputImage.Items.Add(f);
+                }
             }
             else
             {
-                this.groupBoxForPlateParameter.Enabled = false;
+                return;
+            }
+
+            this.listShowSplitImage.Items.Clear();
+            this.imgListSplitImage.Images.Clear();
+
+            this.showTypes = UserSetting.ShowTypes.CHAR;
+            this.tabControl1.TabPages[0].Enabled = false;
+            this.tabControl1.TabPages[1].Enabled = true;
+
+            this.tabControl1.SelectedTab = this.tabControl1.TabPages[1];
+
+
+
+            //初始化一下tab界面
+            for (int i = this.tabShowDiffImage.TabPages.Count - 1; i >= 0; i--)
+            {
+                this.tabShowDiffImage.TabPages.RemoveAt(i);
+            }
+        }
+
+
+
+
+        //选中列表中的文件路径并进行图片处理
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(this.showTypes==UserSetting.ShowTypes.UNKNOW)
+            {
+                MessageBox.Show("文件夹类型错误");
+                return; 
+            }
+
+            if (this.showTypes == UserSetting.ShowTypes.PLATE)
+            {
+                if (listInputImage.SelectedItems.Count != 0)
+                {
+                    this.groupBoxForPlateParameter.Enabled = true;
+                    this.ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
+                }
+                else
+                {
+                    this.groupBoxForPlateParameter.Enabled = false;
+                }
+
+                return;
+            }
+
+
+            if (this.showTypes == UserSetting.ShowTypes.CHAR)
+            {
+                if (listInputImage.SelectedItems.Count != 0)
+                {
+                    this.ProcessAndShowChars(new Bitmap(this.listInputImage.SelectedItems[0].Text));
+                }
+                else
+                {
+
+                }
+
+                return;
             }
 
         }
         //选择切出来的图片进行处理
         private void listShowSplitImage_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //if (listShowSplitImage.SelectedItems.Count != 0)
-            //{
-            //    this.groupBoxForPlateLabel.Enabled = true;
-            //    Bitmap bitmap = (Bitmap)(this.imgListSplitImage.Images[this.listShowSplitImage.SelectedItems[0].ImageIndex]);
-            //    selectedImage = bitmap;  //这里不太好
-            //}
-            //else
-            //{
-            //    this.groupBoxForPlateLabel.Enabled = false;
-            //}
+            if (listShowSplitImage.SelectedItems.Count != 0)
+            {
+                this.groupBoxForPlateLabel.Enabled = true;
+            }
+            else
+            {
+                this.groupBoxForPlateLabel.Enabled = false;
+
+            }
+
         }
         //单个保存
         private void butSavePlateCategory_Click(object sender, EventArgs e)
@@ -383,10 +484,10 @@ namespace LicensePlateRecognition
                 return;
             }
 
-            if (UserSetting.isFolderReady == false)
+            if (UserSetting.isPlateFolderReady == false)
             {
                 FileIO.PrepareTrainningPlateDirectory(UserSetting.savePath);  //添加文件夹
-                UserSetting.isFolderReady = true;
+                UserSetting.isPlateFolderReady = true;
             }
 
            
@@ -401,14 +502,103 @@ namespace LicensePlateRecognition
                 //MessageBox.Show(sp);
                 Cv2.ImWrite(sp, bitmap.ToMat()); //添加图片
 
-                this.listShowSplitImage.SelectedItems[index].Remove();  
             }
 
+            for (int index = this.listShowSplitImage.SelectedItems.Count-1; index >=0 ; index--)
+            {
+                this.listShowSplitImage.SelectedItems[0].Remove();
+
+            }
+
+
+
+            if (this.listShowSplitImage.Items.Count == 0)
+            {
+
+                if (this.listInputImage.SelectedItems.Count == 0)  //没有了
+                    return;
+
+                if (this.listInputImage.SelectedItems[0].Index + 1 >= this.listInputImage.Items.Count) //最后一个
+                {
+                    this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index].Remove();
+                    return;
+                }
+
+
+                this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index + 1].Selected = true;
+                this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index].Selected = false;
+                this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index - 1].Remove();
+            }
+
+        }
+        private void butSaveCharCategory_Click(object sender, EventArgs e)
+        {
+            if (listShowSplitImage.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("请先选择图片");
+                return;
+            }
+
+            if (UserSetting.savePath == null)
+            {
+                MessageBox.Show("请先在设置中添加保存路径");
+                return;
+            }
+
+            if (this.comboBoxChar.Text == "")
+            {
+                MessageBox.Show("请先为图片添加一个标签");
+                return;
+            }
+
+            if (UserSetting.isCharFolderReady == false)
+            {
+                FileIO.PrepareTrainningCharDirectory(UserSetting.savePath);  //添加文件夹
+                UserSetting.isCharFolderReady = true;
+            }
+
+
+
+            for (int index = 0; index < this.listShowSplitImage.SelectedItems.Count; index++)
+            {
+                Bitmap bitmap = (Bitmap)(this.imgListSplitImage.Images[this.listShowSplitImage.SelectedItems[index].ImageIndex]);
+                DateTime now = DateTime.Now;
+                string time = string.Format("{0}-{1:00}-{2:00}-{3:00}-{4:00}-{5:00}-{6:000000}",
+                    now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second, new Random().Next(1000));
+                string sp = UserSetting.savePath + @"\chars\" + this.comboBoxChar.Text + @"\" + time + ".jpg";//保存路径
+                //MessageBox.Show(sp);
+                Cv2.ImWrite(sp, bitmap.ToMat()); //添加图片
+
+            }
+
+            for (int index = this.listShowSplitImage.SelectedItems.Count - 1; index >= 0; index--)
+            {
+                this.listShowSplitImage.SelectedItems[0].Remove();
+
+            }
+
+
+            if (this.listShowSplitImage.Items.Count == 0)
+            {
+                if (this.listInputImage.SelectedItems.Count == 0)
+                    return;
+
+                if (this.listInputImage.SelectedItems[0].Index + 1 >= this.listInputImage.Items.Count)
+                {
+                    this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index].Remove();
+                    return;
+                }
+
+
+                this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index + 1].Selected = true;
+                this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index].Selected = false;
+                this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index - 1].Remove();
+            }
         }
         //全部保存
         private void butAutoSavePlateCategory(object sender, EventArgs e)
         {
-            if (!UserSetting.isAutoProcess)
+            if (!UserSetting.isAutoProcessPlate)
             {
                 MessageBox.Show("请先在设置中开启自动处理功能");
                 return;
@@ -443,6 +633,41 @@ namespace LicensePlateRecognition
 
 
         }
+        private void butAutoSaveCharCategory(object sender, EventArgs e)
+        {
+            if (!UserSetting.isAutoProcessChar)
+            {
+                MessageBox.Show("请先在设置中开启自动处理功能");
+                return;
+            }
+
+            for (int index = 0; index < this.listShowSplitImage.Items.Count; index++)
+            {
+                Bitmap bitmap = (Bitmap)(this.imgListSplitImage.Images[this.listShowSplitImage.Items[index].ImageIndex]);
+                DateTime now = DateTime.Now;
+                string time = string.Format("{0}-{1:00}-{2:00}-{3:00}-{4:00}-{5:00}-{6:000000}",
+                    now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second, new Random().Next(1000));
+
+                string sp = UserSetting.savePath + @"\chars\" + this.listShowSplitImage.Items[index].Text + @"\" + time + ".jpg";//保存路径
+                //MessageBox.Show(sp);
+                Cv2.ImWrite(sp, bitmap.ToMat()); //添加图片             
+            }
+            this.listShowSplitImage.Clear();
+
+            if (this.listInputImage.SelectedItems.Count == 0)
+                return;
+
+            if (this.listInputImage.SelectedItems[0].Index + 1 >= this.listInputImage.Items.Count)
+            {
+                this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index].Remove();
+                return;
+            }
+
+
+            this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index + 1].Selected = true;
+            this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index].Selected = false;
+            this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index - 1].Remove();
+        }
         //修改标签
         private void comboBoxPlate_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -450,10 +675,37 @@ namespace LicensePlateRecognition
             {
                 this.listShowSplitImage.SelectedItems[index].Text = this.comboBoxPlate.Text;
                 
+            }
+        }
+        private void comboBoxChar_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            for (int index = 0; index < this.listShowSplitImage.SelectedItems.Count; index++)
+            {
+                this.listShowSplitImage.SelectedItems[index].Text = this.comboBoxChar.Text;
 
             }
         }
+        //丢弃
+        private void butDrop_Click(object sender, EventArgs e)
+        {
+            if (this.listInputImage.SelectedItems.Count == 0)
+            {
+                this.listShowSplitImage.Clear();
+                return;
+            }
+                
 
+            if (this.listInputImage.SelectedItems[0].Index + 1 >= this.listInputImage.Items.Count)
+            {
+                this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index].Remove();
+                return;
+            }
+
+
+            this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index + 1].Selected = true;
+            this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index].Selected = false;
+            this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index - 1].Remove();
+        }
 
         //批量处理列表文件
         private void AutoProcessImage(object sender, EventArgs e)
@@ -485,6 +737,80 @@ namespace LicensePlateRecognition
             MessageBox.Show("处理完成");
         }
 
+
+
+        
+        //训练
+        private void TrainPlate(object sender, EventArgs e)
+        {
+            if(UserSetting.savePath==null)
+            {
+                MessageBox.Show("请先在设置中设置训练样本保存路径");
+                return;
+            }
+
+            List<PlateCategorySVM.SVMFileInfo> fileInfos = FileIO.PrepareTrainningPlateDirectory(UserSetting.savePath);
+
+            UserSetting.isPlateFolderReady = true;
+
+            if (PlateCategorySVM.Train(fileInfos))
+            {
+                PlateCategorySVM.Save(UserSetting.savePath);
+                MessageBox.Show("svm已经准备好");
+            }
+            else
+            {
+                MessageBox.Show("训练文件夹中无图片，请先手动添加一部分");
+                return;
+            }
+        }
+        private void TrainChar(object sender, EventArgs e)
+        {
+            if (UserSetting.savePath == null)
+            {
+                MessageBox.Show("请先在设置中设置训练样本保存路径");
+                return;
+            }
+
+            List<CharCategorySVM.SVMFileInfo> fileInfos = FileIO.PrepareTrainningCharDirectory(UserSetting.savePath);
+
+            UserSetting.isPlateFolderReady = true;
+
+            if (CharCategorySVM.Train(fileInfos))
+            {
+                CharCategorySVM.Save(UserSetting.savePath);
+                MessageBox.Show("svm已经准备好");
+            }
+            else
+            {
+                MessageBox.Show("训练文件夹中无图片，请先手动添加一部分");
+                return;
+            }
+        }
+
+
+        //打开设置界面
+        private void OpenUserSetting(object sender, EventArgs e)
+        {
+            Form form = new UserSetting();
+            form.ShowDialog();
+        }
+        //帮助
+        private void OpenHelpForm(object sender, EventArgs e)
+        {
+            Form form = new HelpWeb();
+            form.ShowDialog();
+        }
+
+        //测试用按钮
+        private void button7_Click(object sender, EventArgs e)
+        {
+
+
+        }
+
+
+        //动态修改
         private void HeightDividWidthLow_ValueChanged(object sender, EventArgs e)
         {
             this.parameterList.HeightDivideWidthLow = (double)this.HeightDividWidthLow.Value;
@@ -493,7 +819,7 @@ namespace LicensePlateRecognition
 
         private void HeightDividWidthUp_ValueChanged(object sender, EventArgs e)
         {
-            this.parameterList.HeightDivedeWidthUp= (double)this.HeightDividWidthUp.Value;
+            this.parameterList.HeightDivedeWidthUp = (double)this.HeightDividWidthUp.Value;
             ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
         }
 
@@ -505,7 +831,7 @@ namespace LicensePlateRecognition
 
         private void WidthUp_ValueChanged(object sender, EventArgs e)
         {
-            this.parameterList.WidthUp= (int)this.WidthUp.Value;
+            this.parameterList.WidthUp = (int)this.WidthUp.Value;
             ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
         }
 
@@ -519,61 +845,6 @@ namespace LicensePlateRecognition
         {
             this.parameterList.HeightUp = (int)this.HeightUp.Value;
             ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
-        }
-
-
-        //测试用按钮
-        private void button7_Click(object sender, EventArgs e)
-        {
-            if (this.listInputImage.SelectedItems.Count == 0)
-                return;
-
-            if (this.listInputImage.SelectedItems[0].Index + 1 >= this.listInputImage.Items.Count)
-            {
-                this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index].Remove();
-                return;
-            }
-                
-
-            this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index + 1].Selected = true;
-            this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index].Selected = false;
-            this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index - 1].Remove();
-
-        }
-
-        //训练
-        private void TrainPlate(object sender, EventArgs e)
-        {
-            if(UserSetting.savePath==null)
-            {
-                MessageBox.Show("请先在设置中设置训练样本保存路径");
-                return;
-            }
-
-            List<PlateCategorySVM.SVMFileInfo> fileInfos = FileIO.PrepareTrainningPlateDirectory(UserSetting.savePath);
-
-            UserSetting.isFolderReady = true;
-
-            if (PlateCategorySVM.Train(fileInfos))
-            {
-                PlateCategorySVM.Save(UserSetting.savePath);
-                MessageBox.Show("svm已经准备好");
-            }
-            else
-            {
-                MessageBox.Show("训练文件夹中无图片，请先手动添加一部分");
-                return;
-            }
-            
-
-
-        }
-
-        //打开设置界面
-        private void OpenUserSetting(object sender, EventArgs e)
-        {
-            Form form = new UserSetting();
-            form.ShowDialog();
         }
 
         

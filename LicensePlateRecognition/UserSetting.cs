@@ -15,9 +15,17 @@ namespace LicensePlateRecognition
 
 
         public static string savePath;
-        public static bool isAutoProcess = false;
-        public static bool isFolderReady = false;
-
+        public static bool isAutoProcessPlate = false;
+        public static bool isAutoProcessChar = false;
+        public static bool isPlateFolderReady = false;
+        public static bool isCharFolderReady = false;
+        public enum ShowTypes
+        {
+            UNKNOW=0,
+            PLATE=1,
+            CHAR=2,
+            All=3
+        } 
 
 
 
@@ -31,8 +39,11 @@ namespace LicensePlateRecognition
         {
             this.textBox1.Text = savePath;
             this.checkBox1.CheckedChanged -= new System.EventHandler(checkBox1_CheckedChanged);
-            this.checkBox1.Checked = isAutoProcess;
+            this.checkBox2.CheckedChanged -= new System.EventHandler(checkBox2_CheckedChanged);
+            this.checkBox1.Checked = isAutoProcessPlate;
+            this.checkBox2.Checked = isAutoProcessChar;
             this.checkBox1.CheckedChanged += new System.EventHandler(checkBox1_CheckedChanged);
+            this.checkBox2.CheckedChanged += new System.EventHandler(checkBox2_CheckedChanged);
 
         }
 
@@ -57,19 +68,33 @@ namespace LicensePlateRecognition
             }
         }
 
-        //自动训练
+        //自动训练车牌
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             if (PlateCategorySVM.IsReady == false)
             {
                 this.checkBox1.CheckedChanged -= new System.EventHandler(checkBox1_CheckedChanged);
-                this.checkBox1.Checked = isAutoProcess;
+                this.checkBox1.Checked = isAutoProcessPlate;
                 this.checkBox1.CheckedChanged += new System.EventHandler(checkBox1_CheckedChanged);
-                MessageBox.Show("训练库没有准备好，请先训练一次");
+                MessageBox.Show("车牌训练库没有准备好，请先训练一次");
                 return;
             }
 
-            isAutoProcess = !isAutoProcess;
+            isAutoProcessPlate = !isAutoProcessPlate;
+        }
+        //自动训练字符
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (CharCategorySVM.IsReady == false)
+            {
+                this.checkBox2.CheckedChanged -= new System.EventHandler(checkBox2_CheckedChanged);
+                this.checkBox2.Checked = isAutoProcessChar;
+                this.checkBox2.CheckedChanged += new System.EventHandler(checkBox2_CheckedChanged);
+                MessageBox.Show("字符训练库没有准备好，请先训练一次");
+                return;
+            }
+
+            isAutoProcessChar = !isAutoProcessChar;
         }
     }
 }

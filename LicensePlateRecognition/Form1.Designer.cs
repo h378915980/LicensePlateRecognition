@@ -55,37 +55,29 @@
             this.HeightDividWidthLow = new System.Windows.Forms.NumericUpDown();
             this.HeightDividWidthUp = new System.Windows.Forms.NumericUpDown();
             this.groupBoxForPlateLabel = new System.Windows.Forms.GroupBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.butSaveAllPlate = new System.Windows.Forms.Button();
+            this.butDrop = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.butSavePlateCategory = new System.Windows.Forms.Button();
             this.comboBoxPlate = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.label9 = new System.Windows.Forms.Label();
+            this.butSaveAllChar = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
-            this.button6 = new System.Windows.Forms.Button();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.butSaveChar = new System.Windows.Forms.Button();
+            this.comboBoxChar = new System.Windows.Forms.ComboBox();
             this.车牌定位ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.打开图片ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.butOpenImage = new System.Windows.Forms.ToolStripMenuItem();
             this.批量处理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.字符分割ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.打开文件夹ToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.butOpenPlate = new System.Windows.Forms.ToolStripMenuItem();
+            this.批量处理ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.车牌训练ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.字符训练ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.打开文件夹ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.帮助ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.button1 = new System.Windows.Forms.Button();
             this.tabShowDiffImage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -106,7 +98,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.HeightDividWidthUp)).BeginInit();
             this.groupBoxForPlateLabel.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -156,7 +147,7 @@
             // imgListSplitImage
             // 
             this.imgListSplitImage.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.imgListSplitImage.ImageSize = new System.Drawing.Size(48, 24);
+            this.imgListSplitImage.ImageSize = new System.Drawing.Size(16, 32);
             this.imgListSplitImage.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // listShowSplitImage
@@ -467,9 +458,8 @@
             // 
             // groupBoxForPlateLabel
             // 
-            this.groupBoxForPlateLabel.Controls.Add(this.button3);
-            this.groupBoxForPlateLabel.Controls.Add(this.button8);
-            this.groupBoxForPlateLabel.Controls.Add(this.button2);
+            this.groupBoxForPlateLabel.Controls.Add(this.butSaveAllPlate);
+            this.groupBoxForPlateLabel.Controls.Add(this.butDrop);
             this.groupBoxForPlateLabel.Controls.Add(this.label1);
             this.groupBoxForPlateLabel.Controls.Add(this.butSavePlateCategory);
             this.groupBoxForPlateLabel.Controls.Add(this.comboBoxPlate);
@@ -481,33 +471,25 @@
             this.groupBoxForPlateLabel.TabStop = false;
             this.groupBoxForPlateLabel.Text = "打标签";
             // 
-            // button3
+            // butSaveAllPlate
             // 
-            this.button3.Location = new System.Drawing.Point(335, 81);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 28;
-            this.button3.Text = "保存全部";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.butAutoSavePlateCategory);
+            this.butSaveAllPlate.Location = new System.Drawing.Point(338, 81);
+            this.butSaveAllPlate.Name = "butSaveAllPlate";
+            this.butSaveAllPlate.Size = new System.Drawing.Size(75, 23);
+            this.butSaveAllPlate.TabIndex = 28;
+            this.butSaveAllPlate.Text = "保存全部";
+            this.butSaveAllPlate.UseVisualStyleBackColor = true;
+            this.butSaveAllPlate.Click += new System.EventHandler(this.butAutoSavePlateCategory);
             // 
-            // button8
+            // butDrop
             // 
-            this.button8.Location = new System.Drawing.Point(598, 82);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(75, 23);
-            this.button8.TabIndex = 27;
-            this.button8.Text = "丢弃全部";
-            this.button8.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(482, 82);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 25;
-            this.button2.Text = "丢弃";
-            this.button2.UseVisualStyleBackColor = true;
+            this.butDrop.Location = new System.Drawing.Point(482, 82);
+            this.butDrop.Name = "butDrop";
+            this.butDrop.Size = new System.Drawing.Size(75, 23);
+            this.butDrop.TabIndex = 25;
+            this.butDrop.Text = "丢弃";
+            this.butDrop.UseVisualStyleBackColor = true;
+            this.butDrop.Click += new System.EventHandler(this.butDrop_Click);
             // 
             // label1
             // 
@@ -541,7 +523,6 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.groupBox2);
             this.tabPage2.Controls.Add(this.groupBox4);
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
@@ -551,73 +532,13 @@
             this.tabPage2.Text = "字符处理";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.radioButton4);
-            this.groupBox2.Controls.Add(this.radioButton3);
-            this.groupBox2.Controls.Add(this.radioButton2);
-            this.groupBox2.Controls.Add(this.radioButton1);
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox2.Location = new System.Drawing.Point(3, 138);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(806, 107);
-            this.groupBox2.TabIndex = 11;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "图像增强";
-            // 
-            // radioButton4
-            // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(611, 43);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(88, 19);
-            this.radioButton4.TabIndex = 4;
-            this.radioButton4.TabStop = true;
-            this.radioButton4.Text = "伽马增强";
-            this.radioButton4.UseVisualStyleBackColor = true;
-            // 
-            // radioButton3
-            // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(431, 43);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(88, 19);
-            this.radioButton3.TabIndex = 3;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "对数增强";
-            this.radioButton3.UseVisualStyleBackColor = true;
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(266, 43);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(88, 19);
-            this.radioButton2.TabIndex = 2;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "指数增强";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(93, 43);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(73, 19);
-            this.radioButton1.TabIndex = 1;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "不增强";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.button4);
-            this.groupBox4.Controls.Add(this.button5);
-            this.groupBox4.Controls.Add(this.checkBox2);
-            this.groupBox4.Controls.Add(this.label9);
+            this.groupBox4.Controls.Add(this.button1);
+            this.groupBox4.Controls.Add(this.butSaveAllChar);
             this.groupBox4.Controls.Add(this.label10);
-            this.groupBox4.Controls.Add(this.button6);
-            this.groupBox4.Controls.Add(this.comboBox2);
+            this.groupBox4.Controls.Add(this.butSaveChar);
+            this.groupBox4.Controls.Add(this.comboBoxChar);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox4.Location = new System.Drawing.Point(3, 3);
             this.groupBox4.Name = "groupBox4";
@@ -626,42 +547,15 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "打标签";
             // 
-            // button4
+            // butSaveAllChar
             // 
-            this.button4.Location = new System.Drawing.Point(399, 80);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 26;
-            this.button4.Text = "训练";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(558, 35);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 25;
-            this.button5.Text = "丢弃";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(205, 80);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(44, 19);
-            this.checkBox2.TabIndex = 23;
-            this.checkBox2.Text = "是";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(90, 80);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(97, 15);
-            this.label9.TabIndex = 22;
-            this.label9.Text = "是否自动识别";
+            this.butSaveAllChar.Location = new System.Drawing.Point(350, 89);
+            this.butSaveAllChar.Name = "butSaveAllChar";
+            this.butSaveAllChar.Size = new System.Drawing.Size(75, 23);
+            this.butSaveAllChar.TabIndex = 25;
+            this.butSaveAllChar.Text = "保存全部";
+            this.butSaveAllChar.UseVisualStyleBackColor = true;
+            this.butSaveAllChar.Click += new System.EventHandler(this.butAutoSaveCharCategory);
             // 
             // label10
             // 
@@ -672,26 +566,100 @@
             this.label10.TabIndex = 21;
             this.label10.Text = "添加标签";
             // 
-            // button6
+            // butSaveChar
             // 
-            this.button6.Location = new System.Drawing.Point(399, 36);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 20;
-            this.button6.Text = "保存";
-            this.button6.UseVisualStyleBackColor = true;
+            this.butSaveChar.Location = new System.Drawing.Point(204, 89);
+            this.butSaveChar.Name = "butSaveChar";
+            this.butSaveChar.Size = new System.Drawing.Size(75, 23);
+            this.butSaveChar.TabIndex = 20;
+            this.butSaveChar.Text = "保存";
+            this.butSaveChar.UseVisualStyleBackColor = true;
+            this.butSaveChar.Click += new System.EventHandler(this.butSaveCharCategory_Click);
             // 
-            // comboBox2
+            // comboBoxChar
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Items.AddRange(new object[] {
-            "车牌",
-            "非车牌"});
-            this.comboBox2.Location = new System.Drawing.Point(204, 36);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 23);
-            this.comboBox2.TabIndex = 19;
-            this.comboBox2.Tag = "";
+            this.comboBoxChar.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxChar.FormattingEnabled = true;
+            this.comboBoxChar.Location = new System.Drawing.Point(204, 36);
+            this.comboBoxChar.Name = "comboBoxChar";
+            this.comboBoxChar.Size = new System.Drawing.Size(150, 23);
+            this.comboBoxChar.TabIndex = 19;
+            this.comboBoxChar.Tag = "";
+            this.comboBoxChar.SelectedIndexChanged += new System.EventHandler(this.comboBoxChar_SelectedIndexChanged);
+            // 
+            // 车牌定位ToolStripMenuItem
+            // 
+            this.车牌定位ToolStripMenuItem.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.车牌定位ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.butOpenImage,
+            this.批量处理ToolStripMenuItem});
+            this.车牌定位ToolStripMenuItem.Name = "车牌定位ToolStripMenuItem";
+            this.车牌定位ToolStripMenuItem.Size = new System.Drawing.Size(81, 24);
+            this.车牌定位ToolStripMenuItem.Text = "车牌定位";
+            // 
+            // butOpenImage
+            // 
+            this.butOpenImage.Name = "butOpenImage";
+            this.butOpenImage.Size = new System.Drawing.Size(189, 26);
+            this.butOpenImage.Text = "打开图片文件夹";
+            this.butOpenImage.Click += new System.EventHandler(this.OpenImageFolder);
+            // 
+            // 批量处理ToolStripMenuItem
+            // 
+            this.批量处理ToolStripMenuItem.Name = "批量处理ToolStripMenuItem";
+            this.批量处理ToolStripMenuItem.Size = new System.Drawing.Size(189, 26);
+            this.批量处理ToolStripMenuItem.Text = "批量处理";
+            this.批量处理ToolStripMenuItem.Click += new System.EventHandler(this.AutoProcessImage);
+            // 
+            // 字符分割ToolStripMenuItem
+            // 
+            this.字符分割ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.butOpenPlate,
+            this.批量处理ToolStripMenuItem1});
+            this.字符分割ToolStripMenuItem.Name = "字符分割ToolStripMenuItem";
+            this.字符分割ToolStripMenuItem.Size = new System.Drawing.Size(81, 24);
+            this.字符分割ToolStripMenuItem.Text = "字符分割";
+            // 
+            // butOpenPlate
+            // 
+            this.butOpenPlate.Name = "butOpenPlate";
+            this.butOpenPlate.Size = new System.Drawing.Size(216, 26);
+            this.butOpenPlate.Text = "打开图片文件夹";
+            this.butOpenPlate.Click += new System.EventHandler(this.butOpenCharFolder);
+            // 
+            // 批量处理ToolStripMenuItem1
+            // 
+            this.批量处理ToolStripMenuItem1.Name = "批量处理ToolStripMenuItem1";
+            this.批量处理ToolStripMenuItem1.Size = new System.Drawing.Size(216, 26);
+            this.批量处理ToolStripMenuItem1.Text = "批量处理";
+            // 
+            // 车牌训练ToolStripMenuItem
+            // 
+            this.车牌训练ToolStripMenuItem.Name = "车牌训练ToolStripMenuItem";
+            this.车牌训练ToolStripMenuItem.Size = new System.Drawing.Size(81, 24);
+            this.车牌训练ToolStripMenuItem.Text = "车牌训练";
+            this.车牌训练ToolStripMenuItem.Click += new System.EventHandler(this.TrainPlate);
+            // 
+            // 字符训练ToolStripMenuItem
+            // 
+            this.字符训练ToolStripMenuItem.Name = "字符训练ToolStripMenuItem";
+            this.字符训练ToolStripMenuItem.Size = new System.Drawing.Size(81, 24);
+            this.字符训练ToolStripMenuItem.Text = "字符训练";
+            this.字符训练ToolStripMenuItem.Click += new System.EventHandler(this.TrainChar);
+            // 
+            // 帮助ToolStripMenuItem
+            // 
+            this.帮助ToolStripMenuItem.Name = "帮助ToolStripMenuItem";
+            this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(51, 24);
+            this.帮助ToolStripMenuItem.Text = "设置";
+            this.帮助ToolStripMenuItem.Click += new System.EventHandler(this.OpenUserSetting);
+            // 
+            // 帮助ToolStripMenuItem1
+            // 
+            this.帮助ToolStripMenuItem1.Name = "帮助ToolStripMenuItem1";
+            this.帮助ToolStripMenuItem1.Size = new System.Drawing.Size(51, 24);
+            this.帮助ToolStripMenuItem1.Text = "帮助";
+            this.帮助ToolStripMenuItem1.Click += new System.EventHandler(this.OpenHelpForm);
             // 
             // menuStrip1
             // 
@@ -709,77 +677,15 @@
             this.menuStrip1.TabIndex = 8;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // 车牌定位ToolStripMenuItem
+            // button1
             // 
-            this.车牌定位ToolStripMenuItem.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.车牌定位ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.打开图片ToolStripMenuItem,
-            this.批量处理ToolStripMenuItem});
-            this.车牌定位ToolStripMenuItem.Name = "车牌定位ToolStripMenuItem";
-            this.车牌定位ToolStripMenuItem.Size = new System.Drawing.Size(81, 24);
-            this.车牌定位ToolStripMenuItem.Text = "车牌定位";
-            // 
-            // 打开图片ToolStripMenuItem
-            // 
-            this.打开图片ToolStripMenuItem.Name = "打开图片ToolStripMenuItem";
-            this.打开图片ToolStripMenuItem.Size = new System.Drawing.Size(189, 26);
-            this.打开图片ToolStripMenuItem.Text = "打开图片文件夹";
-            this.打开图片ToolStripMenuItem.Click += new System.EventHandler(this.OpenImageFolder);
-            // 
-            // 批量处理ToolStripMenuItem
-            // 
-            this.批量处理ToolStripMenuItem.Name = "批量处理ToolStripMenuItem";
-            this.批量处理ToolStripMenuItem.Size = new System.Drawing.Size(189, 26);
-            this.批量处理ToolStripMenuItem.Text = "批量处理";
-            this.批量处理ToolStripMenuItem.Click += new System.EventHandler(this.AutoProcessImage);
-            // 
-            // 字符分割ToolStripMenuItem
-            // 
-            this.字符分割ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.打开文件夹ToolStripMenuItem2});
-            this.字符分割ToolStripMenuItem.Name = "字符分割ToolStripMenuItem";
-            this.字符分割ToolStripMenuItem.Size = new System.Drawing.Size(81, 24);
-            this.字符分割ToolStripMenuItem.Text = "字符分割";
-            // 
-            // 打开文件夹ToolStripMenuItem2
-            // 
-            this.打开文件夹ToolStripMenuItem2.Name = "打开文件夹ToolStripMenuItem2";
-            this.打开文件夹ToolStripMenuItem2.Size = new System.Drawing.Size(144, 26);
-            this.打开文件夹ToolStripMenuItem2.Text = "打开图片";
-            // 
-            // 车牌训练ToolStripMenuItem
-            // 
-            this.车牌训练ToolStripMenuItem.Name = "车牌训练ToolStripMenuItem";
-            this.车牌训练ToolStripMenuItem.Size = new System.Drawing.Size(81, 24);
-            this.车牌训练ToolStripMenuItem.Text = "车牌训练";
-            this.车牌训练ToolStripMenuItem.Click += new System.EventHandler(this.TrainPlate);
-            // 
-            // 字符训练ToolStripMenuItem
-            // 
-            this.字符训练ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.打开文件夹ToolStripMenuItem1});
-            this.字符训练ToolStripMenuItem.Name = "字符训练ToolStripMenuItem";
-            this.字符训练ToolStripMenuItem.Size = new System.Drawing.Size(81, 24);
-            this.字符训练ToolStripMenuItem.Text = "字符训练";
-            // 
-            // 打开文件夹ToolStripMenuItem1
-            // 
-            this.打开文件夹ToolStripMenuItem1.Name = "打开文件夹ToolStripMenuItem1";
-            this.打开文件夹ToolStripMenuItem1.Size = new System.Drawing.Size(159, 26);
-            this.打开文件夹ToolStripMenuItem1.Text = "打开文件夹";
-            // 
-            // 帮助ToolStripMenuItem
-            // 
-            this.帮助ToolStripMenuItem.Name = "帮助ToolStripMenuItem";
-            this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(51, 24);
-            this.帮助ToolStripMenuItem.Text = "设置";
-            this.帮助ToolStripMenuItem.Click += new System.EventHandler(this.OpenUserSetting);
-            // 
-            // 帮助ToolStripMenuItem1
-            // 
-            this.帮助ToolStripMenuItem1.Name = "帮助ToolStripMenuItem1";
-            this.帮助ToolStripMenuItem1.Size = new System.Drawing.Size(51, 24);
-            this.帮助ToolStripMenuItem1.Text = "帮助";
+            this.button1.Location = new System.Drawing.Point(493, 89);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 26;
+            this.button1.Text = "丢弃";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.butDrop_Click);
             // 
             // Form1
             // 
@@ -816,8 +722,6 @@
             this.groupBoxForPlateLabel.ResumeLayout(false);
             this.groupBoxForPlateLabel.PerformLayout();
             this.tabPage2.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
@@ -851,16 +755,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown WidthUp;
         private System.Windows.Forms.NumericUpDown WidthLow;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem 车牌定位ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 字符分割ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 车牌训练ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 字符训练ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 打开图片ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 批量处理ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 打开文件夹ToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem 帮助ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 打开文件夹ToolStripMenuItem2;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
@@ -868,24 +762,26 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button butSavePlateCategory;
         private System.Windows.Forms.ComboBox comboBoxPlate;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.RadioButton radioButton4;
-        private System.Windows.Forms.RadioButton radioButton3;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.Button butDrop;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button butSaveAllChar;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ToolStripMenuItem 帮助ToolStripMenuItem1;
+        private System.Windows.Forms.Button butSaveChar;
+        private System.Windows.Forms.ComboBox comboBoxChar;
         private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button butSaveAllPlate;
+        private System.Windows.Forms.ToolStripMenuItem 车牌定位ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem butOpenImage;
+        private System.Windows.Forms.ToolStripMenuItem 批量处理ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 字符分割ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem butOpenPlate;
+        private System.Windows.Forms.ToolStripMenuItem 批量处理ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem 车牌训练ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 字符训练ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 帮助ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 帮助ToolStripMenuItem1;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.Button button1;
     }
 }
 

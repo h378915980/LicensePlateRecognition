@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static LicensePlateRecognition.PlateCategorySVM;
 
 namespace LicensePlateRecognition
 {
@@ -30,13 +29,12 @@ namespace LicensePlateRecognition
         }
 
         //生成字符文件目录
-        public static bool PrepareTrainningCharDirectory(string path)
+        public static List<CharCategorySVM.SVMFileInfo> PrepareTrainningCharDirectory(string path)
         {
-            bool success = true;
+            List<CharCategorySVM.SVMFileInfo> fileInfos = new List<CharCategorySVM.SVMFileInfo>();
+
             try
             {
-                success = Directory.Exists(path);
-
                 string charsDirectory = path + @"\chars";
                 if (Directory.Exists(charsDirectory) == false)
                     Directory.CreateDirectory(charsDirectory);   //不存在就创建
@@ -45,9 +43,15 @@ namespace LicensePlateRecognition
 
                 for (int index_PlateChar = 0; index_PlateChar < plateCharNames.Length; index_PlateChar++)
                 {
-                    string plateChar = plateCharNames[index_PlateChar];
+                    CharCategorySVM.SVMFileInfo fileInfo = new CharCategorySVM.SVMFileInfo();
 
+                    string plateChar = plateCharNames[index_PlateChar];
                     string plateCharDirectory = charsDirectory + @"\" + plateChar;
+
+                    fileInfo.FilePath = plateCharDirectory;
+                    fileInfo.Label = index_PlateChar;   //希望是按照枚举顺序来的
+                    fileInfos.Add(fileInfo);
+
                     if (Directory.Exists(plateCharDirectory) == false)
                         Directory.CreateDirectory(plateCharDirectory);
                 }
@@ -55,19 +59,15 @@ namespace LicensePlateRecognition
             }
             catch (IOException)
             {
-                success = false;
-            }
-            catch (Exception)
-            {
-                success = false;
+                throw new Exception("路径错误");
             }
 
-            return success;
+            return fileInfos;
         }
         //生成车牌文件目录，返回标签信息
-        public static List<SVMFileInfo> PrepareTrainningPlateDirectory(string path)
+        public static List<PlateCategorySVM.SVMFileInfo> PrepareTrainningPlateDirectory(string path)
         {
-            List<SVMFileInfo> fileInfos = new List<SVMFileInfo>();
+            List<PlateCategorySVM.SVMFileInfo> fileInfos = new List<PlateCategorySVM.SVMFileInfo>();
 
             try
             {
@@ -80,14 +80,14 @@ namespace LicensePlateRecognition
 
                 for (int index_Plate = 0; index_Plate < plateCategory.Length; index_Plate++)
                 {
-                    SVMFileInfo fileInfo = new SVMFileInfo();
+                    PlateCategorySVM.SVMFileInfo fileInfo = new PlateCategorySVM.SVMFileInfo();
                     string plateChar = plateCategory[index_Plate];
                     string plateCharDirectory = charsDirectory + @"\" + plateChar;
 
                     fileInfo.FilePath = plateCharDirectory;
                     fileInfo.Label = index_Plate;   //希望是按照枚举顺序来的
-
                     fileInfos.Add(fileInfo);
+
                     if (Directory.Exists(plateCharDirectory) == false)
                         Directory.CreateDirectory(plateCharDirectory);
                 }

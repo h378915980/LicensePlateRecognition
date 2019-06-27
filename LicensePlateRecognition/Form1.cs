@@ -279,9 +279,9 @@ namespace LicensePlateRecognition
         {
             this.listShowSplitImage.Items.Clear();
             this.imgListSplitImage.Images.Clear();
-<<<<<<< HEAD
 
-            if(this.showTypes==UserSetting.ShowTypes.PLATE)
+
+            if (this.showTypes == UserSetting.ShowTypes.PLATE)
             {
                 this.imgListSplitImage.ImageSize = new System.Drawing.Size(96, 32);
 
@@ -307,20 +307,6 @@ namespace LicensePlateRecognition
                     index++;
                 }
                 return;
-=======
-            this.imgListSplitImage.ImageSize = new System.Drawing.Size(16,32);
-            int i = 0;
-            rects = CharSegement.SortLeftRects(rects);
-            foreach (Rect rect in rects)
-            {
-                Mat roi = new Mat(matIn, rects[i]);
-                
-                this.imgListSplitImage.Images.Add(roi.ToBitmap());
-                this.listShowSplitImage.Items.Add(i.ToString());
-                //this.listShowSplitImage.Items[index].ImageList.ImageSize = new System.Drawing.Size(rects[index].Width, rects[index].Height);
-                this.listShowSplitImage.Items[i].ImageIndex = i;
-                i++;
->>>>>>> f2f62546d802e296fda81f65129b2804524a1461
             }
 
             if (this.showTypes == UserSetting.ShowTypes.CHAR)
@@ -441,7 +427,6 @@ namespace LicensePlateRecognition
 
             if (this.showTypes == UserSetting.ShowTypes.PLATE)
             {
-<<<<<<< HEAD
                 if (listInputImage.SelectedItems.Count != 0)
                 {
                     this.groupBoxForPlateParameter.Enabled = true;
@@ -453,12 +438,10 @@ namespace LicensePlateRecognition
                 }
 
                 return;
-=======
                 
                 this.groupBoxForPlateParameter.Enabled = true;
                 //this.ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text),parameterList);
                 this.ProcessAndShowChars(new Bitmap(this.listInputImage.SelectedItems[0].Text));
->>>>>>> f2f62546d802e296fda81f65129b2804524a1461
             }
 
 
@@ -491,6 +474,9 @@ namespace LicensePlateRecognition
             }
 
         }
+
+
+
         //单个保存
         private void butSavePlateCategory_Click(object sender, EventArgs e)
         {
@@ -623,6 +609,8 @@ namespace LicensePlateRecognition
                 this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index - 1].Remove();
             }
         }
+
+
         //全部保存
         private void butAutoSavePlateCategory(object sender, EventArgs e)
         {

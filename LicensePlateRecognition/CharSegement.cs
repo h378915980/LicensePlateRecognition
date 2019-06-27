@@ -61,9 +61,9 @@ namespace LicensePlateRecognition
             int rows = matIn.Rows;
             int cols = matIn.Cols;
 
-            int noJumpCountThreshold = (int)(0.15f * cols);  //判断是否是边框的阈值
+            int noJumpCountThreshold = (int)(0.15f * cols); //判断是否是边框的阈值
 
-            Mat border = new Mat(rows,1,MatType.CV_8UC1); //边框，跟原车牌行数相同但只有一列
+            Mat border = new Mat(rows,1,MatType.CV_8UC1);   //边框，跟原车牌行数相同但只有一列
 
             //清除水平边框，思路是只要有连续的一长段（0.15cols）相同就将这一行当作边框
             for(int rowIndex = 0; rowIndex < rows; rowIndex++)
@@ -86,7 +86,7 @@ namespace LicensePlateRecognition
                 border.Set<byte>(rowIndex, 0, isBorder); //得出哪一行是边框
             }
 
-            int minTop = (int)(0.1f * rows);   //为了避免将字抹去，只设置最上面和最下面的两小行范围
+            int minTop = (int)(0.15f * rows);   //为了避免将字抹去，只设置最上面和最下面的两小行范围
             int maxTop = (int)(0.85f * rows);
 
             Mat matResult = matIn.Clone();
@@ -113,42 +113,6 @@ namespace LicensePlateRecognition
                     }
                 }
             }
-
-            //去掉左侧边框
-            //for (int colsIndex = 0; colsIndex < cols; colsIndex++)
-            //{
-            //    int noJumpCount = 0;
-            //    int JumpCount = 0;
-            //    int JumpThreshold = 5;
-            //    byte isBorder = 0;
-
-            //    for (int rowsIndex = 0; rowsIndex < rows - 1; rowsIndex++)
-            //    {
-            //        if (matIn.At<byte>(rowsIndex, colsIndex) == matIn.At<byte>(rowsIndex + 1, colsIndex))  //每一行值与后一行比较
-            //            noJumpCount++;
-            //        else JumpCount++;
-
-            //        if (noJumpCount > noJumpCountThreshold && JumpCount <= JumpThreshold)
-            //        {
-            //            noJumpCount = 0;
-            //            isBorder = 1;
-            //            break;
-            //        }
-            //    }
-            //    border.Set<byte>(0, colsIndex, isBorder); //得出哪一列是边框
-            //}
-
-            //for (int colIndex = 0; colIndex < 0.05 * cols; colIndex++)
-            //{
-            //    if (border.At<byte>(0, colIndex) == 1) //说明这一列是矩形边框
-            //    {
-            //        for (int rowIndex = 0; rowIndex < rows; rowIndex++)
-            //        {
-            //            matResult.Set<byte>(rowIndex, colIndex, 0);
-            //        }
-
-            //    }
-            //}
 
             return matResult;
         }
@@ -376,9 +340,9 @@ namespace LicensePlateRecognition
                     //那边偏移值大就选另一边
                     if (topOffset > bottomOffset)      
                     {
-                        rect.Y = (int)(rect.Bottom - heightAverage - 0.5);
+                        rect.Y = (int)(rect.Bottom - heightAverage);
                     }
-
+                    
                     rect.Height = (int)(heightAverage +3);
                     rects[index] = rect;
                 }
@@ -388,6 +352,9 @@ namespace LicensePlateRecognition
         //去掉矩形的内部矩形和左右的矩形
         public static List<Rect> RejectInnerRectFromRects(List<Rect> rects)
         {
+            if (rects.Count == 0)
+                return rects;
+
             for (int index = rects.Count - 1; index >= 0; index--)
             {
                 Rect rect = rects[index];

@@ -537,6 +537,7 @@
             this.comboBoxPlate.Size = new System.Drawing.Size(153, 23);
             this.comboBoxPlate.TabIndex = 19;
             this.comboBoxPlate.Tag = "";
+            this.comboBoxPlate.SelectedIndexChanged += new System.EventHandler(this.comboBoxPlate_SelectedIndexChanged);
             // 
             // tabPage2
             // 

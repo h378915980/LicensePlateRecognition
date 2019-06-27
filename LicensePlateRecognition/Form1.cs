@@ -425,13 +425,34 @@ namespace LicensePlateRecognition
                 //MessageBox.Show(sp);
                 Cv2.ImWrite(sp, bitmap.ToMat()); //添加图片             
             }
-            this.listShowSplitImage.Clear();          
+            this.listShowSplitImage.Clear();
+
+            if (this.listInputImage.SelectedItems.Count == 0)
+                return;
+
+            if (this.listInputImage.SelectedItems[0].Index + 1 >= this.listInputImage.Items.Count)
+            {
+                this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index].Remove();
+                return;
+            }
+
+
             this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index + 1].Selected = true;
+            this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index].Selected = false;
             this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index - 1].Remove();
 
-            
-        }
 
+        }
+        //修改标签
+        private void comboBoxPlate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            for(int index = 0; index < this.listShowSplitImage.SelectedItems.Count; index++)
+            {
+                this.listShowSplitImage.SelectedItems[index].Text = this.comboBoxPlate.Text;
+                
+
+            }
+        }
 
 
         //批量处理列表文件
@@ -510,7 +531,6 @@ namespace LicensePlateRecognition
             if (this.listInputImage.SelectedItems[0].Index + 1 >= this.listInputImage.Items.Count)
             {
                 this.listInputImage.Items[this.listInputImage.SelectedItems[0].Index].Remove();
-
                 return;
             }
                 

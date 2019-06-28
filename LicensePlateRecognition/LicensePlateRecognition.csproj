@@ -78,7 +78,6 @@
       <DependentUpon>HelpWeb.cs</DependentUpon>
     </Compile>
     <Compile Include="PlateCategorySVM.cs" />
-    <Compile Include="PlateCharSVM.cs" />
     <Compile Include="PlateLocator.cs" />
     <Compile Include="PlateRecognInfo.cs" />
     <Compile Include="Program.cs" />

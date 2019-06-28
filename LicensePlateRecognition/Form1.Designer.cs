@@ -61,7 +61,8 @@
             this.butSavePlateCategory = new System.Windows.Forms.Button();
             this.comboBoxPlate = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.groupBoxForChar = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.butSaveAllChar = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.butSaveChar = new System.Windows.Forms.Button();
@@ -77,7 +78,6 @@
             this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.帮助ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.button1 = new System.Windows.Forms.Button();
             this.tabShowDiffImage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -98,7 +98,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.HeightDividWidthUp)).BeginInit();
             this.groupBoxForPlateLabel.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.groupBox4.SuspendLayout();
+            this.groupBoxForChar.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -113,7 +113,7 @@
             this.listInputImage.Location = new System.Drawing.Point(0, 0);
             this.listInputImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listInputImage.Name = "listInputImage";
-            this.listInputImage.Size = new System.Drawing.Size(242, 648);
+            this.listInputImage.Size = new System.Drawing.Size(247, 658);
             this.listInputImage.TabIndex = 0;
             this.listInputImage.UseCompatibleStateImageBehavior = false;
             this.listInputImage.View = System.Windows.Forms.View.List;
@@ -131,7 +131,7 @@
             this.tabShowDiffImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabShowDiffImage.Name = "tabShowDiffImage";
             this.tabShowDiffImage.SelectedIndex = 0;
-            this.tabShowDiffImage.Size = new System.Drawing.Size(820, 171);
+            this.tabShowDiffImage.Size = new System.Drawing.Size(839, 173);
             this.tabShowDiffImage.TabIndex = 2;
             // 
             // tabPage12
@@ -140,7 +140,7 @@
             this.tabPage12.Location = new System.Drawing.Point(4, 25);
             this.tabPage12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage12.Name = "tabPage12";
-            this.tabPage12.Size = new System.Drawing.Size(812, 142);
+            this.tabPage12.Size = new System.Drawing.Size(831, 144);
             this.tabPage12.TabIndex = 0;
             this.tabPage12.Text = "原图";
             // 
@@ -157,20 +157,18 @@
             this.listShowSplitImage.Location = new System.Drawing.Point(0, 0);
             this.listShowSplitImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listShowSplitImage.Name = "listShowSplitImage";
-            this.listShowSplitImage.Size = new System.Drawing.Size(820, 166);
+            this.listShowSplitImage.Size = new System.Drawing.Size(839, 166);
             this.listShowSplitImage.TabIndex = 4;
             this.listShowSplitImage.UseCompatibleStateImageBehavior = false;
             this.listShowSplitImage.SelectedIndexChanged += new System.EventHandler(this.listShowSplitImage_SelectedIndexChanged);
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.splitContainer1.Location = new System.Drawing.Point(12, 26);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 28);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(0, 2, 0, 2);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -181,16 +179,16 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1083, 652);
-            this.splitContainer1.SplitterDistance = 246;
+            this.splitContainer1.Size = new System.Drawing.Size(1107, 662);
+            this.splitContainer1.SplitterDistance = 251;
             this.splitContainer1.TabIndex = 7;
             // 
             // button7
             // 
             this.button7.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.button7.Location = new System.Drawing.Point(0, 625);
+            this.button7.Location = new System.Drawing.Point(0, 635);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(242, 23);
+            this.button7.Size = new System.Drawing.Size(247, 23);
             this.button7.TabIndex = 1;
             this.button7.Text = "button7";
             this.button7.UseVisualStyleBackColor = true;
@@ -215,8 +213,8 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.tabControl1);
             this.splitContainer2.Panel2.Controls.Add(this.listShowSplitImage);
-            this.splitContainer2.Size = new System.Drawing.Size(824, 642);
-            this.splitContainer2.SplitterDistance = 175;
+            this.splitContainer2.Size = new System.Drawing.Size(843, 652);
+            this.splitContainer2.SplitterDistance = 177;
             this.splitContainer2.TabIndex = 0;
             // 
             // tabControl1
@@ -227,7 +225,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 166);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(820, 463);
+            this.tabControl1.Size = new System.Drawing.Size(839, 463);
             this.tabControl1.TabIndex = 8;
             // 
             // tabPage1
@@ -237,7 +235,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(812, 434);
+            this.tabPage1.Size = new System.Drawing.Size(831, 434);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "车牌处理";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -261,7 +259,7 @@
             this.groupBoxForPlateParameter.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBoxForPlateParameter.Name = "groupBoxForPlateParameter";
             this.groupBoxForPlateParameter.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBoxForPlateParameter.Size = new System.Drawing.Size(806, 180);
+            this.groupBoxForPlateParameter.Size = new System.Drawing.Size(825, 180);
             this.groupBoxForPlateParameter.TabIndex = 7;
             this.groupBoxForPlateParameter.TabStop = false;
             this.groupBoxForPlateParameter.Text = "外接矩形参数";
@@ -466,7 +464,7 @@
             this.groupBoxForPlateLabel.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBoxForPlateLabel.Location = new System.Drawing.Point(3, 3);
             this.groupBoxForPlateLabel.Name = "groupBoxForPlateLabel";
-            this.groupBoxForPlateLabel.Size = new System.Drawing.Size(806, 125);
+            this.groupBoxForPlateLabel.Size = new System.Drawing.Size(825, 125);
             this.groupBoxForPlateLabel.TabIndex = 8;
             this.groupBoxForPlateLabel.TabStop = false;
             this.groupBoxForPlateLabel.Text = "打标签";
@@ -523,29 +521,39 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.groupBox4);
+            this.tabPage2.Controls.Add(this.groupBoxForChar);
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(812, 434);
+            this.tabPage2.Size = new System.Drawing.Size(831, 434);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "字符处理";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // groupBox4
+            // groupBoxForChar
             // 
-            this.groupBox4.Controls.Add(this.button1);
-            this.groupBox4.Controls.Add(this.butSaveAllChar);
-            this.groupBox4.Controls.Add(this.label10);
-            this.groupBox4.Controls.Add(this.butSaveChar);
-            this.groupBox4.Controls.Add(this.comboBoxChar);
-            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox4.Location = new System.Drawing.Point(3, 3);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(806, 135);
-            this.groupBox4.TabIndex = 10;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "打标签";
+            this.groupBoxForChar.Controls.Add(this.button1);
+            this.groupBoxForChar.Controls.Add(this.butSaveAllChar);
+            this.groupBoxForChar.Controls.Add(this.label10);
+            this.groupBoxForChar.Controls.Add(this.butSaveChar);
+            this.groupBoxForChar.Controls.Add(this.comboBoxChar);
+            this.groupBoxForChar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBoxForChar.Location = new System.Drawing.Point(3, 3);
+            this.groupBoxForChar.Name = "groupBoxForChar";
+            this.groupBoxForChar.Size = new System.Drawing.Size(825, 135);
+            this.groupBoxForChar.TabIndex = 10;
+            this.groupBoxForChar.TabStop = false;
+            this.groupBoxForChar.Text = "打标签";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(493, 89);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 26;
+            this.button1.Text = "丢弃";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.butDrop_Click);
             // 
             // butSaveAllChar
             // 
@@ -632,6 +640,7 @@
             this.批量处理ToolStripMenuItem1.Name = "批量处理ToolStripMenuItem1";
             this.批量处理ToolStripMenuItem1.Size = new System.Drawing.Size(216, 26);
             this.批量处理ToolStripMenuItem1.Text = "批量处理";
+            this.批量处理ToolStripMenuItem1.Click += new System.EventHandler(this.AutoProcessChar);
             // 
             // 车牌训练ToolStripMenuItem
             // 
@@ -677,16 +686,6 @@
             this.menuStrip1.TabIndex = 8;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(493, 89);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 26;
-            this.button1.Text = "丢弃";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.butDrop_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -722,8 +721,8 @@
             this.groupBoxForPlateLabel.ResumeLayout(false);
             this.groupBoxForPlateLabel.PerformLayout();
             this.tabPage2.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
+            this.groupBoxForChar.ResumeLayout(false);
+            this.groupBoxForChar.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -763,7 +762,7 @@
         private System.Windows.Forms.Button butSavePlateCategory;
         private System.Windows.Forms.ComboBox comboBoxPlate;
         private System.Windows.Forms.Button butDrop;
-        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox groupBoxForChar;
         private System.Windows.Forms.Button butSaveAllChar;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button butSaveChar;

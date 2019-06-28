@@ -265,6 +265,79 @@ namespace LicensePlateRecognition
             minRatio, maxRatio);
         }
 
+        public static bool AutoProcessCharSegement(List<string> files,string savePath)
+        {
+
+            for(int i = 0; i < files.Count; i++)
+            {
+                Mat matIn = new Mat(files[i]);
+                Mat matGray = matIn.CvtColor(ColorConversionCodes.RGB2GRAY);
+
+                PlateColor plateColor = GetPlateColor(matIn);
+                Mat matClear = ClearMaodingAndBorder(matGray, plateColor);
+
+                //找轮廓
+                OpenCvSharp.Point[][] contours = null;
+                HierarchyIndex[] hierarchyIndices = null;
+                matClear.FindContours(out contours, out hierarchyIndices, RetrievalModes.External, ContourApproximationModes.ApproxNone);
+
+                //求轮廓外接最小矩形
+                List<Rect> rects = new List<Rect>();
+                Mat matContours = matIn.Clone();
+                for (int index = 0; index < contours.Length; index++)
+                {
+                    Rect rect = Cv2.BoundingRect(contours[index]);
+                    if (VerifyRect(rect) &&
+                        NotOnBorder(rect, matIn.Size()))
+                    {
+                        rects.Add(rect);
+                        Cv2.Rectangle(matContours, rect, new Scalar(0, 0, 255), 1);
+                    }
+                }
+
+                //去除内部矩形
+                Mat matInner = matIn.Clone();
+                rects =RejectInnerRectFromRects(rects);
+                for (int index = 0; index < rects.Count; index++)
+                {
+                    Cv2.Rectangle(matInner, rects[index], new Scalar(0, 0, 255), 1);
+                }
+
+
+
+                //调整矩形大小
+                Mat matAdjust = matIn.Clone();
+                rects = AdjustRects(rects);
+                for (int index = 0; index < rects.Count; index++)
+                {
+                    Cv2.Rectangle(matAdjust, rects[index], new Scalar(0, 0, 255), 1);
+                }
+                rects = GetSafeRects(matIn, rects);
+
+                //保存切分的图片
+                int j = 0;
+                foreach (Rect rect in rects)
+                {
+                    Mat roi = new Mat(matIn, rects[j]);
+                    Cv2.ImWrite(savePath + "\\sample_" + i.ToString() + "_" + j.ToString() + ".jpg", roi);
+                    j++;
+                }
+
+
+
+            }
+
+
+
+
+
+            return false;
+        }
+
+
+
+
+
 
 
 

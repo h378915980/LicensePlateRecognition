@@ -12,14 +12,13 @@ using System.Windows.Forms;
 
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
-using static LicensePlateRecognition.PlateLocator;
 
 namespace LicensePlateRecognition
 {
     public partial class Form1 : Form
     {
         //初始化参数列表
-        ParameterList parameterList = new ParameterList(
+        PlateLocator.ParameterList parameterList = new PlateLocator.ParameterList(
             hdwl: 0.15f,
             hdwu: 0.70f,
             hl: 10,
@@ -68,6 +67,7 @@ namespace LicensePlateRecognition
 
             this.groupBoxForPlateLabel.Enabled = false;
             this.groupBoxForPlateParameter.Enabled = false;
+            this.groupBoxForChar.Enabled = false;
 
         }
         //添加车牌标签选项
@@ -124,7 +124,7 @@ namespace LicensePlateRecognition
             currentTabCount++;
         }
         //展示车牌
-        private void ProcessAndShowImage(Bitmap image,ParameterList pl)
+        private void ProcessAndShowImage(Bitmap image,PlateLocator.ParameterList pl)
         {
             currentTabCount = 0;
 
@@ -436,12 +436,7 @@ namespace LicensePlateRecognition
                 {
                     this.groupBoxForPlateParameter.Enabled = false;
                 }
-
                 return;
-                
-                this.groupBoxForPlateParameter.Enabled = true;
-                //this.ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text),parameterList);
-                this.ProcessAndShowChars(new Bitmap(this.listInputImage.SelectedItems[0].Text));
             }
 
 
@@ -466,9 +461,11 @@ namespace LicensePlateRecognition
             if (listShowSplitImage.SelectedItems.Count != 0)
             {
                 this.groupBoxForPlateLabel.Enabled = true;
+                this.groupBoxForChar.Enabled = true;
             }
             else
             {
+                this.groupBoxForChar.Enabled = false;
                 this.groupBoxForPlateLabel.Enabled = false;
 
             }
@@ -726,6 +723,15 @@ namespace LicensePlateRecognition
         //批量处理列表文件
         private void AutoProcessImage(object sender, EventArgs e)
         {
+
+
+            if(this.showTypes!=UserSetting.ShowTypes.PLATE)
+            {
+                MessageBox.Show("当前列表打开图片不对！");
+                return;
+            }
+
+
             if (this.listInputImage.Items.Count == 0)
             {
                 MessageBox.Show("请先导入图片");
@@ -748,14 +754,48 @@ namespace LicensePlateRecognition
                 files.Add(this.listInputImage.Items[i].Text);
             }
 
-            AutoProcessImageByColor(files, parameterList, savePath);
+            PlateLocator.AutoProcessImageByColor(files, parameterList, savePath);
 
             MessageBox.Show("处理完成");
         }
+        private void AutoProcessChar(object sender, EventArgs e)
+        {
+            if (this.showTypes != UserSetting.ShowTypes.CHAR)
+            {
+                MessageBox.Show("当前列表打开图片不对！");
+                return;
+            }
+
+            if (this.listInputImage.Items.Count == 0)
+            {
+                MessageBox.Show("请先导入图片");
+                return;
+            }
+
+            MessageBox.Show(" 请选择保存路径，处理过程中请不要进行其他操作！");
+
+            string savePath;
+
+            if (this.inputImageFolder.ShowDialog() == DialogResult.OK)
+            {
+                savePath = this.inputImageFolder.SelectedPath;
+            }
+            else return;
+
+            List<string> files = new List<string>();
+            for (int i = 0; i < this.listInputImage.Items.Count; i++)
+            {
+                files.Add(this.listInputImage.Items[i].Text);
+            }
+
+            CharSegement.AutoProcessCharSegement(files,savePath);
+
+            MessageBox.Show("处理完成");
 
 
+        }
 
-        
+
         //训练
         private void TrainPlate(object sender, EventArgs e)
         {

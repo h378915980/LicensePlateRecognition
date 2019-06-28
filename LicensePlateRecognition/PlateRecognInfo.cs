@@ -12,8 +12,8 @@ namespace LicensePlateRecognition
     //车牌类型
     public enum PlateCategory
     {
-        UNKNOW=0,
-        NORMALPLATE=1
+        非车牌=0,
+        车牌=1
     }
     //车牌颜色
     public enum PlateColor

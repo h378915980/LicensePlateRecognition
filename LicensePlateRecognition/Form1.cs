@@ -914,11 +914,7 @@ namespace LicensePlateRecognition
         //测试用按钮
         private void button7_Click(object sender, EventArgs e)
         {
-            if (listInputImage.SelectedItems.Count != 0)
-            {
-                Mat matIn = new Mat(listInputImage.SelectedItems[0].Text);
-                MessageBox.Show(PlateRecognition.PlateRecognite(matIn));
-            }
+            
 
         }
 

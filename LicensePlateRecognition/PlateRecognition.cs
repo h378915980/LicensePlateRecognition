@@ -29,7 +29,7 @@ namespace LicensePlateRecognition
             for(int index = 0; index < roiPlates.Count; index++)
             {
                 Mat mat = roiPlates[index];
-                if (PlateCategory.NORMALPLATE != PlateCategorySVM.Test(mat))
+                if (PlateCategory.车牌 != PlateCategorySVM.Test(mat))
                     continue;
                 else
                     matPlates.Add(mat);
@@ -43,7 +43,7 @@ namespace LicensePlateRecognition
                 for (int index = 0; index < roiPlates.Count; index++)
                 {
                     Mat mat = roiPlates[index];
-                    if (PlateCategory.NORMALPLATE != PlateCategorySVM.Test(mat))
+                    if (PlateCategory.车牌 != PlateCategorySVM.Test(mat))
                         continue;
                     else
                         matPlates.Add(mat);

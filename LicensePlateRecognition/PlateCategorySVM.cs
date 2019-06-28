@@ -138,7 +138,7 @@ namespace LicensePlateRecognition
                     throw new Exception("训练数据为空，请重新训练⻋牌类型识别或加载数据");
                 }
 
-                PlateCategory result = PlateCategory.UNKNOW;
+                PlateCategory result = PlateCategory.非车牌;
 
                 if (IsReady == false || svm == null) return result;
 

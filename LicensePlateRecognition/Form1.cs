@@ -28,8 +28,10 @@ namespace LicensePlateRecognition
 
 
         public Form1()
-        {
+        {          
             InitializeComponent();
+           // Form form = new Welcome();
+           // form.ShowDialog();
             InitAll();
         }
 
@@ -46,7 +48,7 @@ namespace LicensePlateRecognition
             this.HeightUp.ValueChanged -= new System.EventHandler(HeightUp_ValueChanged);
             this.WidthLow.ValueChanged -= new System.EventHandler(WidthLow_ValueChanged);
             this.WidthUp.ValueChanged -= new System.EventHandler(WidthUp_ValueChanged);
-
+            
             this.HeightDividWidthLow.Value = (decimal)parameterList.HeightDivideWidthLow;
             this.HeightDividWidthUp.Value = (decimal)parameterList.HeightDivedeWidthUp;
             this.HeightLow.Value = parameterList.HeightLow;
@@ -274,6 +276,15 @@ namespace LicensePlateRecognition
             //展示切割结果
             ShowSpliteImage(rects, matIn);
         }
+        //展示最终结果
+        private void ProcessAndShowResult(Mat matIn)
+        {
+            currentTabCount = 0;
+
+            AddTag("原图", matIn);
+
+            MessageBox.Show(PlateRecognition.PlateRecognite(matIn));
+        }
         //显示图片和相关信息
         private void ShowSpliteImage(List<Rect> rects, Mat matIn)
         {
@@ -380,7 +391,6 @@ namespace LicensePlateRecognition
         //选择字符文件夹中的图片添加到列表
         private void butOpenCharFolder(object sender, EventArgs e)
         {
-
             if (this.inputImageFolder.ShowDialog() == DialogResult.OK)
             {
                 this.listInputImage.Clear();
@@ -412,8 +422,37 @@ namespace LicensePlateRecognition
                 this.tabShowDiffImage.TabPages.RemoveAt(i);
             }
         }
+        //选择待识别文件夹中的图片添加到列表
+        private void butOpenPlateFolder(object sender, EventArgs e)
+        {
+            if (this.inputImageFolder.ShowDialog() == DialogResult.OK)
+            {
+                this.listInputImage.Clear();
+                List<string> files = FileIO.OpenFile(inputImageFolder.SelectedPath);
+                foreach (string f in files)
+                {
+                    listInputImage.Items.Add(f);
+                }
+            }
+            else
+            {
+                return;
+            }
 
+            this.listShowSplitImage.Items.Clear();
+            this.imgListSplitImage.Images.Clear();
 
+            this.showTypes = UserSetting.ShowTypes.All;
+            this.tabControl1.TabPages[0].Enabled = false;
+            this.tabControl1.TabPages[1].Enabled = false;
+
+           
+            //初始化一下tab界面
+            for (int i = this.tabShowDiffImage.TabPages.Count - 1; i >= 0; i--)
+            {
+                this.tabShowDiffImage.TabPages.RemoveAt(i);
+            }
+        }
 
 
         //选中列表中的文件路径并进行图片处理
@@ -439,12 +478,26 @@ namespace LicensePlateRecognition
                 return;
             }
 
-
             if (this.showTypes == UserSetting.ShowTypes.CHAR)
             {
                 if (listInputImage.SelectedItems.Count != 0)
                 {
                     this.ProcessAndShowChars(new Bitmap(this.listInputImage.SelectedItems[0].Text));
+                }
+                else
+                {
+
+                }
+
+                return;
+            }
+
+            if (this.showTypes == UserSetting.ShowTypes.All)
+            {
+                if (listInputImage.SelectedItems.Count != 0)
+                {
+                    ProcessAndShowResult(new Mat(this.listInputImage.SelectedItems[0].Text));
+
                 }
                 else
                 {
@@ -471,7 +524,7 @@ namespace LicensePlateRecognition
             }
 
         }
-
+        //
 
 
         //单个保存
@@ -861,7 +914,11 @@ namespace LicensePlateRecognition
         //测试用按钮
         private void button7_Click(object sender, EventArgs e)
         {
-
+            if (listInputImage.SelectedItems.Count != 0)
+            {
+                Mat matIn = new Mat(listInputImage.SelectedItems[0].Text);
+                MessageBox.Show(PlateRecognition.PlateRecognite(matIn));
+            }
 
         }
 

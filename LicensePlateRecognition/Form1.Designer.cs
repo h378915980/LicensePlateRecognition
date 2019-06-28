@@ -32,7 +32,6 @@
             this.listInputImage = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabShowDiffImage = new System.Windows.Forms.TabControl();
-            this.tabPage12 = new System.Windows.Forms.TabPage();
             this.inputImageFolder = new System.Windows.Forms.FolderBrowserDialog();
             this.imgListSplitImage = new System.Windows.Forms.ImageList(this.components);
             this.listShowSplitImage = new System.Windows.Forms.ListView();
@@ -78,7 +77,8 @@
             this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.帮助ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.tabShowDiffImage.SuspendLayout();
+            this.车牌识别ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.打开图片文件夹ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -125,24 +125,13 @@
             // 
             // tabShowDiffImage
             // 
-            this.tabShowDiffImage.Controls.Add(this.tabPage12);
             this.tabShowDiffImage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabShowDiffImage.Location = new System.Drawing.Point(0, 0);
             this.tabShowDiffImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabShowDiffImage.Name = "tabShowDiffImage";
             this.tabShowDiffImage.SelectedIndex = 0;
-            this.tabShowDiffImage.Size = new System.Drawing.Size(839, 173);
+            this.tabShowDiffImage.Size = new System.Drawing.Size(839, 256);
             this.tabShowDiffImage.TabIndex = 2;
-            // 
-            // tabPage12
-            // 
-            this.tabPage12.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.tabPage12.Location = new System.Drawing.Point(4, 25);
-            this.tabPage12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage12.Name = "tabPage12";
-            this.tabPage12.Size = new System.Drawing.Size(831, 144);
-            this.tabPage12.TabIndex = 0;
-            this.tabPage12.Text = "原图";
             // 
             // imgListSplitImage
             // 
@@ -214,7 +203,7 @@
             this.splitContainer2.Panel2.Controls.Add(this.tabControl1);
             this.splitContainer2.Panel2.Controls.Add(this.listShowSplitImage);
             this.splitContainer2.Size = new System.Drawing.Size(843, 652);
-            this.splitContainer2.SplitterDistance = 177;
+            this.splitContainer2.SplitterDistance = 260;
             this.splitContainer2.TabIndex = 0;
             // 
             // tabControl1
@@ -631,14 +620,14 @@
             // butOpenPlate
             // 
             this.butOpenPlate.Name = "butOpenPlate";
-            this.butOpenPlate.Size = new System.Drawing.Size(216, 26);
+            this.butOpenPlate.Size = new System.Drawing.Size(189, 26);
             this.butOpenPlate.Text = "打开图片文件夹";
             this.butOpenPlate.Click += new System.EventHandler(this.butOpenCharFolder);
             // 
             // 批量处理ToolStripMenuItem1
             // 
             this.批量处理ToolStripMenuItem1.Name = "批量处理ToolStripMenuItem1";
-            this.批量处理ToolStripMenuItem1.Size = new System.Drawing.Size(216, 26);
+            this.批量处理ToolStripMenuItem1.Size = new System.Drawing.Size(189, 26);
             this.批量处理ToolStripMenuItem1.Text = "批量处理";
             this.批量处理ToolStripMenuItem1.Click += new System.EventHandler(this.AutoProcessChar);
             // 
@@ -678,6 +667,7 @@
             this.字符分割ToolStripMenuItem,
             this.车牌训练ToolStripMenuItem,
             this.字符训练ToolStripMenuItem,
+            this.车牌识别ToolStripMenuItem,
             this.帮助ToolStripMenuItem,
             this.帮助ToolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -685,6 +675,21 @@
             this.menuStrip1.Size = new System.Drawing.Size(1107, 28);
             this.menuStrip1.TabIndex = 8;
             this.menuStrip1.Text = "menuStrip1";
+            // 
+            // 车牌识别ToolStripMenuItem
+            // 
+            this.车牌识别ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.打开图片文件夹ToolStripMenuItem});
+            this.车牌识别ToolStripMenuItem.Name = "车牌识别ToolStripMenuItem";
+            this.车牌识别ToolStripMenuItem.Size = new System.Drawing.Size(81, 24);
+            this.车牌识别ToolStripMenuItem.Text = "车牌识别";
+            // 
+            // 打开图片文件夹ToolStripMenuItem
+            // 
+            this.打开图片文件夹ToolStripMenuItem.Name = "打开图片文件夹ToolStripMenuItem";
+            this.打开图片文件夹ToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.打开图片文件夹ToolStripMenuItem.Text = "打开图片文件夹";
+            this.打开图片文件夹ToolStripMenuItem.Click += new System.EventHandler(this.butOpenPlateFolder);
             // 
             // Form1
             // 
@@ -699,7 +704,6 @@
             this.Name = "Form1";
             this.Text = "LicensePlateRecognition";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.tabShowDiffImage.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -740,7 +744,6 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.TabPage tabPage12;
         private System.Windows.Forms.NumericUpDown HeightDividWidthLow;
         private System.Windows.Forms.GroupBox groupBoxForPlateParameter;
         private System.Windows.Forms.NumericUpDown HeightDividWidthUp;
@@ -781,6 +784,8 @@
         private System.Windows.Forms.ToolStripMenuItem 帮助ToolStripMenuItem1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ToolStripMenuItem 车牌识别ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 打开图片文件夹ToolStripMenuItem;
     }
 }
 

@@ -244,6 +244,71 @@ namespace LicensePlateRecognition
             return result;
         }
 
+        public static List<Mat> SplitePlateByOriginal(Mat matPlate,
+            int leftLimit = 0, int rightLimit = 0,
+            int topLimit = 0, int bottomLimit = 0,
+            int minWidth = 2, int maxWidth = 30,
+            int minHeight = 10, int maxHeight = 80,
+            float minRatio = 0.08f, float maxRatio = 2f)
+        {
+
+            List<Mat> matChars = new List<Mat>();
+  
+            Mat matGray = matPlate.CvtColor(ColorConversionCodes.BGR2GRAY);//先将车牌转为灰度图,注意蓝黄牌会有很大区别
+            Mat matClear = ClearMaodingAndBorder(matGray, GetPlateColor(matPlate)); //去除铆钉和边框
+            //找轮廓
+            OpenCvSharp.Point[][] contours = null;
+            HierarchyIndex[] hierarchyIndices = null;
+            matClear.FindContours(out contours, out hierarchyIndices, RetrievalModes.External, ContourApproximationModes.ApproxNone);
+            //求轮廓外接最小矩形
+            List<Rect> rects = new List<Rect>();
+            for (int index = 0; index < contours.Length; index++)
+            {
+                Rect rect = Cv2.BoundingRect(contours[index]);
+                if (VerifyRect(rect, minWidth, maxWidth, minHeight, maxHeight, minRatio, maxRatio) &&
+                    NotOnBorder(rect, matPlate.Size(), leftLimit, rightLimit, topLimit, bottomLimit))
+                {
+                    rects.Add(rect);
+                }
+            }
+
+            rects = RejectInnerRectFromRects(rects);  //去掉矩形内部的矩形
+            rects = AdjustRects(rects);        //对矩形大小等进行调整
+            rects = GetSafeRects(matPlate, rects);   //检查安全矩形
+            rects = SortLeftRects(rects);      //存排序结果
+
+            if (rects.Count == 0) return matChars;
+
+            for (int index = 0; index < rects.Count; index++)
+            {
+                Mat roi = new Mat(matPlate,rects[index]);
+                matChars.Add(roi);
+
+            }
+            return matChars;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         //通过gamma增强原图后在切割
         public static List<CharInfo> SplitePlateByGammaTransform(Mat originalMat,
@@ -265,7 +330,7 @@ namespace LicensePlateRecognition
             minRatio, maxRatio);
         }
 
-        public static bool AutoProcessCharSegement(List<string> files,string savePath)
+        public static void AutoProcessCharSegement(List<string> files,string savePath)
         {
 
             for(int i = 0; i < files.Count; i++)
@@ -322,16 +387,8 @@ namespace LicensePlateRecognition
                     Cv2.ImWrite(savePath + "\\sample_" + i.ToString() + "_" + j.ToString() + ".jpg", roi);
                     j++;
                 }
-
-
-
             }
 
-
-
-
-
-            return false;
         }
 
 

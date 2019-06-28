@@ -30,8 +30,8 @@ namespace LicensePlateRecognition
         public Form1()
         {          
             InitializeComponent();
-           // Form form = new Welcome();
-           // form.ShowDialog();
+            Form form = new Welcome();
+            form.ShowDialog();
             InitAll();
         }
 

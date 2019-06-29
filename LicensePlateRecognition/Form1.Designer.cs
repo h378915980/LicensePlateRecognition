@@ -29,7 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.listInputImage = new System.Windows.Forms.ListView();
+            this.listInputImage = new ListViewNF();
+            //this.listInputImage = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabShowDiffImage = new System.Windows.Forms.TabControl();
             this.inputImageFolder = new System.Windows.Forms.FolderBrowserDialog();
@@ -736,7 +737,8 @@
 
         #endregion
 
-        private System.Windows.Forms.ListView listInputImage;
+        //private System.Windows.Forms.ListView listInputImage;
+        private ListViewNF listInputImage;
         private System.Windows.Forms.TabControl tabShowDiffImage;
         private System.Windows.Forms.FolderBrowserDialog inputImageFolder;
         private System.Windows.Forms.ImageList imgListSplitImage;

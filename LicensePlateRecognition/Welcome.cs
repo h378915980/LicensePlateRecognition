@@ -33,7 +33,7 @@ namespace LicensePlateRecognition
             else
             {
                 timer1.Stop();
-                System.Threading.Thread.Sleep(2000);
+                System.Threading.Thread.Sleep(3000);
                 this.Close();
             }
         }

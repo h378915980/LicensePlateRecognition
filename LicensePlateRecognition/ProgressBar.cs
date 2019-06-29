@@ -17,5 +17,16 @@ namespace LicensePlateRecognition
             InitializeComponent();
         }
 
+
+
+
+
+
+
+
+
+
+
+
     }
 }

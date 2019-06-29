@@ -77,6 +77,9 @@
     <Compile Include="HelpWeb.Designer.cs">
       <DependentUpon>HelpWeb.cs</DependentUpon>
     </Compile>
+    <Compile Include="ListViewNF.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PlateCategorySVM.cs" />
     <Compile Include="PlateLocator.cs" />
     <Compile Include="PlateRecognInfo.cs" />
@@ -121,6 +124,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="UserSetting.resx">
       <DependentUpon>UserSetting.cs</DependentUpon>
@@ -141,6 +145,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\图层 1.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

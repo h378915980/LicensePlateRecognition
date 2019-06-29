@@ -33,25 +33,31 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(109, 193);
+            this.progressBar1.Location = new System.Drawing.Point(48, 74);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(607, 23);
+            this.progressBar1.Size = new System.Drawing.Size(372, 23);
             this.progressBar1.TabIndex = 0;
             // 
             // ProgressBar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.ClientSize = new System.Drawing.Size(474, 149);
             this.Controls.Add(this.progressBar1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "ProgressBar";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ProgressBar";
+            this.TopMost = true;
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ProgressBar progressBar1;
+        public System.Windows.Forms.ProgressBar progressBar1;
     }
 }

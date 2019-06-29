@@ -31,7 +31,7 @@ namespace LicensePlateRecognition
         {          
             InitializeComponent();
             Form form = new Welcome();
-            form.ShowDialog();
+            //form.ShowDialog();
             InitAll();
         }
 
@@ -341,7 +341,7 @@ namespace LicensePlateRecognition
                     {
 
                         this.imgListSplitImage.Images.Add(roi.ToBitmap());
-                        this.listShowSplitImage.Items.Add(CharCategorySVM.Test(roi).ToString().Replace("_",""));
+                        this.listShowSplitImage.Items.Add(CharCategorySVM.Test(roi).ToString());
                         this.listShowSplitImage.Items[index].ImageIndex = index;  //这三条顺序还还不能换，佛了
                     }
 
@@ -914,9 +914,30 @@ namespace LicensePlateRecognition
         //测试用按钮
         private void button7_Click(object sender, EventArgs e)
         {
-            
+            Thread progressthread = new Thread(new ParameterizedThreadStart(ThreadForProcessBar));
+            object maxValue = 500;
+            progressthread.Start(maxValue);
 
         }
+
+
+        //进度条管理
+        private void ThreadForProcessBar(object length)
+        {
+            ProgressBar progressBar = new ProgressBar();
+            progressBar.progressBar1.Maximum = (int)length;
+            progressBar.Show();
+
+            for(int i = 0; i < (int)length; i++)
+            {
+
+                progressBar.AddProcess();
+                Thread.Sleep(50);
+            }
+            progressBar.Close();
+        }
+
+
 
 
         //动态修改

@@ -18,7 +18,11 @@ namespace LicensePlateRecognition
         }
 
 
+        public void AddProcess()
+        {
 
+            this.progressBar1.Value++;
+        }
 
 
 

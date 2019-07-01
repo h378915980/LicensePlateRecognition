@@ -917,13 +917,12 @@ namespace LicensePlateRecognition
             //Thread progressthread = new Thread(new ParameterizedThreadStart(ThreadForProcessBar));
             //object maxValue = 500;
             //progressthread.Start(maxValue);
-            string sp;
-            if (this.inputImageFolder.ShowDialog() == DialogResult.OK)
-            {
-                sp = this.inputImageFolder.SelectedPath;
-                Mat mat = new Mat(this.listInputImage.SelectedItems[0].Text);
-                Cv2.ImWrite(sp, mat);
-            }
+            string fp = this.listInputImage.SelectedItems[0].Text;
+            string fn = Path.GetFileName(fp);
+            string sp = "" + fn;
+            Mat mat = new Mat(fp);
+            Cv2.ImWrite(sp, mat);
+            
 
         }
 

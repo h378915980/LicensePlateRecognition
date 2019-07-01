@@ -914,9 +914,16 @@ namespace LicensePlateRecognition
         //测试用按钮
         private void button7_Click(object sender, EventArgs e)
         {
-            Thread progressthread = new Thread(new ParameterizedThreadStart(ThreadForProcessBar));
-            object maxValue = 500;
-            progressthread.Start(maxValue);
+            //Thread progressthread = new Thread(new ParameterizedThreadStart(ThreadForProcessBar));
+            //object maxValue = 500;
+            //progressthread.Start(maxValue);
+            string sp;
+            if (this.inputImageFolder.ShowDialog() == DialogResult.OK)
+            {
+                sp = this.inputImageFolder.SelectedPath;
+                Mat mat = new Mat(this.listInputImage.SelectedItems[0].Text);
+                Cv2.ImWrite(sp, mat);
+            }
 
         }
 

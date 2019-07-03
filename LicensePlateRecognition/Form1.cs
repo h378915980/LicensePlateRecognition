@@ -1006,9 +1006,12 @@ namespace LicensePlateRecognition
             //Thread progressthread = new Thread(new ParameterizedThreadStart(ThreadForProcessBar));
             //object maxValue = 500;
             //progressthread.Start(maxValue);
+            if (this.listInputImage.SelectedItems.Count == 0)
+                return;
+
             string fp = this.listInputImage.SelectedItems[0].Text;
             string fn = Path.GetFileName(fp);
-            string sp = "" + fn;
+            string sp = @"C:\Users\18446\Desktop\Plat_test\" + fn;
             Mat mat = new Mat(fp);
             Cv2.ImWrite(sp, mat);
             

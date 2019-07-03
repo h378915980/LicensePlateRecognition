@@ -29,15 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.listInputImage = new ListViewNF();
-            //this.listInputImage = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabShowDiffImage = new System.Windows.Forms.TabControl();
             this.inputImageFolder = new System.Windows.Forms.FolderBrowserDialog();
             this.imgListSplitImage = new System.Windows.Forms.ImageList(this.components);
             this.listShowSplitImage = new System.Windows.Forms.ListView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.button7 = new System.Windows.Forms.Button();
+            this.listInputImage = new LicensePlateRecognition.ListViewNF();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -67,6 +66,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.butSaveChar = new System.Windows.Forms.Button();
             this.comboBoxChar = new System.Windows.Forms.ComboBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.车牌定位ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.butOpenImage = new System.Windows.Forms.ToolStripMenuItem();
             this.批量处理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,11 +75,11 @@
             this.批量处理ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.车牌训练ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.字符训练ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.帮助ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.车牌识别ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.打开图片文件夹ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.帮助ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.skinEngine2 = new Sunisoft.IrisSkin.SkinEngine();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -103,27 +103,6 @@
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // listInputImage
-            // 
-            this.listInputImage.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.listInputImage.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1});
-            this.listInputImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listInputImage.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.listInputImage.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.listInputImage.Location = new System.Drawing.Point(0, 0);
-            this.listInputImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.listInputImage.Name = "listInputImage";
-            this.listInputImage.Size = new System.Drawing.Size(247, 658);
-            this.listInputImage.TabIndex = 0;
-            this.listInputImage.UseCompatibleStateImageBehavior = false;
-            this.listInputImage.View = System.Windows.Forms.View.List;
-            this.listInputImage.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Width = 640;
-            // 
             // tabShowDiffImage
             // 
             this.tabShowDiffImage.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -131,7 +110,7 @@
             this.tabShowDiffImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabShowDiffImage.Name = "tabShowDiffImage";
             this.tabShowDiffImage.SelectedIndex = 0;
-            this.tabShowDiffImage.Size = new System.Drawing.Size(839, 256);
+            this.tabShowDiffImage.Size = new System.Drawing.Size(847, 182);
             this.tabShowDiffImage.TabIndex = 2;
             // 
             // imgListSplitImage
@@ -142,54 +121,68 @@
             // 
             // listShowSplitImage
             // 
+            this.listShowSplitImage.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.listShowSplitImage.Dock = System.Windows.Forms.DockStyle.Top;
+            this.listShowSplitImage.ForeColor = System.Drawing.SystemColors.Window;
             this.listShowSplitImage.LargeImageList = this.imgListSplitImage;
             this.listShowSplitImage.Location = new System.Drawing.Point(0, 0);
             this.listShowSplitImage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listShowSplitImage.Name = "listShowSplitImage";
-            this.listShowSplitImage.Size = new System.Drawing.Size(839, 166);
+            this.listShowSplitImage.Size = new System.Drawing.Size(847, 166);
             this.listShowSplitImage.TabIndex = 4;
             this.listShowSplitImage.UseCompatibleStateImageBehavior = false;
             this.listShowSplitImage.SelectedIndexChanged += new System.EventHandler(this.listShowSplitImage_SelectedIndexChanged);
             // 
             // splitContainer1
             // 
-            this.splitContainer1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.splitContainer1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.ForeColor = System.Drawing.SystemColors.Window;
             this.splitContainer1.Location = new System.Drawing.Point(0, 28);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(0, 2, 0, 2);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.button7);
+            this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.splitContainer1.Panel1.Controls.Add(this.listInputImage);
+            this.splitContainer1.Panel1.ForeColor = System.Drawing.SystemColors.Window;
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
+            this.splitContainer1.Panel2.ForeColor = System.Drawing.SystemColors.Window;
             this.splitContainer1.Size = new System.Drawing.Size(1107, 662);
             this.splitContainer1.SplitterDistance = 251;
             this.splitContainer1.TabIndex = 7;
             // 
-            // button7
+            // listInputImage
             // 
-            this.button7.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.button7.Location = new System.Drawing.Point(0, 635);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(247, 23);
-            this.button7.TabIndex = 1;
-            this.button7.Text = "button7";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.listInputImage.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.listInputImage.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.listInputImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listInputImage.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.listInputImage.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.listInputImage.Location = new System.Drawing.Point(0, 0);
+            this.listInputImage.Margin = new System.Windows.Forms.Padding(0, 2, 0, 2);
+            this.listInputImage.Name = "listInputImage";
+            this.listInputImage.Size = new System.Drawing.Size(251, 662);
+            this.listInputImage.TabIndex = 0;
+            this.listInputImage.UseCompatibleStateImageBehavior = false;
+            this.listInputImage.View = System.Windows.Forms.View.List;
+            this.listInputImage.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Width = 640;
             // 
             // splitContainer2
             // 
             this.splitContainer2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.splitContainer2.Location = new System.Drawing.Point(3, 2);
             this.splitContainer2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.splitContainer2.Name = "splitContainer2";
@@ -203,8 +196,8 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.tabControl1);
             this.splitContainer2.Panel2.Controls.Add(this.listShowSplitImage);
-            this.splitContainer2.Size = new System.Drawing.Size(843, 652);
-            this.splitContainer2.SplitterDistance = 260;
+            this.splitContainer2.Size = new System.Drawing.Size(847, 656);
+            this.splitContainer2.SplitterDistance = 182;
             this.splitContainer2.TabIndex = 0;
             // 
             // tabControl1
@@ -215,7 +208,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 166);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(839, 463);
+            this.tabControl1.Size = new System.Drawing.Size(847, 684);
             this.tabControl1.TabIndex = 8;
             // 
             // tabPage1
@@ -225,7 +218,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(831, 434);
+            this.tabPage1.Size = new System.Drawing.Size(839, 655);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "车牌处理";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -249,7 +242,7 @@
             this.groupBoxForPlateParameter.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBoxForPlateParameter.Name = "groupBoxForPlateParameter";
             this.groupBoxForPlateParameter.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBoxForPlateParameter.Size = new System.Drawing.Size(825, 180);
+            this.groupBoxForPlateParameter.Size = new System.Drawing.Size(833, 180);
             this.groupBoxForPlateParameter.TabIndex = 7;
             this.groupBoxForPlateParameter.TabStop = false;
             this.groupBoxForPlateParameter.Text = "外接矩形参数";
@@ -257,6 +250,8 @@
             // label6
             // 
             this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.Color.Transparent;
+            this.label6.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.label6.Location = new System.Drawing.Point(396, 144);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(67, 15);
@@ -266,6 +261,8 @@
             // label7
             // 
             this.label7.AutoSize = true;
+            this.label7.BackColor = System.Drawing.Color.Transparent;
+            this.label7.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.label7.Location = new System.Drawing.Point(87, 144);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(67, 15);
@@ -313,6 +310,8 @@
             // label5
             // 
             this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
+            this.label5.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.label5.Location = new System.Drawing.Point(396, 98);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(67, 15);
@@ -322,6 +321,8 @@
             // label4
             // 
             this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.Transparent;
+            this.label4.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.label4.Location = new System.Drawing.Point(87, 98);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(67, 15);
@@ -369,6 +370,8 @@
             // label3
             // 
             this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.label3.Location = new System.Drawing.Point(396, 50);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(97, 15);
@@ -378,6 +381,8 @@
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.label2.Location = new System.Drawing.Point(87, 51);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(97, 15);
@@ -454,7 +459,7 @@
             this.groupBoxForPlateLabel.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBoxForPlateLabel.Location = new System.Drawing.Point(3, 3);
             this.groupBoxForPlateLabel.Name = "groupBoxForPlateLabel";
-            this.groupBoxForPlateLabel.Size = new System.Drawing.Size(825, 125);
+            this.groupBoxForPlateLabel.Size = new System.Drawing.Size(833, 125);
             this.groupBoxForPlateLabel.TabIndex = 8;
             this.groupBoxForPlateLabel.TabStop = false;
             this.groupBoxForPlateLabel.Text = "打标签";
@@ -482,6 +487,8 @@
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.label1.Location = new System.Drawing.Point(90, 43);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(67, 15);
@@ -515,7 +522,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(831, 434);
+            this.tabPage2.Size = new System.Drawing.Size(839, 655);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "字符处理";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -530,7 +537,7 @@
             this.groupBoxForChar.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBoxForChar.Location = new System.Drawing.Point(3, 3);
             this.groupBoxForChar.Name = "groupBoxForChar";
-            this.groupBoxForChar.Size = new System.Drawing.Size(825, 135);
+            this.groupBoxForChar.Size = new System.Drawing.Size(833, 135);
             this.groupBoxForChar.TabIndex = 10;
             this.groupBoxForChar.TabStop = false;
             this.groupBoxForChar.Text = "打标签";
@@ -558,6 +565,8 @@
             // label10
             // 
             this.label10.AutoSize = true;
+            this.label10.BackColor = System.Drawing.Color.Transparent;
+            this.label10.ForeColor = System.Drawing.SystemColors.InfoText;
             this.label10.Location = new System.Drawing.Point(90, 43);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(67, 15);
@@ -585,81 +594,6 @@
             this.comboBoxChar.Tag = "";
             this.comboBoxChar.SelectedIndexChanged += new System.EventHandler(this.comboBoxChar_SelectedIndexChanged);
             // 
-            // 车牌定位ToolStripMenuItem
-            // 
-            this.车牌定位ToolStripMenuItem.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.车牌定位ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.butOpenImage,
-            this.批量处理ToolStripMenuItem});
-            this.车牌定位ToolStripMenuItem.Name = "车牌定位ToolStripMenuItem";
-            this.车牌定位ToolStripMenuItem.Size = new System.Drawing.Size(81, 24);
-            this.车牌定位ToolStripMenuItem.Text = "车牌定位";
-            // 
-            // butOpenImage
-            // 
-            this.butOpenImage.Name = "butOpenImage";
-            this.butOpenImage.Size = new System.Drawing.Size(189, 26);
-            this.butOpenImage.Text = "打开图片文件夹";
-            this.butOpenImage.Click += new System.EventHandler(this.OpenImageFolder);
-            // 
-            // 批量处理ToolStripMenuItem
-            // 
-            this.批量处理ToolStripMenuItem.Name = "批量处理ToolStripMenuItem";
-            this.批量处理ToolStripMenuItem.Size = new System.Drawing.Size(189, 26);
-            this.批量处理ToolStripMenuItem.Text = "批量处理";
-            this.批量处理ToolStripMenuItem.Click += new System.EventHandler(this.AutoProcessImage);
-            // 
-            // 字符分割ToolStripMenuItem
-            // 
-            this.字符分割ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.butOpenPlate,
-            this.批量处理ToolStripMenuItem1});
-            this.字符分割ToolStripMenuItem.Name = "字符分割ToolStripMenuItem";
-            this.字符分割ToolStripMenuItem.Size = new System.Drawing.Size(81, 24);
-            this.字符分割ToolStripMenuItem.Text = "字符分割";
-            // 
-            // butOpenPlate
-            // 
-            this.butOpenPlate.Name = "butOpenPlate";
-            this.butOpenPlate.Size = new System.Drawing.Size(189, 26);
-            this.butOpenPlate.Text = "打开图片文件夹";
-            this.butOpenPlate.Click += new System.EventHandler(this.butOpenCharFolder);
-            // 
-            // 批量处理ToolStripMenuItem1
-            // 
-            this.批量处理ToolStripMenuItem1.Name = "批量处理ToolStripMenuItem1";
-            this.批量处理ToolStripMenuItem1.Size = new System.Drawing.Size(189, 26);
-            this.批量处理ToolStripMenuItem1.Text = "批量处理";
-            this.批量处理ToolStripMenuItem1.Click += new System.EventHandler(this.AutoProcessChar);
-            // 
-            // 车牌训练ToolStripMenuItem
-            // 
-            this.车牌训练ToolStripMenuItem.Name = "车牌训练ToolStripMenuItem";
-            this.车牌训练ToolStripMenuItem.Size = new System.Drawing.Size(81, 24);
-            this.车牌训练ToolStripMenuItem.Text = "车牌训练";
-            this.车牌训练ToolStripMenuItem.Click += new System.EventHandler(this.TrainPlate);
-            // 
-            // 字符训练ToolStripMenuItem
-            // 
-            this.字符训练ToolStripMenuItem.Name = "字符训练ToolStripMenuItem";
-            this.字符训练ToolStripMenuItem.Size = new System.Drawing.Size(81, 24);
-            this.字符训练ToolStripMenuItem.Text = "字符训练";
-            this.字符训练ToolStripMenuItem.Click += new System.EventHandler(this.TrainChar);
-            // 
-            // 帮助ToolStripMenuItem
-            // 
-            this.帮助ToolStripMenuItem.Name = "帮助ToolStripMenuItem";
-            this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(51, 24);
-            this.帮助ToolStripMenuItem.Text = "设置";
-            this.帮助ToolStripMenuItem.Click += new System.EventHandler(this.OpenUserSetting);
-            // 
-            // 帮助ToolStripMenuItem1
-            // 
-            this.帮助ToolStripMenuItem1.Name = "帮助ToolStripMenuItem1";
-            this.帮助ToolStripMenuItem1.Size = new System.Drawing.Size(51, 24);
-            this.帮助ToolStripMenuItem1.Text = "帮助";
-            this.帮助ToolStripMenuItem1.Click += new System.EventHandler(this.OpenHelpForm);
-            // 
             // menuStrip1
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -677,20 +611,116 @@
             this.menuStrip1.TabIndex = 8;
             this.menuStrip1.Text = "menuStrip1";
             // 
+            // 车牌定位ToolStripMenuItem
+            // 
+            this.车牌定位ToolStripMenuItem.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.车牌定位ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.butOpenImage,
+            this.批量处理ToolStripMenuItem});
+            this.车牌定位ToolStripMenuItem.Image = global::LicensePlateRecognition.Properties.Resources.army_jeep;
+            this.车牌定位ToolStripMenuItem.Name = "车牌定位ToolStripMenuItem";
+            this.车牌定位ToolStripMenuItem.Size = new System.Drawing.Size(101, 24);
+            this.车牌定位ToolStripMenuItem.Text = "车牌定位";
+            // 
+            // butOpenImage
+            // 
+            this.butOpenImage.Image = global::LicensePlateRecognition.Properties.Resources.project__1_;
+            this.butOpenImage.Name = "butOpenImage";
+            this.butOpenImage.Size = new System.Drawing.Size(189, 26);
+            this.butOpenImage.Text = "打开图片文件夹";
+            this.butOpenImage.Click += new System.EventHandler(this.OpenImageFolder);
+            // 
+            // 批量处理ToolStripMenuItem
+            // 
+            this.批量处理ToolStripMenuItem.Image = global::LicensePlateRecognition.Properties.Resources.allow_all;
+            this.批量处理ToolStripMenuItem.Name = "批量处理ToolStripMenuItem";
+            this.批量处理ToolStripMenuItem.Size = new System.Drawing.Size(189, 26);
+            this.批量处理ToolStripMenuItem.Text = "批量处理";
+            this.批量处理ToolStripMenuItem.Click += new System.EventHandler(this.AutoProcessImage);
+            // 
+            // 字符分割ToolStripMenuItem
+            // 
+            this.字符分割ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.butOpenPlate,
+            this.批量处理ToolStripMenuItem1});
+            this.字符分割ToolStripMenuItem.Image = global::LicensePlateRecognition.Properties.Resources.daycare;
+            this.字符分割ToolStripMenuItem.Name = "字符分割ToolStripMenuItem";
+            this.字符分割ToolStripMenuItem.Size = new System.Drawing.Size(101, 24);
+            this.字符分割ToolStripMenuItem.Text = "字符分割";
+            // 
+            // butOpenPlate
+            // 
+            this.butOpenPlate.Image = global::LicensePlateRecognition.Properties.Resources.project;
+            this.butOpenPlate.Name = "butOpenPlate";
+            this.butOpenPlate.Size = new System.Drawing.Size(189, 26);
+            this.butOpenPlate.Text = "打开图片文件夹";
+            this.butOpenPlate.Click += new System.EventHandler(this.butOpenCharFolder);
+            // 
+            // 批量处理ToolStripMenuItem1
+            // 
+            this.批量处理ToolStripMenuItem1.Image = global::LicensePlateRecognition.Properties.Resources.allow_all1;
+            this.批量处理ToolStripMenuItem1.Name = "批量处理ToolStripMenuItem1";
+            this.批量处理ToolStripMenuItem1.Size = new System.Drawing.Size(189, 26);
+            this.批量处理ToolStripMenuItem1.Text = "批量处理";
+            this.批量处理ToolStripMenuItem1.Click += new System.EventHandler(this.AutoProcessChar);
+            // 
+            // 车牌训练ToolStripMenuItem
+            // 
+            this.车牌训练ToolStripMenuItem.Image = global::LicensePlateRecognition.Properties.Resources.alien;
+            this.车牌训练ToolStripMenuItem.Name = "车牌训练ToolStripMenuItem";
+            this.车牌训练ToolStripMenuItem.Size = new System.Drawing.Size(101, 24);
+            this.车牌训练ToolStripMenuItem.Text = "车牌训练";
+            this.车牌训练ToolStripMenuItem.Click += new System.EventHandler(this.TrainPlate);
+            // 
+            // 字符训练ToolStripMenuItem
+            // 
+            this.字符训练ToolStripMenuItem.Image = global::LicensePlateRecognition.Properties.Resources.alien2;
+            this.字符训练ToolStripMenuItem.Name = "字符训练ToolStripMenuItem";
+            this.字符训练ToolStripMenuItem.Size = new System.Drawing.Size(101, 24);
+            this.字符训练ToolStripMenuItem.Text = "字符训练";
+            this.字符训练ToolStripMenuItem.Click += new System.EventHandler(this.TrainChar);
+            // 
             // 车牌识别ToolStripMenuItem
             // 
             this.车牌识别ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.打开图片文件夹ToolStripMenuItem});
+            this.车牌识别ToolStripMenuItem.Image = global::LicensePlateRecognition.Properties.Resources.rocket;
             this.车牌识别ToolStripMenuItem.Name = "车牌识别ToolStripMenuItem";
-            this.车牌识别ToolStripMenuItem.Size = new System.Drawing.Size(81, 24);
+            this.车牌识别ToolStripMenuItem.Size = new System.Drawing.Size(101, 24);
             this.车牌识别ToolStripMenuItem.Text = "车牌识别";
             // 
             // 打开图片文件夹ToolStripMenuItem
             // 
+            this.打开图片文件夹ToolStripMenuItem.Image = global::LicensePlateRecognition.Properties.Resources.project1;
             this.打开图片文件夹ToolStripMenuItem.Name = "打开图片文件夹ToolStripMenuItem";
-            this.打开图片文件夹ToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.打开图片文件夹ToolStripMenuItem.Size = new System.Drawing.Size(189, 26);
             this.打开图片文件夹ToolStripMenuItem.Text = "打开图片文件夹";
             this.打开图片文件夹ToolStripMenuItem.Click += new System.EventHandler(this.butOpenPlateFolder);
+            // 
+            // 帮助ToolStripMenuItem
+            // 
+            this.帮助ToolStripMenuItem.Image = global::LicensePlateRecognition.Properties.Resources.engineering;
+            this.帮助ToolStripMenuItem.Name = "帮助ToolStripMenuItem";
+            this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(71, 24);
+            this.帮助ToolStripMenuItem.Text = "设置";
+            this.帮助ToolStripMenuItem.Click += new System.EventHandler(this.OpenUserSetting);
+            // 
+            // 帮助ToolStripMenuItem1
+            // 
+            this.帮助ToolStripMenuItem1.Image = global::LicensePlateRecognition.Properties.Resources.anonymous1;
+            this.帮助ToolStripMenuItem1.Name = "帮助ToolStripMenuItem1";
+            this.帮助ToolStripMenuItem1.Size = new System.Drawing.Size(71, 24);
+            this.帮助ToolStripMenuItem1.Text = "帮助";
+            this.帮助ToolStripMenuItem1.Click += new System.EventHandler(this.OpenHelpForm);
+            // 
+            // skinEngine2
+            // 
+            this.skinEngine2.@__DrawButtonFocusRectangle = true;
+            this.skinEngine2.DisabledButtonTextColor = System.Drawing.Color.Gray;
+            this.skinEngine2.DisabledMenuFontColor = System.Drawing.SystemColors.GrayText;
+            this.skinEngine2.InactiveCaptionColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.skinEngine2.SerialNumber = "";
+            this.skinEngine2.SkinFile = null;
             // 
             // Form1
             // 
@@ -700,6 +730,7 @@
             this.ClientSize = new System.Drawing.Size(1107, 690);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
@@ -772,7 +803,6 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button butSaveChar;
         private System.Windows.Forms.ComboBox comboBoxChar;
-        private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button butSaveAllPlate;
         private System.Windows.Forms.ToolStripMenuItem 车牌定位ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem butOpenImage;
@@ -788,6 +818,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ToolStripMenuItem 车牌识别ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 打开图片文件夹ToolStripMenuItem;
+        private Sunisoft.IrisSkin.SkinEngine skinEngine2;
     }
 }
 

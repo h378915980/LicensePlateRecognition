@@ -31,17 +31,23 @@ namespace LicensePlateRecognition
         {          
             InitializeComponent();
             Form form = new Welcome();
-            //form.ShowDialog();
+            form.ShowDialog();
             InitAll();
         }
 
-
+        Sunisoft.IrisSkin.SkinEngine skinEngine1;
         UserSetting.ShowTypes showTypes=UserSetting.ShowTypes.UNKNOW;
 
 
         //init
         private void InitAll()
         {
+
+            //C#皮肤文件加载
+            this.Text = "studio";
+            this.skinEngine1 = new Sunisoft.IrisSkin.SkinEngine(((System.ComponentModel.Component)(this)));
+            this.skinEngine1.SkinFile = Application.StartupPath + "//NeoSkin.ssk";
+
             this.HeightDividWidthLow.ValueChanged -= new System.EventHandler(HeightDividWidthLow_ValueChanged);
             this.HeightDividWidthUp.ValueChanged -= new System.EventHandler(HeightDividWidthUp_ValueChanged);
             this.HeightLow.ValueChanged -= new System.EventHandler(HeightLow_ValueChanged);
@@ -282,8 +288,74 @@ namespace LicensePlateRecognition
             currentTabCount = 0;
 
             AddTag("原图", matIn);
+            this.listShowSplitImage.Items.Clear();
+            this.imgListSplitImage.Images.Clear();
+            this.imgListSplitImage.ImageSize = new System.Drawing.Size(192, 64);
 
-            MessageBox.Show(PlateRecognition.PlateRecognite(matIn));
+
+
+            List<Mat> roiPlates = PlateLocator.PlateLocateByColor(matIn); //疑似区域
+            List<Mat> matPlates = new List<Mat>(); //车牌区域
+            for (int index = 0; index < roiPlates.Count; index++)
+            {
+                Mat mat = roiPlates[index];
+                if (PlateCategory.车牌 != PlateCategorySVM.Test(mat))
+                    continue;
+                else
+                    matPlates.Add(mat);
+
+            }
+            //颜色不行就用sobel
+            if (matPlates.Count == 0)
+            {
+                roiPlates.Clear();
+                roiPlates = PlateLocator.PlateLocateBySobel(matIn);
+                for (int index = 0; index < roiPlates.Count; index++)
+                {
+                    Mat mat = roiPlates[index];
+                    if (PlateCategory.车牌 != PlateCategorySVM.Test(mat))
+                        continue;
+                    else
+                        matPlates.Add(mat);
+                }
+            }
+
+            if (matPlates.Count == 0)
+            {
+                MessageBox.Show("没有识别出车牌");
+                return;
+            }
+
+            
+
+
+            //下面根据识别出的车牌进行字符识别
+            for (int index = 0; index < matPlates.Count; index++)
+            {
+                string plate = null;
+                Mat mat = matPlates[index];
+
+                List<Mat> roiChars = new List<Mat>();
+                roiChars = CharSegement.SplitePlateByOriginal(mat);
+
+                if (roiChars.Count == 0)
+                {
+                    continue;
+                }
+
+                for (int i = 0; i < roiChars.Count; i++)
+                {
+                    plate = plate + CharCategorySVM.Test(roiChars[i]).ToString();
+                }
+                plate = plate.Replace("_", "");
+                plate = plate.Replace("非字符", "");
+
+                this.imgListSplitImage.Images.Add(mat.ToBitmap());
+                this.listShowSplitImage.Items.Add(plate);
+                this.listShowSplitImage.Items[index].ImageIndex = index;
+            }
+
+           //MessageBox.Show(PlateRecognition.PlateRecognite(matIn));
         }
         //显示图片和相关信息
         private void ShowSpliteImage(List<Rect> rects, Mat matIn)
@@ -348,7 +420,13 @@ namespace LicensePlateRecognition
                     index++;
                 }
                 return; 
-            }         
+            }
+
+            if (this.showTypes == UserSetting.ShowTypes.All)
+            {
+
+
+            }
         }
 
 
@@ -364,7 +442,7 @@ namespace LicensePlateRecognition
                 List<string> files = FileIO.OpenFile(inputImageFolder.SelectedPath);
                 foreach (string f in files)
                 {
-                    listInputImage.Items.Add(f);
+                    listInputImage.Items.Add(Path.GetFileName(f));
                 }
             }
             else
@@ -397,7 +475,7 @@ namespace LicensePlateRecognition
                 List<string> files = FileIO.OpenFile(inputImageFolder.SelectedPath);
                 foreach (string f in files)
                 {
-                    listInputImage.Items.Add(f);
+                    listInputImage.Items.Add(Path.GetFileName(f));
                 }
             }
             else
@@ -425,13 +503,24 @@ namespace LicensePlateRecognition
         //选择待识别文件夹中的图片添加到列表
         private void butOpenPlateFolder(object sender, EventArgs e)
         {
+
+            if(UserSetting.plateSVMPath==null || UserSetting.charSVMPath==null)
+            {
+                MessageBox.Show("请先在设置中添加识别库");
+                return;
+            }
+
+            PlateCategorySVM.Load(UserSetting.plateSVMPath);
+            CharCategorySVM.Load(UserSetting.charSVMPath);
+
+
             if (this.inputImageFolder.ShowDialog() == DialogResult.OK)
             {
                 this.listInputImage.Clear();
                 List<string> files = FileIO.OpenFile(inputImageFolder.SelectedPath);
                 foreach (string f in files)
                 {
-                    listInputImage.Items.Add(f);
+                    listInputImage.Items.Add(Path.GetFileName(f));
                 }
             }
             else
@@ -469,7 +558,7 @@ namespace LicensePlateRecognition
                 if (listInputImage.SelectedItems.Count != 0)
                 {
                     this.groupBoxForPlateParameter.Enabled = true;
-                    this.ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
+                    this.ProcessAndShowImage(new Bitmap(this.inputImageFolder.SelectedPath+@"\"+this.listInputImage.SelectedItems[0].Text), parameterList);
                 }
                 else
                 {
@@ -482,7 +571,7 @@ namespace LicensePlateRecognition
             {
                 if (listInputImage.SelectedItems.Count != 0)
                 {
-                    this.ProcessAndShowChars(new Bitmap(this.listInputImage.SelectedItems[0].Text));
+                    this.ProcessAndShowChars(new Bitmap(this.inputImageFolder.SelectedPath + @"\" + this.listInputImage.SelectedItems[0].Text));
                 }
                 else
                 {
@@ -491,12 +580,12 @@ namespace LicensePlateRecognition
 
                 return;
             }
-
+            
             if (this.showTypes == UserSetting.ShowTypes.All)
             {
                 if (listInputImage.SelectedItems.Count != 0)
                 {
-                    ProcessAndShowResult(new Mat(this.listInputImage.SelectedItems[0].Text));
+                    ProcessAndShowResult(new Mat(this.inputImageFolder.SelectedPath + @"\" + this.listInputImage.SelectedItems[0].Text));
 
                 }
                 else
@@ -950,39 +1039,39 @@ namespace LicensePlateRecognition
         private void HeightDividWidthLow_ValueChanged(object sender, EventArgs e)
         {
             this.parameterList.HeightDivideWidthLow = (double)this.HeightDividWidthLow.Value;
-            ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
+            ProcessAndShowImage(new Bitmap(this.inputImageFolder.SelectedPath + @"\" + this.listInputImage.SelectedItems[0].Text), parameterList);
         }
 
         private void HeightDividWidthUp_ValueChanged(object sender, EventArgs e)
         {
             this.parameterList.HeightDivedeWidthUp = (double)this.HeightDividWidthUp.Value;
-            ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
+            ProcessAndShowImage(new Bitmap(this.inputImageFolder.SelectedPath + @"\" + this.listInputImage.SelectedItems[0].Text), parameterList);
         }
 
         private void WidthLow_ValueChanged(object sender, EventArgs e)
         {
             this.parameterList.WidthLow = (int)this.WidthLow.Value;
-            ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
+            ProcessAndShowImage(new Bitmap(this.inputImageFolder.SelectedPath + @"\" + this.listInputImage.SelectedItems[0].Text), parameterList);
         }
 
         private void WidthUp_ValueChanged(object sender, EventArgs e)
         {
             this.parameterList.WidthUp = (int)this.WidthUp.Value;
-            ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
+            ProcessAndShowImage(new Bitmap(this.inputImageFolder.SelectedPath + @"\" + this.listInputImage.SelectedItems[0].Text), parameterList);
         }
 
         private void HeightLow_ValueChanged(object sender, EventArgs e)
         {
             this.parameterList.HeightLow = (int)this.HeightLow.Value;
-            ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
+            ProcessAndShowImage(new Bitmap(this.inputImageFolder.SelectedPath + @"\" + this.listInputImage.SelectedItems[0].Text), parameterList);
         }
 
         private void HeightUp_ValueChanged(object sender, EventArgs e)
         {
             this.parameterList.HeightUp = (int)this.HeightUp.Value;
-            ProcessAndShowImage(new Bitmap(this.listInputImage.SelectedItems[0].Text), parameterList);
+            ProcessAndShowImage(new Bitmap(this.inputImageFolder.SelectedPath + @"\" + this.listInputImage.SelectedItems[0].Text), parameterList);
         }
 
-        
+     
     }
 }

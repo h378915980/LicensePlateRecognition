@@ -629,8 +629,10 @@ namespace LicensePlateRecognition
             {
                 rects.RemoveAt(0);
             }
-                        
-            if (rects[0].Width <= 2)
+            
+            
+
+            if (rects.Count!=0&& rects[0].Width <= 2)
                 rects.RemoveAt(0);
             
             if (rects.Count > 7)

@@ -99,7 +99,20 @@ namespace LicensePlateRecognition
                 return;
             svm.Save(ﬁleName + @"\charSVM.xml");
         }
+        //加载svm模型,也就是哪个xml文件
+        public static void Load(string fileName)
+        {
+            try
+            {
+                svm = SVM.Load(fileName);
+                IsReady = true;
+            }
+            catch (Exception)
+            {
+                throw new Exception("ERROR：请检查路径是否正确");
+            }
 
+        }
         //测试
         public static PlateChar Test(Mat matTest)
         {

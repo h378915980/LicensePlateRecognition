@@ -19,6 +19,7 @@ namespace LicensePlateRecognition
         public static OpenCvSharp.Size HOGCellSize = new Size(8,8);
         public static int HOGNBits = 9;
 
+
         private static SVM svm = null;
         public struct SVMFileInfo
         {
@@ -68,39 +69,29 @@ namespace LicensePlateRecognition
 
             IsReady = true;
 
-            Mat samples = new Mat();  //特征矩阵
-             
+            Mat samples = new Mat();  //特征矩阵            
             Mat responses = new Mat(); //标签矩阵
-
             foreach(SVMFileInfo fi in file)
             {
                 List<string> fileNames= FileIO.OpenFile(fi.FilePath); //读到需要的文件路径列表
-
                 if (fileNames == null || fileNames.Count<=0)  //如果文件夹中一个图片都没有就返回
                     return false;
-
                 //处理每个文件
                 foreach(string s in fileNames)
                 {
                     Mat matImg = new Mat(s,ImreadModes.Grayscale);  //get image
-
-                    Cv2.Threshold(matImg, matImg, 0, 255,ThresholdTypes.Otsu); //二值化
-                    
+                    Cv2.Threshold(matImg, matImg, 0, 255,ThresholdTypes.Otsu); //二值化                  
                     float[] feature = ComputeHogDescriptors(matImg);  //提取图片HOG特征
-
                     samples.PushBack(TypeConvert.Float2Mat(feature));//向特征矩阵中添加一行特征向量
                     responses.PushBack(TypeConvert.Int2Mat(fi.Label)); //向标签矩阵中添加一行标签
-
                 }
             }
 
             samples.ConvertTo(samples, MatType.CV_32FC1); //训练数据的格式必须是32位浮点型
-
             if (svm.Train(samples, SampleTypes.RowSample, responses))
             {
                 return true;
             }
-
             return false;
         }
 
@@ -128,7 +119,7 @@ namespace LicensePlateRecognition
             svm.Save(ﬁleName+@"\plateSVM.xml");
         }
 
-        //
+        //测试
         public static PlateCategory Test(Mat matTest)
         {
             try

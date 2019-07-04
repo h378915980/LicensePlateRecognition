@@ -46,7 +46,7 @@ namespace LicensePlateRecognition
             //C#皮肤文件加载
             this.Text = "studio";
             this.skinEngine1 = new Sunisoft.IrisSkin.SkinEngine(((System.ComponentModel.Component)(this)));
-            this.skinEngine1.SkinFile = Application.StartupPath + "//NeoSkin.ssk";
+            this.skinEngine1.SkinFile = Application.StartupPath + "//OmegaSkin.ssk";
 
             this.HeightDividWidthLow.ValueChanged -= new System.EventHandler(HeightDividWidthLow_ValueChanged);
             this.HeightDividWidthUp.ValueChanged -= new System.EventHandler(HeightDividWidthUp_ValueChanged);
@@ -239,7 +239,8 @@ namespace LicensePlateRecognition
             //找轮廓
             OpenCvSharp.Point[][] contours = null;
             HierarchyIndex[] hierarchyIndices = null;
-            matClear.FindContours(out contours, out hierarchyIndices, RetrievalModes.External, ContourApproximationModes.ApproxNone);
+            matClear.FindContours(out contours, out hierarchyIndices, RetrievalModes.External,
+                 ContourApproximationModes.ApproxNone);
             
             //求轮廓外接最小矩形
             List<Rect> rects = new List<Rect>();
@@ -276,8 +277,8 @@ namespace LicensePlateRecognition
             }
             AddTag("调整大小",matAdjust);
 
-
-            rects = CharSegement.GetSafeRects(matIn,rects);
+            //得到安全矩形
+            rects = CharSegement.GetSafeRects(matIn,rects); ;
 
             //展示切割结果
             ShowSpliteImage(rects, matIn);

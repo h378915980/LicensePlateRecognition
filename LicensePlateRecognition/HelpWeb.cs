@@ -12,9 +12,19 @@ namespace LicensePlateRecognition
 {
     public partial class HelpWeb : Form
     {
+
+        Sunisoft.IrisSkin.SkinEngine skinEngine1;
+
         public HelpWeb()
         {
             InitializeComponent();
+
+            //C#皮肤文件加载
+            this.Text = "studio";
+            this.skinEngine1 = new Sunisoft.IrisSkin.SkinEngine(((System.ComponentModel.Component)(this)));
+            this.skinEngine1.SkinFile = Application.StartupPath + "//OmegaSkin.ssk";
         }
+
+
     }
 }

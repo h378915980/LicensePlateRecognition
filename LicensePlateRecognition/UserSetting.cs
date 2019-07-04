@@ -45,7 +45,7 @@ namespace LicensePlateRecognition
         {
             this.Text = "设置";
             this.skinEngine1 = new Sunisoft.IrisSkin.SkinEngine(((System.ComponentModel.Component)(this)));
-            this.skinEngine1.SkinFile = Application.StartupPath + "//NeoSkin.ssk";
+            this.skinEngine1.SkinFile = Application.StartupPath + "//OmegaSkin.ssk";
 
             this.textBox1.Text = savePath;
             this.textBox2.Text = charSVMPath;
